@@ -2,6 +2,9 @@
   if(!document.querySelector('link[href="../polish.css"]')){
     var polish=document.createElement('link');polish.rel='stylesheet';polish.href='../polish.css';document.head.appendChild(polish);
   }
+  if(!document.querySelector('link[href="../pricing.css"]')){
+    var pricingStyles=document.createElement('link');pricingStyles.rel='stylesheet';pricingStyles.href='../pricing.css';document.head.appendChild(pricingStyles);
+  }
 
   function addArchitecture(){
     if(document.getElementById('architecture'))return;

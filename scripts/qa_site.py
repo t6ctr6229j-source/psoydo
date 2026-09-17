@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import re
+import sys
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import urlparse
+
+ROOT = Path(__file__).resolve().parents[1]
+PUBLIC_HTML = [ROOT / "de" / "index.html", ROOT / "de" / "technologie.html", ROOT / "de" / "preise.html"]
+FORBIDDEN_PUBLIC = [
+    "Frühzugang",
+    "Early Access",
+    "100% DSGVO",
+    "100 % DSGVO",
+    "revisionssicher",
+    "Emma",
+    "Liane",
+    "BTC-TOM",
+]
+EXPECTED_PRICES = ["990 €", "9.900 €", "24.900 €", "ab 49.900 €"]
+
+
+class PageParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.ids: set[str] = set()
+        self.refs: list[tuple[str, str]] = []
+        self.title_parts: list[str] = []
+        self.in_title = False
+        self.description = None
+        self.lang = None
+        self.h1_count = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "html":
+            self.lang = attrs.get("lang")
+        if "id" in attrs:
+            self.ids.add(attrs["id"])
+        if tag == "a" and attrs.get("href"):
+            self.refs.append(("href", attrs["href"]))
+        if tag in {"script", "img", "link"}:
+            key = "src" if tag in {"script", "img"} else "href"
+            if attrs.get(key):
+                self.refs.append((key, attrs[key]))
+        if tag == "meta" and attrs.get("name") == "description":
+            self.description = attrs.get("content")
+        if tag == "title":
+            self.in_title = True
+        if tag == "h1":
+            self.h1_count += 1
+
+    def handle_endtag(self, tag):
+        if tag == "title":
+            self.in_title = False
+
+    def handle_data(self, data):
+        if self.in_title:
+            self.title_parts.append(data)
+
+    @property
+    def title(self):
+        return "".join(self.title_parts).strip()
+
+
+def local_target(page: Path, ref: str) -> Path | None:
+    if not ref or ref.startswith(("#", "mailto:", "tel:", "javascript:")):
+        return None
+    parsed = urlparse(ref)
+    if parsed.scheme or parsed.netloc:
+        return None
+    path = parsed.path
+    if not path:
+        return None
+    if path.startswith("/"):
+        candidate = ROOT / path.lstrip("/")
+    else:
+        candidate = page.parent / path
+    if str(path).endswith("/"):
+        candidate = candidate / "index.html"
+    return candidate.resolve()
+
+
+def fail(errors, message):
+    errors.append(message)
+
+
+def check_page(page: Path, errors: list[str]):
+    if not page.exists():
+        fail(errors, f"missing page: {page.relative_to(ROOT)}")
+        return
+    text = page.read_text(encoding="utf-8")
+    parser = PageParser()
+    parser.feed(text)
+
+    rel = page.relative_to(ROOT)
+    if parser.lang != "de":
+        fail(errors, f"{rel}: html lang must be de")
+    if not parser.title or len(parser.title) < 8:
+        fail(errors, f"{rel}: missing/weak title")
+    if not parser.description or len(parser.description.strip()) < 40:
+        fail(errors, f"{rel}: missing/weak meta description")
+    if parser.h1_count != 1:
+        fail(errors, f"{rel}: expected exactly one h1, got {parser.h1_count}")
+
+    lowered = text.lower()
+    for phrase in FORBIDDEN_PUBLIC:
+        if phrase.lower() in lowered:
+            fail(errors, f"{rel}: forbidden/unapproved public phrase: {phrase}")
+
+    for kind, ref in parser.refs:
+        if ref.startswith("#"):
+            target = ref[1:]
+            if target and target not in parser.ids:
+                # Dynamic homepage sections/anchors are allowed only on index.html.
+                if page.name != "index.html":
+                    fail(errors, f"{rel}: missing anchor target {ref}")
+            continue
+        target = local_target(page, ref)
+        if target and not target.exists():
+            # Existing legal pages currently live on production psoydo.com and are absolute links.
+            fail(errors, f"{rel}: missing local {kind} target {ref} -> {target.relative_to(ROOT) if ROOT in target.parents else target}")
+
+
+def main() -> int:
+    errors: list[str] = []
+    for page in PUBLIC_HTML:
+        check_page(page, errors)
+
+    pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
+    for price in EXPECTED_PRICES:
+        if price not in pricing:
+            fail(errors, f"de/preise.html: expected price missing: {price}")
+    for phrase in ["keine automatische Verlängerung", "30 Tage", "Cloud"]:
+        if phrase.lower() not in pricing.lower():
+            fail(errors, f"de/preise.html: test-license guardrail missing: {phrase}")
+
+    app = ROOT / "app.js"
+    if app.exists():
+        app_text = app.read_text(encoding="utf-8")
+        for phrase in FORBIDDEN_PUBLIC:
+            if phrase.lower() in app_text.lower():
+                fail(errors, f"app.js: forbidden/unapproved public phrase: {phrase}")
+
+    sitemap = ROOT / "sitemap.xml"
+    if sitemap.exists():
+        sitemap_text = sitemap.read_text(encoding="utf-8")
+        for url in ["https://psoydo.com/de/", "https://psoydo.com/de/technologie.html", "https://psoydo.com/de/preise.html"]:
+            if url not in sitemap_text:
+                fail(errors, f"sitemap.xml: missing {url}")
+    else:
+        fail(errors, "missing sitemap.xml")
+
+    if errors:
+        print("SITE QA FAILED")
+        for item in errors:
+            print(f"- {item}")
+        return 1
+
+    print("SITE QA PASSED")
+    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, pricing guardrails, public claims, assets and sitemap.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

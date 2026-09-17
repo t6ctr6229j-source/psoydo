@@ -2,7 +2,16 @@
 
 Website repository for psoydo.com.
 
-## Current website work
-- Main landing page: `/de/`
-- Technology deep dive: `/de/technologie.html`
-- PIF content is based on DOC-PIF-001 and intentionally exposes principles rather than internal model names or implementation details.
+## Working branch
+Current enterprise website refinement: `polish/committee-90` (PR #2).
+
+## Current public pages
+- `/de/` — product landing page
+- `/de/technologie.html` — PIF / technology
+- `/de/preise.html` — pricing and 30-day test license
+
+## Quality controls
+- `scripts/qa_site.py` — dependency-free site checks
+- `.github/workflows/website-qa.yml` — automated QA workflow
+- `docs/WEBSITE_AGENT_BRIEF.md` — product, claims and design guardrails
+- `docs/OVERNIGHT_BUILD_STATE.md` — bounded iterative build state

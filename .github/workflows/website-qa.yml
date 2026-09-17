@@ -1,0 +1,46 @@
+name: Website QA
+
+on:
+  push:
+    branches:
+      - polish/committee-90
+      - redesign/register-landingpage
+  pull_request:
+    paths:
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - 'scripts/**'
+      - 'sitemap.xml'
+      - '.github/workflows/website-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static site QA
+        run: python scripts/qa_site.py
+      - name: JavaScript syntax
+        run: node --check app.js
+      - name: Start local site
+        run: |
+          python -m http.server 8080 >/tmp/psoydo-http.log 2>&1 &
+          echo $! > /tmp/psoydo-http.pid
+          sleep 2
+      - name: Smoke test public pages
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/technologie.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/preise.html >/dev/null
+      - name: Stop local site
+        if: always()
+        run: kill $(cat /tmp/psoydo-http.pid) || true

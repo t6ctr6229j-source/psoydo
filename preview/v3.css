@@ -2033,3 +2033,27 @@ body{background:var(--v3-paper)}
     padding-bottom:88px;
   }
 }
+
+
+/* Brand pass — original Psoydo AI wordmark */
+.brand-wordmark{
+  display:block;
+  width:132px;
+  height:auto;
+  max-height:42px;
+  object-fit:contain;
+  object-position:left center;
+}
+.footer-logo .brand-wordmark{
+  width:158px;
+  max-height:48px;
+}
+.site-header .logo{
+  min-width:132px;
+  line-height:0;
+}
+@media(max-width:780px){
+  .brand-wordmark{width:118px;max-height:36px}
+  .footer-logo .brand-wordmark{width:145px;max-height:44px}
+  .site-header .logo{min-width:118px}
+}

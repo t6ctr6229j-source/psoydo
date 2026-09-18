@@ -33,56 +33,104 @@
 
   <main id="main">
     <section class="sub-hero">
-      <div class="shell wide sub-hero-grid"><span class="v3-index">USE CASES / 01</span><div><h1>Bring echte Fälle zur KI.<br><span>Nicht echte Identitäten.</span></h1><p class="sub-lead">Psoydo wird interessant, wenn der wertvollste Kontext gleichzeitig der sensibelste ist. Drei typische Szenarien zeigen das Prinzip.</p></div></div>
-    </section>
-
-    <section class="sub-section" id="legal">
-      <div class="shell wide sub-grid"><span class="v3-index">LEGAL / 02</span><div><h2>Viele Verträge.<br><span>Ein konsistenter Analysekontext.</span></h2><p class="sub-copy">Vertragsbestände enthalten Namen, Ansprechpartner, Gesellschaften, Orte und weitere Bezüge. Pseudonyme können diese Identitäten abstrahieren, während die Beziehungen zwischen den Beteiligten für die Analyse erhalten bleiben.</p></div></div>
-      <div class="shell wide sub-columns">
-        <article><small>ORIGINAL</small><h3>Dr. Anna Keller</h3><p>Kronberg Maschinenbau GmbH · Stuttgart · Vertragsbezug</p></article>
-        <article><small>PSOYDO</small><h3>PERSON_041</h3><p>UNTERNEHMEN_018 · ORT_003 · gleicher Beziehungsgraph</p></article>
-        <article><small>MODELL</small><h3>Analyse</h3><p>Das Zielmodell arbeitet mit dem abstrahierten Fall statt mit den ursprünglichen Identitäten.</p></article>
-      </div>
-    </section>
-
-    <section class="sub-section dark" id="hr">
-      <div class="shell wide sub-grid"><span class="v3-index">HR / 03</span><div><h2>Gespräche gemeinsam analysieren.<br><span>Personen nicht offenlegen.</span></h2><p class="sub-copy">Feedback, Gesprächsdokumentation und qualitative HR-Daten sind kontextreich. Gleichzeitig sind reale Personenbezüge besonders sensibel. Konsistente Pseudonyme können Muster analysierbar halten, ohne die reale Person als Teil des externen Prompts zu benötigen.</p></div></div>
-      <div class="shell wide fact-strip"><div><strong>PERSON_041</strong><span>bleibt im Fall konsistent</span></div><div><strong>TEAM_007</strong><span>Bezug bleibt erhalten</span></div><div><strong>ORT_003</strong><span>Kontext bleibt nutzbar</span></div></div>
-    </section>
-
-    <section class="sub-section" id="security">
-      <div class="shell wide sub-grid"><span class="v3-index">IT & SECURITY / 04</span><div><h2>Logs korrelieren.<br><span>Reale Zuordnungen abstrahieren.</span></h2><p class="sub-copy">In Tickets, Logs und Security-Meldungen tauchen Nutzer, IP-Adressen, Systeme und weitere Identifikatoren wiederholt auf. Für eine Analyse muss die Beziehung oft erhalten bleiben, die reale Zuordnung aber nicht zwingend an das Zielmodell übergeben werden.</p></div></div>
-      <div class="shell wide control-room">
-        <div class="cr-top"><span>SECURITY CASE / CORRELATION VIEW</span><b>ILLUSTRATIVE</b></div>
-        <div class="cr-main">
-          <div class="cr-table">
-            <div class="cr-line head"><span>ZEIT</span><span>ENTITY</span><span>EVENT</span><span>STATUS</span></div>
-            <div class="cr-line"><span>08:42:13</span><span class="mono">USER_148</span><span>login_success · source=IP_082</span><span class="cr-ok">korreliert</span></div>
-            <div class="cr-line"><span>08:44:09</span><span class="mono">USER_148</span><span>privilege_change · role=admin</span><span class="cr-ok">korreliert</span></div>
-            <div class="cr-line"><span>08:49:27</span><span class="mono">USER_148</span><span>export_started · records=18,420</span><span class="cr-review">prüfen</span></div>
-          </div>
+      <div class="shell wide sub-hero-grid">
+        <span class="v3-index">USE CASES / 01</span>
+        <div>
+          <h1>Was vorher tabu war,<br><span>wird analysierbar.</span></h1>
+          <p class="sub-lead">Der Wert von Psoydo zeigt sich nicht im Pseudonym selbst, sondern in Analysen, die mit sensiblen Daten plötzlich möglich werden. Drei anonymisierte Praxisfälle zeigen die Größenordnung.</p>
         </div>
       </div>
     </section>
 
-    <section class="pif-signature">
-      <div class="shell wide pif-signature-grid"><span class="v3-index">DAS MUSTER / 05</span><div><h2>Der Use Case ändert sich.<br><span>Das Prinzip nicht.</span></h2><p>Egal ob Vertrag, Gespräch oder Log: Psoydo soll die Information vom realen Identitätsbezug trennen, bevor ein externes Modell mit dem Inhalt arbeitet.</p></div></div>
-      <div class="shell wide pif-loop-v3">
-        <div><small>01</small><strong>Kontext</strong><span>Was braucht die KI wirklich?</span></div>
-        <div><small>02</small><strong>Identität</strong><span>Was muss nicht nach außen?</span></div>
-        <div><small>03</small><strong>Konsistenz</strong><span>Welche Beziehungen müssen erhalten bleiben?</span></div>
-        <div><small>04</small><strong>Review</strong><span>Was muss vor Freigabe geprüft werden?</span></div>
+    <section class="case-study" id="finance">
+      <div class="shell wide case-study-grid">
+        <span class="v3-index">FINANZEN / 02</span>
+        <div>
+          <h2>Erbrachte Leistung.<br><span>Nie berechnet.</span></h2>
+          <p class="case-study-lead">Ein Handwerksunternehmen wollte drei Geschäftsjahre nicht mehr einzeln durchsuchen, sondern die dokumentierte Leistung systematisch gegen die tatsächliche Fakturierung prüfen.</p>
+        </div>
+      </div>
+      <div class="shell wide case-study-result">
+        <div class="case-big">
+          <small>ERGEBNIS</small>
+          <strong>60.000 €+</strong>
+          <span>an erbrachten, aber nie in Rechnung gestellten Leistungen sichtbar gemacht.</span>
+        </div>
+        <div class="case-detail">
+          <div><small>DATENBASIS</small><strong>3 Geschäftsjahre</strong><p>Eingescannte Aufträge, unterschriebene Tätigkeitsnachweise, Materialverbrauch und Rechnungen.</p></div>
+          <div><small>PSOYDO</small><strong>OCR + fallweite Pseudonymisierung</strong><p>Die sensiblen Inhalte wurden vor der KI-Analyse konsistent geschützt.</p></div>
+          <div><small>KI</small><strong>Claude</strong><p>Dokumentierte und bestätigte Leistung wurde gegen die tatsächliche Fakturierung abgeglichen.</p></div>
+        </div>
+      </div>
+      <div class="shell wide case-outcome">Der Business Case ist nicht „Dokumente anonymisieren“. <strong>Der Business Case ist: Geld finden, das sonst liegen bleibt.</strong></div>
+    </section>
+
+    <section class="case-study dark" id="legal">
+      <div class="shell wide case-study-grid">
+        <span class="v3-index">RECHT / 03</span>
+        <div>
+          <h2>5.300 Verträge.<br><span>127 zuerst lesen.</span></h2>
+          <p class="case-study-lead">Statt einen kompletten Vertragsbestand manuell nach kritischen Klauseln zu durchsuchen, wurde der Bestand geschützt an leistungsfähige Modelle übergeben und nach konkreten Risikomustern priorisiert.</p>
+        </div>
+      </div>
+      <div class="shell wide case-study-result">
+        <div class="case-big">
+          <small>ERGEBNIS</small>
+          <strong>127</strong>
+          <span>Verträge mit erhöhtem Risikopotenzial für die weitere Prüfung priorisiert.</span>
+        </div>
+        <div class="case-detail">
+          <div><small>DATENBASIS</small><strong>5.300+ Verträge</strong><p>Vertragsparteien und personenbezogene Daten wurden vor der Analyse pseudonymisiert.</p></div>
+          <div><small>PRÜFMUSTER</small><strong>Haftung, Preis, Laufzeit</strong><p>Unbegrenzte Haftung, Preisgleitklauseln, automatische Verlängerungen und ungünstige Kündigungsregeln.</p></div>
+          <div><small>KI</small><strong>Claude + Gemini</strong><p>Die Rechtsabteilung konnte sich anschließend auf die kritischsten Vereinbarungen konzentrieren.</p></div>
+        </div>
+      </div>
+      <div class="shell wide case-outcome">Nicht schneller alles lesen. <strong>Schneller wissen, was überhaupt gelesen werden muss.</strong></div>
+    </section>
+
+    <section class="case-study" id="security">
+      <div class="shell wide case-study-grid">
+        <span class="v3-index">IT & SECURITY / 04</span>
+        <div>
+          <h2>3,8 Millionen Events.<br><span>Zusammenhänge statt Rauschen.</span></h2>
+          <p class="case-study-lead">SIEM-Meldungen, Firewall-Logs und Incident-Tickets enthalten wiederkehrende Nutzer- und Systembezüge. Genau diese Beziehungen sind für die Korrelation wichtig, obwohl die realen Identitäten nicht Bestandteil des externen Prompts sein müssen.</p>
+        </div>
+      </div>
+      <div class="shell wide case-study-result">
+        <div class="case-big">
+          <small>DATENMENGE</small>
+          <strong>3,8 Mio.</strong>
+          <span>SIEM-Meldungen, Firewall-Logs und Incident-Tickets gemeinsam analysiert.</span>
+        </div>
+        <div class="case-detail">
+          <div><small>PSOYDO</small><strong>Personenbezüge geschützt</strong><p>Personenbezogene Informationen aus Logs und Tickets wurden vor der Analyse pseudonymisiert.</p></div>
+          <div><small>KI</small><strong>ChatGPT + Claude</strong><p>Die Modelle untersuchten die Daten auf Zusammenhänge zwischen Sicherheitsereignissen.</p></div>
+          <div><small>ERGEBNIS</small><strong>Weniger manuelle Prüfung</strong><p>Die Zahl manuell zu prüfender Meldungen wurde deutlich reduziert; zusammenhängende Angriffe konnten schneller erkannt werden.</p></div>
+        </div>
+      </div>
+      <div class="shell wide case-outcome">Der Nutzen entsteht dort, wo <strong>Kontext über Millionen Einzelereignisse hinweg erhalten bleibt.</strong></div>
+    </section>
+
+    <section class="more-cases">
+      <div class="shell wide more-cases-grid">
+        <span class="v3-index">WEITERE MUSTER / 05</span>
+        <div class="more-case-list">
+          <div class="more-case"><small>FINANZEN</small><strong>Doppelt bezahlte Rechnungen</strong><span>Rund 140.000 Eingangsrechnungen aus vier Geschäftsjahren auf Doubletten und versehentliche Doppelzahlungen prüfen.</span></div>
+          <div class="more-case"><small>COMPLIANCE</small><strong>Standort- und Lieferauflagen</strong><span>2.400 Kunden- und Lieferantenverträge gegen Länderbeschränkungen und vertragliche Lieferstandorte auswerten.</span></div>
+          <div class="more-case"><small>DUE DILIGENCE</small><strong>28.000 Dokumente priorisieren</strong><span>Datenraum nach Change-of-Control, Lizenzvereinbarungen, Haftungsrisiken und offenen Verpflichtungen durchsuchen.</span></div>
+          <div class="more-case"><small>VERTRIEB</small><strong>Historische Angebote analysieren</strong><span>Angebote, Aufträge und CRM-Einträge gemeinsam nach Abschluss-, Preis- und Cross-Selling-Mustern auswerten.</span></div>
+        </div>
       </div>
     </section>
 
-    <section class="sub-section">
-      <div class="shell wide sub-grid"><span class="v3-index">DEIN FALL / 06</span><div><h2>Der beste Test ist kein Demo-Dokument.<br><span>Sondern ein echter Prozess.</span></h2><p class="sub-copy">Deshalb ist die Testlizenz für die Evaluation eines konkreten Use Cases gedacht. Welche Daten tatsächlich verwendet werden dürfen und wie die Cloud-Testumgebung dafür ausgestaltet ist, wird vor produktivem Einsatz technisch und vertraglich festgelegt.</p></div></div>
-    </section>
-
     <section class="sub-cta">
-      <div class="shell wide sub-cta-grid"><div><h2>30 Tage für deinen<br>eigenen Use Case.</h2><p>Begrenzter Cloud-Test ohne automatische Verlängerung.</p></div><a class="button" href="preise.html#test">Testlizenz ansehen <span>↗</span></a></div>
+      <div class="shell wide sub-cta-grid">
+        <div><h2>Der nächste relevante Fall<br>ist wahrscheinlich deiner.</h2><p>Der 30-Tage-Test ist für die Evaluation eines konkreten Use Cases gedacht.</p></div>
+        <a class="button" href="preise.html#test">Testlizenz ansehen <span>↗</span></a>
+      </div>
     </section>
   </main>
+
 
   <footer class="site-footer dark-section">
     <div class="shell wide footer-top"><a class="logo footer-logo" href="./"><span class="logo-mark"><span>P</span></span><span>psoydo</span></a><p>Die Schutzschicht zwischen sensiblen Unternehmensdaten und leistungsfähiger KI.</p></div>

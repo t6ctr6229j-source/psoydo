@@ -31,8 +31,12 @@
   }
 
   function setNav(nav,mobile){
-    if(nav){nav.innerHTML='<a href="#product">Produkt</a><a href="technologie.html">Technologie</a><a href="#usecases">Anwendungsfälle</a><a href="#security">Sicherheit</a><a href="#deployment">Betrieb</a><a href="#pricing">Preise</a>';}
-    if(mobile){mobile.innerHTML='<a href="#product">Produkt</a><a href="technologie.html">Technologie</a><a href="#usecases">Anwendungsfälle</a><a href="#architecture">Architektur</a><a href="#security">Sicherheit</a><a href="#deployment">Betrieb</a><a href="#pricing">Preise</a><a href="#register">Registrieren</a>';}
+    var onHome=!!document.getElementById('product');
+    var home=onHome?'':'./';
+    var pricingHref=onHome?'#pricing':'preise.html';
+    var productHref=home+'#product', usecasesHref=home+'#usecases', securityHref=home+'#security', deploymentHref=home+'#deployment', architectureHref=home+'#architecture', registerHref=home+'#register';
+    if(nav){nav.innerHTML='<a href="'+productHref+'">Produkt</a><a href="technologie.html">Technologie</a><a href="'+usecasesHref+'">Anwendungsfälle</a><a href="'+securityHref+'">Sicherheit</a><a href="'+deploymentHref+'">Betrieb</a><a href="'+pricingHref+'">Preise</a>';}
+    if(mobile){mobile.innerHTML='<a href="'+productHref+'">Produkt</a><a href="technologie.html">Technologie</a><a href="'+usecasesHref+'">Anwendungsfälle</a><a href="'+architectureHref+'">Architektur</a><a href="'+securityHref+'">Sicherheit</a><a href="'+deploymentHref+'">Betrieb</a><a href="'+pricingHref+'">Preise</a><a href="'+registerHref+'">Registrieren</a>';}
   }
 
   function polishCopy(){

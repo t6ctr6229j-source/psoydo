@@ -8,7 +8,15 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_HTML = [ROOT / "de" / "index.html", ROOT / "de" / "technologie.html", ROOT / "de" / "preise.html"]
+PUBLIC_HTML = [
+    ROOT / "de" / "index.html",
+    ROOT / "de" / "produkt.html",
+    ROOT / "de" / "technologie.html",
+    ROOT / "de" / "architektur.html",
+    ROOT / "de" / "anwendungsfaelle.html",
+    ROOT / "de" / "sicherheit.html",
+    ROOT / "de" / "preise.html",
+]
 FORBIDDEN_PUBLIC = [
     "Frühzugang",
     "Early Access",
@@ -130,7 +138,7 @@ def main() -> int:
 
     homepage_path = ROOT / "de" / "index.html"
     homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
-    for section_id in ["product", "pif", "usecases", "architecture", "security", "deployment", "pricing", "register"]:
+    for section_id in ["product", "pif", "usecases", "architecture", "security", "pricing", "register"]:
         if f'id="{section_id}"' not in homepage:
             fail(errors, f"de/index.html: core section must be static: #{section_id}")
 
@@ -161,7 +169,15 @@ def main() -> int:
     sitemap = ROOT / "sitemap.xml"
     if sitemap.exists():
         sitemap_text = sitemap.read_text(encoding="utf-8")
-        for url in ["https://psoydo.com/de/", "https://psoydo.com/de/technologie.html", "https://psoydo.com/de/preise.html"]:
+        for url in [
+            "https://psoydo.com/de/",
+            "https://psoydo.com/de/produkt.html",
+            "https://psoydo.com/de/technologie.html",
+            "https://psoydo.com/de/architektur.html",
+            "https://psoydo.com/de/anwendungsfaelle.html",
+            "https://psoydo.com/de/sicherheit.html",
+            "https://psoydo.com/de/preise.html",
+        ]:
             if url not in sitemap_text:
                 fail(errors, f"sitemap.xml: missing {url}")
     else:

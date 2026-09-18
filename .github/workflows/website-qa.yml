@@ -39,7 +39,11 @@ jobs:
       - name: Smoke test public pages
         run: |
           curl --fail --silent --show-error http://127.0.0.1:8080/de/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/produkt.html >/dev/null
           curl --fail --silent --show-error http://127.0.0.1:8080/de/technologie.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/architektur.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/anwendungsfaelle.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/sicherheit.html >/dev/null
           curl --fail --silent --show-error http://127.0.0.1:8080/de/preise.html >/dev/null
       - name: Stop local site
         if: always()

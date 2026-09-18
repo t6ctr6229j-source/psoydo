@@ -125,6 +125,8 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: primary CTA must use the shared label: 30 Tage testen")
     if "Psoydo testen" in text:
         fail(errors, f"{rel}: outdated primary CTA label found: Psoydo testen")
+    if '../assets/psoydo-logo.svg' not in text or 'brand-wordmark' not in text:
+        fail(errors, f"{rel}: original Psoydo wordmark missing from page chrome")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:
@@ -159,6 +161,14 @@ def main() -> int:
             page_text = page.read_text(encoding="utf-8")
             if 'rel="canonical"' not in page_text:
                 fail(errors, f"{page.relative_to(ROOT)}: canonical link missing")
+
+    logo_asset = ROOT / "assets" / "psoydo-logo.svg"
+    if not logo_asset.exists():
+        fail(errors, "missing original Psoydo wordmark asset: assets/psoydo-logo.svg")
+    else:
+        logo_text = logo_asset.read_text(encoding="utf-8")
+        if "Psoydo AI" not in logo_text:
+            fail(errors, "assets/psoydo-logo.svg: missing accessible brand title")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:
@@ -202,7 +212,7 @@ def main() -> int:
         return 1
 
     print("SITE QA PASSED")
-    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, CTA consistency, pricing guardrails, public claims, assets and sitemap.")
+    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, CTA consistency, brand assets, pricing guardrails, public claims, assets and sitemap.")
     return 0
 
 

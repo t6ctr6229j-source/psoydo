@@ -159,258 +159,111 @@
       </div>
     </section>
 
-    <section class="positioning-section" id="positioning">
-      <div class="shell wide positioning-head">
-        <div class="v3-index">03 / LÖSUNGSANSÄTZE</div>
-        <div>
-          <h2>Vier Wege, sensible Daten für KI nutzbar zu machen.<br><span>Sie lösen nicht dasselbe Problem.</span></h2>
-          <p>Der relevante Unterschied liegt nicht darin, ob irgendein Werkzeug eine Entität erkennen kann. Entscheidend ist, wie viel Kontext erhalten bleibt, wie frei die Modellwahl bleibt und ob aus einzelnen Erkennungsschritten ein kontrollierter Unternehmensprozess wird.</p>
-          <div class="category-pulse"><i></i> Vergleich der Lösungsphilosophien · keine Anbieter-Rangliste</div>
-        </div>
-      </div>
-
-      <div class="shell wide strategy-board">
-        <article class="strategy-row">
-          <span class="strategy-no">01</span>
-          <div class="strategy-name"><small>REDACTION</small><h3>Schwärzen / Regex</h3></div>
-          <div class="strategy-cell"><small>STÄRKE</small><strong>Einfach & deterministisch</strong><p>Klare Regeln lassen sich schnell anwenden und nachvollziehen.</p></div>
-          <div class="strategy-cell"><small>TYPISCHER TRADE-OFF</small><strong>Zusammenhänge gehen verloren</strong><p>Wenn Namen und Bezüge nur entfernt werden, verliert das Zielmodell einen Teil der Information, die es für komplexe Analysen braucht.</p></div>
-        </article>
-
-        <article class="strategy-row">
-          <span class="strategy-no">02</span>
-          <div class="strategy-name"><small>DETECTION</small><h3>PII-Frameworks &amp; DLP</h3></div>
-          <div class="strategy-cell"><small>STÄRKE</small><strong>Starke Erkennungskomponenten</strong><p>Recognizer, Regeln und Modelle können sensible Entitäten zuverlässig auffinden und transformieren.</p></div>
-          <div class="strategy-cell"><small>TYPISCHER TRADE-OFF</small><strong>Komponente statt Gesamtprozess</strong><p>Falllogik, dateiübergreifende Identität, Review, Freigabe und Rückführung müssen häufig als eigener Workflow ergänzt werden.</p></div>
-        </article>
-
-        <article class="strategy-row">
-          <span class="strategy-no">03</span>
-          <div class="strategy-name"><small>SOVEREIGN AI</small><h3>Lokales / souveränes LLM</h3></div>
-          <div class="strategy-cell"><small>STÄRKE</small><strong>Klartext bleibt in der eigenen Umgebung</strong><p>Die Schutzfrage wird über den Betriebsort des Modells gelöst.</p></div>
-          <div class="strategy-cell"><small>TYPISCHER TRADE-OFF</small><strong>Modellwahl und Betrieb werden Teil des Problems</strong><p>Das Unternehmen bindet Datenschutz, Modellleistung und Infrastruktur enger aneinander.</p></div>
-        </article>
-
-        <article class="strategy-row featured">
-          <span class="strategy-no">04</span>
-          <div class="strategy-name"><small>CONTROL LAYER</small><h3>Psoydo</h3></div>
-          <div class="strategy-cell"><small>ZIELBILD</small><strong>Kontext behalten. Identität abstrahieren.</strong><p>Das Modell erhält den fachlichen Zusammenhang mit konsistenten Pseudonymen statt den ursprünglichen Identitäten.</p></div>
-          <div class="strategy-cell"><small>PRODUKTGEDANKE</small><strong>Vom Fall bis zur Rückführung</strong><p>Verstehen, schützen, prüfen, freigeben, externe KI nutzen und das Ergebnis kontrolliert wieder in den Originalkontext zurückführen.</p></div>
-        </article>
-      </div>
-
-      <div class="shell wide positioning-thesis">
-        <span class="v3-index">CATEGORY THESIS</span>
-        <div>
-          <blockquote>Detection ist ein Feature.<br><span>Kontrollierte KI-Nutzung ist das Produkt.</span></blockquote>
-          <div class="thesis-sub">
-            <p>Die KI bekommt alles, was sie verstehen muss. Aber nichts, was sie identifizieren muss.</p>
-            <a class="text-link" href="produkt.html">Produktlogik ansehen <span>↗</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="v3-system" id="product">
       <div class="shell wide v3-head">
-        <div class="v3-index">04 / DAS SYSTEM</div>
+        <div class="v3-index">03 / SO FUNKTIONIERT ES</div>
         <div>
-          <h2 class="v3-section-title">Eine Schicht.<br><span>Vier Zustände.</span></h2>
-          <p>Der entscheidende Produktgedanke ist einfach: Nicht die komplette Information verschwindet. Nur die Identität wird durch konsistente Pseudonyme ersetzt.</p>
+          <h2 class="v3-section-title">Eine Schutzschicht.<br><span>Vier klare Schritte.</span></h2>
+          <p>Der Inhalt bleibt für die Analyse wertvoll. Die reale Identität wird vor der Übergabe an das Zielmodell durch konsistente Pseudonyme ersetzt.</p>
         </div>
       </div>
       <div class="shell wide process-rail">
         <article class="process-row">
-          <div class="process-no">01</div><h3>Original verstehen</h3><p>Dokument, Tabelle, Mail, Ticket oder Log wird im Kontext betrachtet. Entscheidend ist nicht nur das Wort, sondern seine Rolle im konkreten Fall.</p>
+          <div class="process-no">01</div><h3>Fall verstehen</h3><p>Dokumente, Tabellen, Mails, Tickets oder Scans werden im Zusammenhang des konkreten Vorgangs betrachtet.</p>
         </article>
         <article class="process-row accent">
-          <div class="process-no">02</div><h3>Identität abstrahieren</h3><p>Schützenswerte Bezüge werden konsistent ersetzt. Beziehungen bleiben analysierbar, ohne die echte Identität an das Zielmodell weiterzugeben.</p>
+          <div class="process-no">02</div><h3>Identität abstrahieren</h3><p>Schützenswerte Bezüge werden konsistent ersetzt, während Beziehungen und fachlicher Kontext erhalten bleiben.</p>
         </article>
         <article class="process-row">
-          <div class="process-no">03</div><h3>Beste KI arbeiten lassen</h3><p>GPT, Claude, Gemini oder ein anderes geeignetes Modell bekommt den pseudonymisierten Arbeitskontext.</p>
+          <div class="process-no">03</div><h3>Beste KI arbeiten lassen</h3><p>Das freigegebene Modell erhält den pseudonymisierten Arbeitskontext für die eigentliche Analyse.</p>
         </article>
         <article class="process-row">
-          <div class="process-no">04</div><h3>Ergebnis zurückführen</h3><p>Das Ergebnis wird innerhalb des kontrollierten Prozesses wieder mit den ursprünglichen Bezügen zusammengeführt.</p>
+          <div class="process-no">04</div><h3>Ergebnis zurückführen</h3><p>Die Antwort wird innerhalb des kontrollierten Prozesses wieder mit den ursprünglichen Bezügen zusammengeführt.</p>
         </article>
       </div>
       <div class="shell wide system-cta"><a class="text-link" href="produkt.html">Produkt im Detail ansehen <span>↗</span></a></div>
     </section>
 
-    <section class="control-room-wrap">
-      <div class="shell wide v3-head">
-        <div class="v3-index">05 / PRODUCT SURFACE</div>
-        <div>
-          <h2 class="v3-section-title">Nicht nur schützen.<br><span>Kontrolle sichtbar machen.</span></h2>
-          <p>Das PIF-Prinzip verbindet Erkennung und Pseudonymisierung mit Revision und bewusster Freigabe. Die dargestellte Oberfläche ist ein illustratives Produktbild, keine verbindliche Feature-Matrix.</p>
-        </div>
+    <section class="home-difference">
+      <div class="shell wide home-difference-head">
+        <span class="v3-index">04 / WARUM ANDERS</span>
+        <div><h2>Detection ist ein Feature.<br><span>Kontrollierte KI-Nutzung ist das Produkt.</span></h2></div>
       </div>
-
-      <div class="shell wide control-room" aria-label="Illustrative Psoydo Produktoberfläche">
-        <div class="cr-top"><span>PSOYDO / LEGAL DUE DILIGENCE</span><b>ILLUSTRATIVE PRODUCT VIEW</b></div>
-        <div class="cr-body">
-          <aside class="cr-side">
-            <span class="side-logo">P</span>
-            <span class="active">Pre-Flight</span>
-            <span>Revision</span>
-            <span>Fälle</span>
-            <span>Freigabe</span>
-          </aside>
-          <div class="cr-main">
-            <div class="cr-header">
-              <div><span class="mono label">DOKUMENT</span><h3>Rahmenvertrag_Kronberg.pdf</h3></div>
-              <span class="cr-state">REVIEW ACTIVE</span>
-            </div>
-            <div class="cr-metrics">
-              <div><b>147</b><span>ERKANNTE ENTITÄTEN</span></div>
-              <div><b>4</b><span>RISIKOKANDIDATEN</span></div>
-              <div><b>2</b><span>OCR-KANDIDATEN</span></div>
-              <div><b>1</b><span>OFFENE FREIGABE</span></div>
-            </div>
-            <div class="cr-table">
-              <div class="cr-line head"><span>ORIGINAL</span><span>TYP</span><span>PSEUDONYM</span><span>STATUS</span></div>
-              <div class="cr-line"><span>Dr. Anna Keller</span><span>Person</span><span class="mono">PERSON_041</span><span class="cr-ok">bestätigt</span></div>
-              <div class="cr-line"><span>Kronberg Maschinenbau GmbH</span><span>Unternehmen</span><span class="mono">UNTERNEHMEN_018</span><span class="cr-ok">bestätigt</span></div>
-              <div class="cr-line"><span>Stuttgart</span><span>Ort</span><span class="mono">ORT_003</span><span class="cr-review">prüfen</span></div>
-            </div>
-          </div>
-        </div>
+      <div class="shell wide home-difference-grid">
+        <article><small>01 / FALL STATT DATEI</small><strong>Zusammenhänge bleiben zusammen.</strong><p>Identitäten sollen über mehrere Dokumente innerhalb eines Falls konsistent behandelt werden.</p></article>
+        <article><small>02 / KONTEXT STATT TREFFER</small><strong>Bedeutung vor Zeichenfolge.</strong><p>Die Frage ist nicht nur, ob ein Begriff gefunden wird, sondern welche Rolle er im konkreten Zusammenhang hat.</p></article>
+        <article><small>03 / CLOSED LOOP</small><strong>Nicht beim Export aufhören.</strong><p>Schützen, prüfen, KI nutzen und das Ergebnis kontrolliert wieder in den Originalkontext zurückführen.</p></article>
+      </div>
+      <div class="shell wide home-difference-thesis">
+        <span class="v3-index">DAS PRINZIP</span>
+        <p>Die KI bekommt alles, was sie <strong>verstehen muss</strong>. Aber nichts, was sie <strong>identifizieren muss</strong>.</p>
       </div>
     </section>
 
-    <section class="pif-signature" id="pif">
-      <div class="shell wide pif-signature-grid">
-        <div class="v3-index">06 / PIF</div>
+    <section class="impact-section" id="usecases">
+      <div class="shell wide impact-head">
+        <span class="v3-index">05 / BUSINESS IMPACT</span>
         <div>
-          <h2>Perfektion ist kein Claim.<br><span>Verbesserung ist ein System.</span></h2>
-          <p>PIF verbindet Pre-Flight, Erkennung, Revision, Ursachenanalyse und menschlichen Sichtabgleich. Fehler werden nicht nur korrigiert. Sie werden zur Information für den nächsten Durchlauf.</p>
+          <h2>Nicht mehr KI.<br><span>Mehr Ergebnis.</span></h2>
+          <p>Drei anonymisierte Praxisfälle zeigen, warum der Schutz sensibler Daten kein Selbstzweck ist: Er macht Analysen möglich, die vorher gar nicht oder nur mit erheblichem Aufwand durchgeführt wurden.</p>
         </div>
       </div>
-      <div class="shell wide pif-loop-v3">
-        <div><small>01</small><strong>PFDI + Pipeline</strong><span>Dokument früh verstehen, relevante Bezüge erkennen und pseudonymisieren.</span></div>
-        <div><small>02</small><strong>Revision</strong><span>Treffer, Risiken und OCR-Kandidaten sichtbar und prüfbar machen.</span></div>
-        <div><small>03</small><strong>Root Cause</strong><span>Nicht nur den Einzelfehler korrigieren, sondern die Ursache verstehen.</span></div>
-        <div><small>04</small><strong>Rückspielung</strong><span>Erkenntnisse wieder in Erkennung und Pipeline zurückführen.</span></div>
-      </div>
-      <div class="shell wide pif-quote">
-        <span class="v3-index">ERFOLGSMASSSTAB</span>
-        <div><p>Die Revision ist nicht dann erfolgreich, wenn sie viele Fehler findet. Sondern wenn sie mit der Zeit immer weniger finden muss.</p><a class="text-link dark" href="technologie.html">PIF im Detail <span>↗</span></a></div>
-      </div>
-    </section>
 
-    <section class="usecase-editorial" id="usecases">
-      <div class="shell wide v3-head">
-        <div class="v3-index">07 / ANWENDUNGSFÄLLE</div>
-        <div>
-          <h2 class="v3-section-title">Die interessantesten Daten.<br><span>Genau die, die bisher tabu waren.</span></h2>
-        </div>
-      </div>
-      <div class="shell wide usecase-list">
-        <a class="usecase-row" href="anwendungsfaelle.html#legal">
-          <span class="uc-label">LEGAL / 01</span><h3>Verträge analysieren</h3><p>Vertragsbestände gemeinsam auswerten, während Namen, Ansprechpartner und Unternehmensbezüge pseudonymisiert in den Analyseprozess gehen.</p>
+      <div class="shell wide impact-list">
+        <a class="impact-case" href="anwendungsfaelle.html#finance">
+          <div class="impact-stat">60.000 €<span>NICHT FAKTURIERTE LEISTUNG</span></div>
+          <h3>Erbrachte Arbeit gefunden, die nie berechnet wurde.</h3>
+          <p>Drei Geschäftsjahre aus eingescannten Aufträgen, Tätigkeitsnachweisen, Materialverbrauch und Rechnungen wurden zusammengeführt und analysiert. Sichtbar wurden über 60.000 € an erbrachten, aber nicht gestellten Rechnungen.</p>
+          <span class="impact-arrow">↗</span>
         </a>
-        <a class="usecase-row" href="anwendungsfaelle.html#hr">
-          <span class="uc-label">HR / 02</span><h3>Muster in Gesprächen erkennen</h3><p>Feedback und Gesprächsdokumentation gemeinsam analysieren, ohne dem Zielmodell die reale Person hinter dem Fall offenzulegen.</p>
+
+        <a class="impact-case" href="anwendungsfaelle.html#legal">
+          <div class="impact-stat">5.300 → 127<span>VERTRÄGE MIT ERHÖHTEM RISIKO</span></div>
+          <h3>Nicht mehr jeden Vertrag lesen. Die kritischen zuerst.</h3>
+          <p>Ein Vertragsbestand wurde auf Haftungen, Preisgleitklauseln, automatische Verlängerungen und ungünstige Kündigungsregeln untersucht. 127 Verträge wurden für die weitere Prüfung priorisiert.</p>
+          <span class="impact-arrow">↗</span>
         </a>
-        <a class="usecase-row" href="anwendungsfaelle.html#security">
-          <span class="uc-label">IT & SECURITY / 03</span><h3>Logs korrelieren</h3><p>Nutzer-, IP- und Systembezüge konsistent analysierbar halten, ohne die reale Zuordnung als Teil des externen Prompts zu benötigen.</p>
+
+        <a class="impact-case" href="anwendungsfaelle.html#security">
+          <div class="impact-stat">3,8 Mio.<span>SECURITY-EVENTS &amp; TICKETS</span></div>
+          <h3>Zusammenhängende Angriffe schneller im Rauschen erkennen.</h3>
+          <p>SIEM-Meldungen, Firewall-Logs und Incident-Tickets wurden gemeinsam analysiert. Die Zahl manuell zu prüfender Meldungen konnte deutlich reduziert und zusammenhängende Angriffe schneller erkannt werden.</p>
+          <span class="impact-arrow">↗</span>
         </a>
       </div>
+      <div class="shell wide impact-footer"><a class="text-link" href="anwendungsfaelle.html">Weitere Anwendungsfälle ansehen <span>↗</span></a></div>
     </section>
 
-    <section class="boundary-section" id="architecture">
-      <div class="shell wide v3-head">
-        <div class="v3-index">08 / ARCHITEKTUR</div>
+    <section class="home-trust" id="pif">
+      <div class="shell wide home-trust-grid">
+        <span class="v3-index">06 / TRUST</span>
         <div>
-          <h2 class="v3-section-title">Die wichtige Grenze ist nicht das Modell.<br><span>Sondern die Grenze davor.</span></h2>
-          <p>Psoydo ist als Schutzschicht zwischen der kontrollierten Unternehmensumgebung und dem externen KI-Modell gedacht.</p>
+          <h2>Perfektion ist kein Claim.<br><span>Kontrolle ist ein System.</span></h2>
+          <p>PIF verbindet kontextbezogene Erkennung, Revision, Ursachenanalyse und menschlichen Sichtabgleich. Vertrauen entsteht dadurch, dass Unsicherheit sichtbar und kontrollierbar bleibt.</p>
         </div>
       </div>
+      <div class="shell wide home-trust-links">
+        <a class="home-trust-link" href="technologie.html"><small>PIF / TECHNOLOGIE</small><strong>Wie Psoydo versteht und lernt.</strong><span>Kontext, PFDI, Revision und Lernkreislauf →</span></a>
+        <a class="home-trust-link" id="architecture" href="architektur.html"><small>ARCHITEKTUR</small><strong>Wo die Schutzgrenze verläuft.</strong><span>Original, Mapping und Modellseite →</span></a>
+        <a class="home-trust-link" id="security" href="sicherheit.html"><small>SICHERHEIT</small><strong>Wie Kontrolle sichtbar bleibt.</strong><span>Review, Freigabe und Nachvollziehbarkeit →</span></a>
+      </div>
+    </section>
 
-      <div class="shell wide boundary-visual">
-        <div class="boundary-side">
-          <div class="boundary-side-label"><span>UNTERNEHMENSSEITE</span><b>CONTROLLED</b></div>
-          <h3>Original + Zuordnung</h3>
-          <p>Hier liegen die echten Bezüge und die Information, welches Pseudonym zu welchem Original gehört.</p>
-          <div class="boundary-stack">
-            <div><b>ORIGINAL</b> · Namen, Firmen, Orte, IDs</div>
-            <div><b>MAPPING</b> · Original ↔ Pseudonym</div>
-            <div><b>REVIEW</b> · Revision und Sichtabgleich</div>
+    <section class="home-start" id="pricing">
+      <div class="shell wide home-start-grid">
+        <div class="home-start-copy">
+          <span class="v3-index">07 / TESTEN</span>
+          <h2>30 Tage.<br><span>Ein echter Use Case.</span></h2>
+          <p>Psoydo soll nicht über eine Demo überzeugen, sondern an einem konkreten Szenario. Deshalb beginnt der Einstieg mit einer klar begrenzten Evaluation.</p>
+          <div class="home-price">
+            <small>PSOYDO TEST · CLOUD</small>
+            <strong>990 €</strong>
+            <span>EINMALIG · NETTO · 30 TAGE · KEINE AUTOMATISCHE VERLÄNGERUNG</span>
+            <a class="text-link dark" href="preise.html#test">Alle Preise und Bedingungen <span>↗</span></a>
           </div>
         </div>
-        <div class="boundary-line"><span>PSOYDO BOUNDARY</span></div>
-        <div class="boundary-side external">
-          <div class="boundary-side-label"><span>MODELLSEITE</span><b>ABSTRACTED</b></div>
-          <h3>Kontext + Pseudonyme</h3>
-          <p>Das externe Modell sieht die für die Aufgabe relevanten Zusammenhänge, aber nicht die ursprünglichen Identitäten.</p>
-          <div class="boundary-stack">
-            <div><b>PERSON_041</b> · bleibt konsistent</div>
-            <div><b>UNTERNEHMEN_018</b> · Beziehung bleibt erhalten</div>
-            <div><b>ORT_003</b> · Kontext bleibt analysierbar</div>
-          </div>
-        </div>
-      </div>
-      <div class="shell wide boundary-foot">
-        <p>Die exakten Betriebsformen und technischen Deployment-Varianten zum Launch werden in der Produktdokumentation verbindlich festgelegt.</p>
-        <a class="text-link" href="architektur.html">Architektur verstehen <span>↗</span></a>
-      </div>
-    </section>
 
-    <section class="control-stack" id="security">
-      <div class="shell wide control-stack-grid">
-        <div class="control-stack-copy">
-          <span class="v3-index">09 / TRUST MODEL</span>
-          <h2>Vertrauen durch Kontrollschichten.</h2>
-          <p>Keine pauschale Perfektionsbehauptung. Stattdessen ein Prozess, der mögliche Fehler sichtbar macht und die letzte Verantwortung bewusst beim Menschen lässt.</p>
-          <a class="text-link dark" href="sicherheit.html">Security-Prinzipien ansehen <span>↗</span></a>
-        </div>
-        <div class="control-layers">
-          <article class="control-layer"><span>01</span><div><h3>Kontextbezogene Erkennung</h3><p>Begriffe werden nicht nur als Zeichenfolge, sondern in ihrer Rolle im Dokument betrachtet.</p></div><b>ERKENNEN</b></article>
-          <article class="control-layer"><span>02</span><div><h3>Konsistente Pseudonyme</h3><p>Beziehungen bleiben innerhalb eines Falls analysierbar.</p></div><b>ERHALTEN</b></article>
-          <article class="control-layer"><span>03</span><div><h3>Revision</h3><p>Trefferlisten, Risikokandidaten und OCR-Kandidaten machen mögliche Fehler gezielt prüfbar.</p></div><b>PRÜFEN</b></article>
-          <article class="control-layer"><span>04</span><div><h3>Ursachenanalyse</h3><p>Fehler können in den Lernkreislauf zurückgespielt werden, statt nur einmalig bereinigt zu werden.</p></div><b>LERNEN</b></article>
-          <article class="control-layer"><span>05</span><div><h3>Menschliche Freigabe</h3><p>Der Sichtabgleich bleibt die bewusste letzte Kontrollinstanz vor der finalen Freigabe.</p></div><b>VERANTWORTEN</b></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="price-splash" id="pricing">
-      <div class="shell wide price-splash-head">
-        <div class="v3-index">10 / PREISE</div>
-        <div><h2>Erst mit echten Fällen testen.<br><span>Dann lizenzieren.</span></h2></div>
-      </div>
-      <article class="shell wide eval-card">
-        <div class="eval-copy">
-          <span class="eval-kicker">PSOYDO TEST · 30 TAGE CLOUD</span>
-          <h3>990 €</h3>
-          <span class="unit">EINMALIG · NETTO</span>
-          <p>Für Evaluation und interne Tests. Kein Abo und keine automatische Verlängerung. Bei direktem Wechsel in eine Jahreslizenz wird der Test vollständig angerechnet.</p>
-        </div>
-        <div class="eval-rules">
-          <span><b>30 Tage</b> fester Evaluationszeitraum</span>
-          <span><b>0 Renewal</b> endet automatisch</span>
-          <span><b>1 Organisation</b> einmaliger Test</span>
-          <span><b>100 %</b> Anrechnung beim direkten Wechsel</span>
-          <a class="button button-primary" href="preise.html#test">Testlizenz ansehen <span>↗</span></a>
-        </div>
-      </article>
-      <div class="shell wide annual-inline">
-        <article><small>TEAM</small><strong>9.900 €</strong><span>PRO JAHR</span></article>
-        <article><small>BUSINESS</small><strong>24.900 €</strong><span>PRO JAHR</span></article>
-        <article><small>ENTERPRISE</small><strong>ab 49.900 €</strong><span>PRO JAHR</span></article>
-      </div>
-    </section>
-
-    <section class="v3-register" id="register">
-      <div class="shell wide v3-register-grid">
-        <div class="v3-register-copy">
-          <span class="v3-index">11 / START</span>
-          <h2>Bring einen Use Case.<br><span>Nicht nur Interesse.</span></h2>
-          <p>Registriere dein Unternehmen mit einem konkreten Szenario. Wir ordnen ein, wie Psoydo in deinen Prozess und deine Schutzgrenze passen kann.</p>
-          <div class="registration-points"><span><i>1</i> Organisation registrieren</span><span><i>2</i> Use Case einordnen</span><span><i>3</i> Technischen nächsten Schritt festlegen</span></div>
-          <div class="registration-note"><strong>Kein Newsletter-Funnel</strong><span>Wir melden uns mit einer konkreten Einschätzung statt mit einer automatisierten Sales-Sequenz.</span></div>
-        </div>
-
-        <div class="form-card">
+        <div class="form-card" id="register">
           <div class="form-head"><span class="signal"></span><strong>Psoydo Registrierung</strong><span class="mono">ON DEMAND</span></div>
           <div id="tf-container" class="registration-entry">
             <div class="registration-entry-intro">
@@ -429,6 +282,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer dark-section">

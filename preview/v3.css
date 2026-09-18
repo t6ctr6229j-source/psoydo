@@ -1966,3 +1966,70 @@ body{background:var(--v3-paper)}
   .model-chip{border-color:rgba(6,16,13,.21)}
   .arch-state:last-child,.model-chip:last-child{border-bottom:0}
 }
+
+
+/* Committee pass — tighter homepage, stronger conversion, clearer evidence discipline */
+.system-principles{
+  margin-top:42px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--v3-darkline);
+  border-bottom:1px solid var(--v3-darkline);
+}
+.system-principles article{
+  min-height:150px;
+  padding:24px 24px 26px;
+  border-right:1px solid var(--v3-darkline);
+  display:flex;
+  flex-direction:column;
+}
+.system-principles article:last-child{border-right:0}
+.system-principles small{
+  font:500 8px var(--mono);
+  letter-spacing:.1em;
+  color:#60736a;
+}
+.system-principles strong{
+  margin-top:auto;
+  font-size:20px;
+  line-height:1.08;
+  letter-spacing:-.035em;
+  color:#eef6f2;
+}
+.system-principles span{
+  margin-top:7px;
+  font-size:10px;
+  line-height:1.55;
+  color:#788a81;
+}
+.impact-case .impact-stat.case-index{
+  font-size:clamp(46px,4.3vw,64px);
+  color:var(--v3-green);
+}
+.impact-case .impact-stat.case-index span{
+  color:#63756c;
+}
+.sub-cta-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.sub-cta-actions .text-link{white-space:nowrap}
+.v3-manifesto,.context-test,.v3-system,.impact-section,.home-trust,.home-start{
+  padding-top:118px;
+  padding-bottom:118px;
+}
+@media(max-width:780px){
+  .system-principles{grid-template-columns:1fr}
+  .system-principles article{
+    min-height:125px;
+    border-right:0;
+    border-bottom:1px solid var(--v3-darkline);
+  }
+  .system-principles article:last-child{border-bottom:0}
+  .v3-manifesto,.context-test,.v3-system,.impact-section,.home-trust,.home-start{
+    padding-top:88px;
+    padding-bottom:88px;
+  }
+}

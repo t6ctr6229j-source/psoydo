@@ -279,3 +279,18 @@ body{background:var(--v3-paper)}
 @media(prefers-reduced-motion:reduce){
   .desktop-nav a:after{transition:none}
 }
+
+
+/* V3 finishing details */
+.footer-bottom div{flex-wrap:wrap;justify-content:flex-end}
+.sub-section.dark .fact-strip{border-color:var(--v3-darkline)}
+.sub-section.dark .fact-strip div{border-color:var(--v3-darkline)}
+.sub-section.dark .fact-strip span{color:#77877f}
+.sub-section.dark .fact-strip strong{color:#fff}
+.usecase-row{transition:padding-left .25s ease,background .25s ease}
+.usecase-row:hover{padding-left:18px;background:rgba(7,16,13,.018)}
+.eval-card,.membrane-stage,.control-room,.boundary-visual{isolation:isolate}
+@media(max-width:780px){
+  .footer-bottom div{justify-content:flex-start;gap:14px 18px}
+  .usecase-row:hover{padding-left:0}
+}

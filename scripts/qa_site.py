@@ -18,6 +18,7 @@ FORBIDDEN_PUBLIC = [
     "Emma",
     "Liane",
     "BTC-TOM",
+    "SOFORT BESTELLBAR",
 ]
 EXPECTED_PRICES = ["990 €", "9.900 €", "24.900 €", "ab 49.900 €"]
 
@@ -114,9 +115,7 @@ def check_page(page: Path, errors: list[str]):
         if ref.startswith("#"):
             target = ref[1:]
             if target and target not in parser.ids:
-                # Dynamic homepage sections/anchors are allowed only on index.html.
-                if page.name != "index.html":
-                    fail(errors, f"{rel}: missing anchor target {ref}")
+                fail(errors, f"{rel}: missing anchor target {ref}")
             continue
         target = local_target(page, ref)
         if target and not target.exists():
@@ -128,6 +127,18 @@ def main() -> int:
     errors: list[str] = []
     for page in PUBLIC_HTML:
         check_page(page, errors)
+
+    homepage_path = ROOT / "de" / "index.html"
+    homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
+    for section_id in ["product", "pif", "usecases", "architecture", "security", "deployment", "pricing", "register"]:
+        if f'id="{section_id}"' not in homepage:
+            fail(errors, f"de/index.html: core section must be static: #{section_id}")
+
+    for page in PUBLIC_HTML:
+        if page.exists():
+            page_text = page.read_text(encoding="utf-8")
+            if 'rel="canonical"' not in page_text:
+                fail(errors, f"{page.relative_to(ROOT)}: canonical link missing")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:
@@ -143,6 +154,9 @@ def main() -> int:
         for phrase in FORBIDDEN_PUBLIC:
             if phrase.lower() in app_text.lower():
                 fail(errors, f"app.js: forbidden/unapproved public phrase: {phrase}")
+        for dynamic_builder in ["addArchitecture", "addPIFTeaser", "addPricing", "polishCopy"]:
+            if dynamic_builder in app_text:
+                fail(errors, f"app.js: core content must remain static, found {dynamic_builder}")
 
     sitemap = ROOT / "sitemap.xml"
     if sitemap.exists():

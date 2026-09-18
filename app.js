@@ -33,29 +33,21 @@
     });
   }
 
-  var revealElements=document.querySelectorAll('.reveal');
-  var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduceMotion||!('IntersectionObserver' in window)){
-    revealElements.forEach(function(el){el.classList.add('visible');});
-  }else{
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
-      });
-    },{threshold:.12});
-    revealElements.forEach(function(el){io.observe(el);});
-  }
+  document.querySelectorAll('.reveal').forEach(function(el){
+    el.classList.add('visible');
+  });
 
-  function initTF(attempt){
-    var container=document.getElementById('tf-container');
-    if(!container)return;
+  var tfOpen=document.getElementById('tf-open');
+  var tfContainer=document.getElementById('tf-container');
+
+  function renderTypeform(attempt){
+    if(!tfContainer)return;
     if(window.tf&&window.tf.createWidget){
-      container.innerHTML='';
+      tfContainer.classList.remove('registration-entry');
+      tfContainer.classList.add('typeform-active');
+      tfContainer.innerHTML='';
       window.tf.createWidget('01KVRJN19YZ8J86JFQYX9N09QG',{
-        container:container,
+        container:tfContainer,
         hideHeaders:true,
         hideFooter:true,
         inlineOnMobile:true
@@ -63,12 +55,38 @@
       return;
     }
     if(attempt<30){
-      window.setTimeout(function(){initTF(attempt+1);},200);
+      window.setTimeout(function(){renderTypeform(attempt+1);},200);
       return;
     }
-    container.innerHTML='<div class="form-loading">Registrierung konnte nicht geladen werden. Bitte lade die Seite neu.</div>';
+    tfContainer.classList.remove('registration-entry');
+    tfContainer.innerHTML='<div class="form-loading">Registrierung konnte nicht geladen werden. Bitte lade die Seite neu.</div>';
   }
-  initTF(0);
+
+  function loadTypeform(){
+    if(!tfContainer)return;
+    if(window.tf&&window.tf.createWidget){
+      renderTypeform(0);
+      return;
+    }
+    tfContainer.classList.remove('registration-entry');
+    tfContainer.innerHTML='<div class="form-loading">Registrierung wird geladen …</div>';
+    var existing=document.getElementById('typeform-embed-script');
+    if(existing){
+      renderTypeform(0);
+      return;
+    }
+    var script=document.createElement('script');
+    script.id='typeform-embed-script';
+    script.src='https://embed.typeform.com/next/embed.js';
+    script.async=true;
+    script.onload=function(){renderTypeform(0);};
+    script.onerror=function(){
+      tfContainer.innerHTML='<div class="form-loading">Registrierung konnte nicht geladen werden. Bitte versuche es erneut.</div>';
+    };
+    document.head.appendChild(script);
+  }
+
+  if(tfOpen)tfOpen.addEventListener('click',loadTypeform);
 
   var box=document.getElementById('consent');
   if(!box)return;

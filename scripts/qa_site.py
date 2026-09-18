@@ -27,6 +27,14 @@ FORBIDDEN_PUBLIC = [
     "Liane",
     "BTC-TOM",
     "SOFORT BESTELLBAR",
+    "DSGVO-konform",
+    "gerichtsfest",
+    "vollständig lokal",
+    "kein Byte",
+    "anonymisierte Praxisfälle",
+    "60.000 €",
+    "5.300 Verträge",
+    "3,8 Mio.",
 ]
 EXPECTED_PRICES = ["990 €", "9.900 €", "24.900 €", "ab 49.900 €"]
 
@@ -113,6 +121,10 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: missing/weak meta description")
     if parser.h1_count != 1:
         fail(errors, f"{rel}: expected exactly one h1, got {parser.h1_count}")
+    if "30 Tage testen" not in text:
+        fail(errors, f"{rel}: primary CTA must use the shared label: 30 Tage testen")
+    if "Psoydo testen" in text:
+        fail(errors, f"{rel}: outdated primary CTA label found: Psoydo testen")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:
@@ -190,7 +202,7 @@ def main() -> int:
         return 1
 
     print("SITE QA PASSED")
-    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, pricing guardrails, public claims, assets and sitemap.")
+    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, CTA consistency, pricing guardrails, public claims, assets and sitemap.")
     return 0
 
 

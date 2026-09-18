@@ -1409,3 +1409,88 @@ body{background:var(--v3-paper)}
   .lens-map-row{grid-template-columns:1fr;gap:8px}
   .lens-map-row span{justify-self:start}
 }
+
+
+/* V8 — security evidence strip */
+.security-evidence{
+  padding:132px 0;
+  background:#edf0e9;
+  color:var(--v3-text);
+}
+.security-evidence-head{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:72px;
+  align-items:start;
+}
+.security-evidence h2{
+  margin:0;
+  max-width:1050px;
+  font-size:clamp(56px,6.2vw,90px);
+  line-height:.91;
+  letter-spacing:-.068em;
+}
+.security-evidence h2 span{color:#818d87}
+.security-evidence p{
+  max-width:760px;
+  margin:30px 0 0;
+  font-size:15px;
+  line-height:1.72;
+  color:#647069;
+}
+.evidence-grid{
+  margin-top:66px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--v3-line);
+  border-bottom:1px solid var(--v3-line);
+}
+.evidence-grid article{
+  min-height:215px;
+  padding:28px 28px 32px;
+  border-right:1px solid var(--v3-line);
+  display:flex;
+  flex-direction:column;
+}
+.evidence-grid article:last-child{border-right:0}
+.evidence-grid small{
+  font:500 8px var(--mono);
+  letter-spacing:.1em;
+  color:#087c57;
+}
+.evidence-grid strong{
+  margin-top:auto;
+  font-size:25px;
+  line-height:1.03;
+  letter-spacing:-.04em;
+}
+.evidence-grid span{
+  margin-top:9px;
+  font-size:11px;
+  line-height:1.6;
+  color:#69756f;
+}
+.security-evidence-note{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:72px;
+  margin-top:38px;
+}
+.security-evidence-note p{
+  margin:0;
+  max-width:900px;
+  font:500 9px/1.65 var(--mono);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#748079;
+}
+@media(max-width:1080px){
+  .security-evidence-head,.security-evidence-note{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:780px){
+  .security-evidence{padding:96px 0}
+  .security-evidence h2{font-size:49px}
+  .evidence-grid{grid-template-columns:1fr}
+  .evidence-grid article{border-right:0;border-bottom:1px solid var(--v3-line);min-height:170px}
+  .evidence-grid article:last-child{border-bottom:0}
+}

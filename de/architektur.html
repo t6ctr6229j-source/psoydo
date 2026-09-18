@@ -32,55 +32,149 @@
 
   <main id="main">
     <section class="sub-hero">
-      <div class="shell wide sub-hero-grid"><span class="v3-index">ARCHITEKTUR / 01</span><div><h1>Die wichtigste Grenze<br><span>liegt vor dem Modell.</span></h1><p class="sub-lead">Psoydo ist als kontrollierte Schutzschicht zwischen der Unternehmensumgebung und einem externen KI-Modell gedacht. Entscheidend ist, welche Information diese Grenze tatsächlich überschreitet.</p></div></div>
+      <div class="shell wide sub-hero-grid">
+        <span class="v3-index">ARCHITEKTUR / 01</span>
+        <div>
+          <h1>Die wichtigste Grenze<br><span>liegt vor dem Modell.</span></h1>
+          <p class="sub-lead">Psoydo ist als kontrollierte Schutzschicht zwischen Unternehmensumgebung und Zielmodell gedacht. Die zentrale Architekturfrage lautet deshalb nicht „Welche KI?“, sondern „Welche Information darf diese Grenze überschreiten?“</p>
+        </div>
+      </div>
     </section>
 
-    <section class="boundary-section">
-      <div class="shell wide v3-head"><span class="v3-index">TRUST BOUNDARY / 02</span><div><h2 class="v3-section-title">Original auf der einen Seite.<br><span>Arbeitskontext auf der anderen.</span></h2></div></div>
-      <div class="shell wide boundary-visual">
-        <div class="boundary-side">
-          <div class="boundary-side-label"><span>UNTERNEHMENSSEITE</span><b>CONTROLLED</b></div>
+    <section class="architecture-map-section">
+      <div class="shell wide architecture-map-head">
+        <span class="v3-index">TRUST BOUNDARY / 02</span>
+        <div>
+          <h2>Links die reale Welt.<br><span>Rechts nur der Arbeitskontext.</span></h2>
+          <p>Das Zielbild trennt Originalbezüge und kontrollierte Zuordnung vom pseudonymisierten Kontext, mit dem ein externes Modell arbeitet. Die Grenze dazwischen ist der eigentliche Kontrollpunkt.</p>
+        </div>
+      </div>
+
+      <div class="shell wide architecture-map">
+        <div class="arch-zone">
+          <div class="arch-zone-head"><span>UNTERNEHMENSSEITE</span><b>CONTROLLED ZONE</b></div>
           <h3>Original + Zuordnung</h3>
-          <p>Die eigentlichen Identitäten und die Information, welches Pseudonym zu welchem Original gehört, sind Teil der kontrollierten Unternehmensseite.</p>
-          <div class="boundary-stack"><div><b>ORIGINAL</b> · echte Bezüge</div><div><b>MAPPING</b> · Original ↔ Pseudonym</div><div><b>REVIEW</b> · Revision und Sichtabgleich</div></div>
+          <p>Hier liegen die Informationen, die reale Personen, Unternehmen, Orte oder andere schützenswerte Bezüge identifizierbar machen.</p>
+
+          <div class="arch-nodes">
+            <div class="arch-node"><i>01</i><div><strong>Originaldaten</strong><span>Dokumente, Tabellen, Mails, Logs</span></div><b>REAL</b></div>
+            <div class="arch-node"><i>02</i><div><strong>Mapping</strong><span>Original ↔ Pseudonym</span></div><b>CONTROLLED</b></div>
+            <div class="arch-node"><i>03</i><div><strong>Review</strong><span>Revision, Sichtabgleich, Freigabe</span></div><b>HUMAN</b></div>
+          </div>
         </div>
-        <div class="boundary-line"><span>PSOYDO BOUNDARY</span></div>
-        <div class="boundary-side external">
-          <div class="boundary-side-label"><span>MODELLSEITE</span><b>ABSTRACTED</b></div>
+
+        <div class="arch-boundary">
+          <span class="arch-boundary-mark">P</span>
+          <strong>PSOYDO CONTROL BOUNDARY</strong>
+          <small>IDENTITÄT<br>→ KONTEXT</small>
+        </div>
+
+        <div class="arch-zone external">
+          <div class="arch-zone-head"><span>MODELLSEITE</span><b>ABSTRACTED ZONE</b></div>
           <h3>Kontext + Pseudonyme</h3>
-          <p>Das externe Modell erhält den für die Aufgabe relevanten Kontext mit konsistenten Pseudonymen statt der ursprünglichen Identitäten.</p>
-          <div class="boundary-stack"><div><b>PERSON_041</b> · konsistenter Bezug</div><div><b>UNTERNEHMEN_018</b> · Beziehung erhalten</div><div><b>ORT_003</b> · Kontext nutzbar</div></div>
+          <p>Das Zielmodell erhält nur den Arbeitskontext, der für die Analyse vorgesehen ist – mit konsistenten Pseudonymen statt der ursprünglichen Identitäten.</p>
+
+          <div class="arch-nodes">
+            <div class="arch-node"><i>A</i><div><strong>Pseudonymisierter Payload</strong><span>PERSON_041 · UNTERNEHMEN_018 · ORT_003</span></div><b>ABSTRACTED</b></div>
+            <div class="arch-node"><i>B</i><div><strong>Zielmodell</strong><span>GPT, Claude, Gemini oder anderes Modell</span></div><b>SELECTABLE</b></div>
+            <div class="arch-node"><i>C</i><div><strong>Analyseergebnis</strong><span>Antwort weiterhin mit Pseudonymen</span></div><b>RETURN</b></div>
+          </div>
+        </div>
+
+        <div class="arch-flow-label"><span>PSEUDONYMISIERTER ARBEITSKONTEXT →</span></div>
+        <div class="arch-return"><span>← KONTROLLIERTE RÜCKFÜHRUNG</span></div>
+      </div>
+
+      <div class="shell wide arch-map-note">
+        <span class="v3-index">ARCHITEKTURPRINZIP</span>
+        <p>Die Schutzentscheidung wird <strong>vor</strong> dem Zielmodell getroffen. Dadurch kann die Modellwahl von der Identitätsfrage entkoppelt werden.</p>
+      </div>
+    </section>
+
+    <section class="arch-state-section">
+      <div class="shell wide arch-state-head">
+        <span class="v3-index">DATENZUSTÄNDE / 03</span>
+        <div><h2>Drei Zustände.<br><span>Drei unterschiedliche Verantwortungen.</span></h2></div>
+      </div>
+
+      <div class="shell wide arch-state-track">
+        <article class="arch-state">
+          <small>01 / ORIGINAL</small>
+          <strong>Reale Identität</strong>
+          <p>Namen, Unternehmen, Orte, Kennungen und weitere Bezüge in ihrer ursprünglichen Form.</p>
+          <em>QUELLE DES PERSONEN- ODER UNTERNEHMENSBEZUGS</em>
+        </article>
+        <article class="arch-state">
+          <small>02 / MAPPING</small>
+          <strong>Kontrollierte Zuordnung</strong>
+          <p>Die Beziehung zwischen Original und Pseudonym. Sie ermöglicht die spätere kontrollierte Rückführung.</p>
+          <em>BRÜCKE ZWISCHEN ORIGINAL UND ABSTRAKTION</em>
+        </article>
+        <article class="arch-state">
+          <small>03 / PAYLOAD</small>
+          <strong>Pseudonymisierter Kontext</strong>
+          <p>Die Information, die das externe Modell für die konkrete Analyseaufgabe erhalten soll.</p>
+          <em>ARBEITSEBENE DES ZIELMODELLS</em>
+        </article>
+      </div>
+    </section>
+
+    <section class="deployment-plane">
+      <div class="shell wide deployment-plane-head">
+        <span class="v3-index">BETRIEBSMODELL / 04</span>
+        <div>
+          <h2>Die Schutzgrenze bleibt.<br><span>Der Betriebsort kann variieren.</span></h2>
+          <p>Die Produktidee ist darauf ausgerichtet, Psoydo innerhalb einer vom Unternehmen kontrollierten Umgebung zu betreiben. Die konkrete Betriebsform zum Launch wird erst mit der technischen Produktdokumentation verbindlich festgelegt.</p>
         </div>
       </div>
-    </section>
 
-    <section class="sub-section">
-      <div class="shell wide sub-grid"><span class="v3-index">DATENZUSTÄNDE / 03</span><div><h2>Drei Zustände.<br><span>Eine klare Verantwortungsgrenze.</span></h2><p class="sub-copy">Die Architekturidee trennt Original, Zuordnung und externen Arbeitskontext voneinander. Damit wird nachvollziehbar, welche Information wo benötigt wird.</p></div></div>
-      <div class="shell wide sub-columns">
-        <article><small>01 / ORIGINAL</small><h3>Reale Identität</h3><p>Namen, Unternehmen, Orte, Kennungen und weitere Bezüge in ihrer ursprünglichen Form.</p></article>
-        <article><small>02 / MAPPING</small><h3>Kontrollierte Zuordnung</h3><p>Die Beziehung zwischen Original und Pseudonym. Sie ist der Schlüssel zur späteren Rückführung.</p></article>
-        <article><small>03 / PAYLOAD</small><h3>Pseudonymisierter Kontext</h3><p>Die Information, die ein externes Modell für die eigentliche Analyseaufgabe erhalten soll.</p></article>
+      <div class="shell wide deployment-options">
+        <article class="deployment-option">
+          <small>ZIELBILD / A</small>
+          <h3>Local</h3>
+          <p>Verarbeitung direkt auf einem kontrollierten Endgerät oder innerhalb einer lokalen Umgebung.</p>
+          <b>STATUS: ARCHITEKTURZIEL · KEINE LAUNCH-ZUSAGE</b>
+        </article>
+        <article class="deployment-option">
+          <small>ZIELBILD / B</small>
+          <h3>On-Prem</h3>
+          <p>Zentraler Betrieb innerhalb der eigenen Infrastruktur des Unternehmens.</p>
+          <b>STATUS: ARCHITEKTURZIEL · KEINE LAUNCH-ZUSAGE</b>
+        </article>
+        <article class="deployment-option">
+          <small>ZIELBILD / C</small>
+          <h3>Private Cloud</h3>
+          <p>Kontrollierter Cloud-Betrieb innerhalb einer klar abgegrenzten Umgebung.</p>
+          <b>STATUS: ARCHITEKTURZIEL · KEINE LAUNCH-ZUSAGE</b>
+        </article>
       </div>
+
+      <p class="shell wide deployment-disclaimer">Welche Betriebsformen tatsächlich unterstützt werden, welche Komponenten wo ausgeführt werden und wie Schlüssel, Mapping und Logging technisch umgesetzt sind, wird in der finalen Produktdokumentation verbindlich beschrieben.</p>
     </section>
 
-    <section class="sub-section dark">
-      <div class="shell wide sub-grid"><span class="v3-index">BETRIEBSMODELL / 04</span><div><h2>Die Architektur folgt der Schutzgrenze.<br><span>Nicht umgekehrt.</span></h2><p class="sub-copy">Die Produktidee ist darauf ausgerichtet, Psoydo innerhalb einer vom Unternehmen kontrollierten Umgebung zu betreiben. Welche Betriebsformen zum Launch tatsächlich freigegeben werden, wird in der technischen Produktdokumentation verbindlich festgelegt.</p></div></div>
-      <div class="shell wide sub-columns">
-        <article><small>OPTION A</small><h3>Local</h3><p>Als Zielbild für Verarbeitung direkt auf einem kontrollierten Endgerät oder einer lokalen Umgebung.</p></article>
-        <article><small>OPTION B</small><h3>On-Prem</h3><p>Als Zielbild für einen zentralen Betrieb in der eigenen Infrastruktur des Unternehmens.</p></article>
-        <article><small>OPTION C</small><h3>Private Cloud</h3><p>Als Zielbild für einen kontrollierten Cloud-Betrieb innerhalb einer klar definierten Umgebung.</p></article>
+    <section class="model-plane">
+      <div class="shell wide model-plane-grid">
+        <span class="v3-index">MODELLFREIHEIT / 05</span>
+        <div>
+          <h2>Das Modell ist austauschbar.<br><span>Die Schutzlogik bleibt davor.</span></h2>
+          <p>Psoydo ist als modellunabhängige Schutzschicht gedacht. So kann das Unternehmen das Zielmodell nach Eignung für die Aufgabe auswählen, ohne die Schutzlogik an einen einzelnen KI-Anbieter zu koppeln.</p>
+        </div>
       </div>
-    </section>
-
-    <section class="sub-section">
-      <div class="shell wide sub-grid"><span class="v3-index">MODELLFREIHEIT / 05</span><div><h2>Die KI ist austauschbar.<br><span>Die Schutzlogik bleibt.</span></h2><p class="sub-copy">Psoydo ist als modellunabhängige Schutzschicht gedacht. Dadurch kann das Zielmodell nach Eignung für die Aufgabe ausgewählt werden, statt die Schutzentscheidung an ein einzelnes Modell zu koppeln.</p></div></div>
-      <div class="shell wide fact-strip"><div><strong>GPT</strong><span>mögliche Modellklasse</span></div><div><strong>Claude</strong><span>mögliche Modellklasse</span></div><div><strong>Gemini</strong><span>mögliche Modellklasse</span></div></div>
+      <div class="shell wide model-chips">
+        <div class="model-chip"><small>MODELLKLASSE / 01</small><strong>GPT</strong><span>mögliches Zielmodell</span></div>
+        <div class="model-chip"><small>MODELLKLASSE / 02</small><strong>Claude</strong><span>mögliches Zielmodell</span></div>
+        <div class="model-chip"><small>MODELLKLASSE / 03</small><strong>Gemini</strong><span>mögliches Zielmodell</span></div>
+      </div>
     </section>
 
     <section class="sub-cta">
-      <div class="shell wide sub-cta-grid"><div><h2>Architektur ist nur dann gut,<br>wenn Kontrolle sichtbar bleibt.</h2><p>Das PIF ergänzt die technische Schutzgrenze um Revision, Ursachenanalyse und menschliche Freigabe.</p></div><a class="button" href="technologie.html">PIF ansehen <span>↗</span></a></div>
+      <div class="shell wide sub-cta-grid">
+        <div><h2>Architektur zeigt die Grenze.<br>Technologie erklärt die Intelligenz.</h2><p>Im PIF wird beschrieben, wie Erkennung, Revision, Ursachenanalyse und menschliche Freigabe zusammenarbeiten.</p></div>
+        <a class="button" href="technologie.html">PIF ansehen <span>↗</span></a>
+      </div>
     </section>
   </main>
+
 
   <footer class="site-footer dark-section">
     <div class="shell wide footer-top"><a class="logo footer-logo" href="./"><span class="logo-mark"><span>P</span></span><span>psoydo</span></a><p>Die Schutzschicht zwischen sensiblen Unternehmensdaten und leistungsfähiger KI.</p></div>

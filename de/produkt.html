@@ -52,9 +52,56 @@
       </div>
     </section>
 
+    <section class="modality-section">
+      <div class="shell wide sub-grid">
+        <span class="v3-index">INFORMATION / 02</span>
+        <div>
+          <h2>Drei Datenwelten.<br><span>Drei verschiedene Fragen.</span></h2>
+          <p class="sub-copy">Psoydo behandelt nicht jede Information gleich. Fließtext, Tabellen und Scans stellen unterschiedliche Anforderungen an die Erkennung.</p>
+        </div>
+      </div>
+      <div class="shell wide modality-grid">
+        <article class="modality-card text">
+          <small>FLIESSTEXT</small>
+          <h3>Was <span>bedeutet</span> es?</h3>
+          <p>Im Satz entscheidet Grammatik und Kontext darüber, ob ein Begriff Person, Unternehmen, Ort oder gar nichts Schützenswertes ist.</p>
+          <div class="modality-demo">„Braun“ → Farbe?<br>„Herr Braun“ → Person?<br>„Braun GmbH“ → Unternehmen?</div>
+        </article>
+        <article class="modality-card table">
+          <small>TABELLE</small>
+          <h3>Was <span>ist</span> es?</h3>
+          <p>Eine isolierte Zelle hat kaum Kontext. Spaltenüberschrift, Zeile, Nachbarzellen und Struktur liefern die entscheidenden Hinweise.</p>
+          <div class="modality-demo">Spalte: Ansprechpartner<br>Zelle: Meier<br>Nachbar: meier@example.de</div>
+        </article>
+        <article class="modality-card ocr">
+          <small>SCAN / OCR</small>
+          <h3>Was <span>steht</span> dort?</h3>
+          <p>Schlechte Scans, Stempel oder Schieflage können Text verändern. Bevor geschützt werden kann, muss der Inhalt zuverlässig erkannt werden.</p>
+          <div class="modality-demo">„Müller“ ≠ „Müll€r“<br>OCR-Artefakt darf nicht<br>zu zweiter Identität werden.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="no-guess">
+      <div class="shell wide no-guess-grid">
+        <div class="no-guess-copy">
+          <span class="v3-index">UNSICHERHEIT / 03</span>
+          <h2>Psoydo schützt auch bei Unsicherheit.<br><span>Aber es soll nicht raten.</span></h2>
+          <p>Wenn eine Zuordnung nicht eindeutig ist, darf aus Unsicherheit keine erfundene Identität werden. Der sichere Weg ist eine eigene Kennung oder eine sichtbare Prüfung durch den Menschen.</p>
+        </div>
+        <div class="identity-puzzle">
+          <div class="identity-puzzle-head"><span>IDENTITY RESOLUTION</span><b>CASE CONTEXT</b></div>
+          <div class="identity-row"><strong>Sabine Meier</strong><span>PERSON_A · bestätigt</span></div>
+          <div class="identity-row"><strong>Sebastian Meier</strong><span>PERSON_B · bestätigt</span></div>
+          <div class="identity-row ambiguous"><strong>S. Meier</strong><span>NICHT EINDEUTIG</span></div>
+          <div class="identity-decision"><b>Prinzip:</b> Keine willkürliche Zuordnung. Unsicherheit bleibt sichtbar und kann kontrolliert bestätigt werden.</div>
+        </div>
+      </div>
+    </section>
+
     <section class="v3-system">
       <div class="shell wide v3-head">
-        <span class="v3-index">PROZESS / 02</span>
+        <span class="v3-index">PROZESS / 04</span>
         <div><h2 class="v3-section-title">Von Original zu KI.<br><span>Und kontrolliert zurück.</span></h2></div>
       </div>
       <div class="shell wide process-rail">
@@ -65,9 +112,23 @@
       </div>
     </section>
 
+    <section class="closed-loop">
+      <div class="shell wide sub-grid">
+        <span class="v3-index">CLOSED LOOP / 05</span>
+        <div><h2>Geschützt zur KI.<br><span>Im Klartext zurück.</span></h2><p class="sub-copy">Der eigentliche Mehrwert endet nicht beim sicheren Export. Das KI-Ergebnis kann innerhalb des kontrollierten Prozesses wieder in die ursprünglichen Bezüge zurückgeführt werden.</p></div>
+      </div>
+      <div class="shell wide closed-loop-track">
+        <div class="closed-loop-step"><small>01</small><strong>Klartext</strong><span>Originale Dokumente und Daten im Unternehmen.</span></div>
+        <div class="closed-loop-step"><small>02</small><strong>Psoydo</strong><span>Identitäten werden durch konsistente Pseudonyme ersetzt.</span></div>
+        <div class="closed-loop-step accent"><small>03</small><strong>Externe KI</strong><span>Das Modell arbeitet mit dem geschützten Kontext.</span></div>
+        <div class="closed-loop-step"><small>04</small><strong>KI-Ergebnis</strong><span>Die Antwort enthält weiterhin die Pseudonyme.</span></div>
+        <div class="closed-loop-step"><small>05</small><strong>Rückführung</strong><span>Originalbezüge werden innerhalb der kontrollierten Umgebung wieder eingesetzt.</span></div>
+      </div>
+    </section>
+
     <section class="control-room-wrap">
       <div class="shell wide v3-head">
-        <span class="v3-index">KONTROLLE / 03</span>
+        <span class="v3-index">KONTROLLE / 06</span>
         <div><h2 class="v3-section-title">Nicht nur ein Filter.<br><span>Ein kontrollierter Arbeitsprozess.</span></h2><p>Revision und Sichtabgleich sind Teil des PIF-Prinzips. Die Oberfläche unten ist bewusst illustrativ und dient der Produktkommunikation, nicht als verbindliche Feature-Zusage.</p></div>
       </div>
       <div class="shell wide control-room">

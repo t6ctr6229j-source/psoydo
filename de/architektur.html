@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Architektur — Psoydo</title>
+  <meta name="description" content="Die Psoydo Schutzgrenze: Originaldaten und Zuordnung bleiben in der kontrollierten Unternehmensumgebung, während das externe KI-Modell pseudonymisierten Arbeitskontext erhält.">
+  <meta name="theme-color" content="#06100d">
+  <meta property="og:title" content="Architektur — Psoydo">
+  <meta property="og:description" content="Eine kontrollierte Schutzgrenze zwischen Unternehmensdaten und externer KI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://psoydo.com/de/architektur.html">
+  <link rel="canonical" href="https://psoydo.com/de/architektur.html">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../polish.css">
+  <link rel="stylesheet" href="../v3.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site-header scrolled">
+    <div class="shell wide nav-wrap">
+      <a class="logo" href="./" aria-label="Psoydo Startseite"><span class="logo-mark"><span>P</span></span><span>psoydo</span></a>
+      <nav class="desktop-nav" aria-label="Hauptnavigation"><a href="produkt.html">Produkt</a><a href="technologie.html">Technologie</a><a href="anwendungsfaelle.html">Anwendungsfälle</a><a href="sicherheit.html">Sicherheit</a><a href="preise.html">Preise</a></nav>
+      <div class="nav-actions"><a class="button button-small button-light" href="./#register">Psoydo testen</a><button class="menu-toggle" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span></button></div>
+    </div>
+    <div class="mobile-menu" aria-hidden="true"><a href="produkt.html">Produkt</a><a href="technologie.html">Technologie</a><a href="architektur.html" aria-current="page">Architektur</a><a href="anwendungsfaelle.html">Anwendungsfälle</a><a href="sicherheit.html">Sicherheit</a><a href="preise.html">Preise</a><a href="./#register">Psoydo testen</a></div>
+  </header>
+
+  <main id="main">
+    <section class="sub-hero">
+      <div class="shell wide sub-hero-grid"><span class="v3-index">ARCHITEKTUR / 01</span><div><h1>Die wichtigste Grenze<br><span>liegt vor dem Modell.</span></h1><p class="sub-lead">Psoydo ist als kontrollierte Schutzschicht zwischen der Unternehmensumgebung und einem externen KI-Modell gedacht. Entscheidend ist, welche Information diese Grenze tatsächlich überschreitet.</p></div></div>
+    </section>
+
+    <section class="boundary-section">
+      <div class="shell wide v3-head"><span class="v3-index">TRUST BOUNDARY / 02</span><div><h2 class="v3-section-title">Original auf der einen Seite.<br><span>Arbeitskontext auf der anderen.</span></h2></div></div>
+      <div class="shell wide boundary-visual">
+        <div class="boundary-side">
+          <div class="boundary-side-label"><span>UNTERNEHMENSSEITE</span><b>CONTROLLED</b></div>
+          <h3>Original + Zuordnung</h3>
+          <p>Die eigentlichen Identitäten und die Information, welches Pseudonym zu welchem Original gehört, sind Teil der kontrollierten Unternehmensseite.</p>
+          <div class="boundary-stack"><div><b>ORIGINAL</b> · echte Bezüge</div><div><b>MAPPING</b> · Original ↔ Pseudonym</div><div><b>REVIEW</b> · Revision und Sichtabgleich</div></div>
+        </div>
+        <div class="boundary-line"><span>PSOYDO BOUNDARY</span></div>
+        <div class="boundary-side external">
+          <div class="boundary-side-label"><span>MODELLSEITE</span><b>ABSTRACTED</b></div>
+          <h3>Kontext + Pseudonyme</h3>
+          <p>Das externe Modell erhält den für die Aufgabe relevanten Kontext mit konsistenten Pseudonymen statt der ursprünglichen Identitäten.</p>
+          <div class="boundary-stack"><div><b>PERSON_041</b> · konsistenter Bezug</div><div><b>UNTERNEHMEN_018</b> · Beziehung erhalten</div><div><b>ORT_003</b> · Kontext nutzbar</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sub-section">
+      <div class="shell wide sub-grid"><span class="v3-index">DATENZUSTÄNDE / 03</span><div><h2>Drei Zustände.<br><span>Eine klare Verantwortungsgrenze.</span></h2><p class="sub-copy">Die Architekturidee trennt Original, Zuordnung und externen Arbeitskontext voneinander. Damit wird nachvollziehbar, welche Information wo benötigt wird.</p></div></div>
+      <div class="shell wide sub-columns">
+        <article><small>01 / ORIGINAL</small><h3>Reale Identität</h3><p>Namen, Unternehmen, Orte, Kennungen und weitere Bezüge in ihrer ursprünglichen Form.</p></article>
+        <article><small>02 / MAPPING</small><h3>Kontrollierte Zuordnung</h3><p>Die Beziehung zwischen Original und Pseudonym. Sie ist der Schlüssel zur späteren Rückführung.</p></article>
+        <article><small>03 / PAYLOAD</small><h3>Pseudonymisierter Kontext</h3><p>Die Information, die ein externes Modell für die eigentliche Analyseaufgabe erhalten soll.</p></article>
+      </div>
+    </section>
+
+    <section class="sub-section dark">
+      <div class="shell wide sub-grid"><span class="v3-index">BETRIEBSMODELL / 04</span><div><h2>Die Architektur folgt der Schutzgrenze.<br><span>Nicht umgekehrt.</span></h2><p class="sub-copy">Die Produktidee ist darauf ausgerichtet, Psoydo innerhalb einer vom Unternehmen kontrollierten Umgebung zu betreiben. Welche Betriebsformen zum Launch tatsächlich freigegeben werden, wird in der technischen Produktdokumentation verbindlich festgelegt.</p></div></div>
+      <div class="shell wide sub-columns">
+        <article><small>OPTION A</small><h3>Local</h3><p>Als Zielbild für Verarbeitung direkt auf einem kontrollierten Endgerät oder einer lokalen Umgebung.</p></article>
+        <article><small>OPTION B</small><h3>On-Prem</h3><p>Als Zielbild für einen zentralen Betrieb in der eigenen Infrastruktur des Unternehmens.</p></article>
+        <article><small>OPTION C</small><h3>Private Cloud</h3><p>Als Zielbild für einen kontrollierten Cloud-Betrieb innerhalb einer klar definierten Umgebung.</p></article>
+      </div>
+    </section>
+
+    <section class="sub-section">
+      <div class="shell wide sub-grid"><span class="v3-index">MODELLFREIHEIT / 05</span><div><h2>Die KI ist austauschbar.<br><span>Die Schutzlogik bleibt.</span></h2><p class="sub-copy">Psoydo ist als modellunabhängige Schutzschicht gedacht. Dadurch kann das Zielmodell nach Eignung für die Aufgabe ausgewählt werden, statt die Schutzentscheidung an ein einzelnes Modell zu koppeln.</p></div></div>
+      <div class="shell wide fact-strip"><div><strong>GPT</strong><span>mögliche Modellklasse</span></div><div><strong>Claude</strong><span>mögliche Modellklasse</span></div><div><strong>Gemini</strong><span>mögliche Modellklasse</span></div></div>
+    </section>
+
+    <section class="sub-cta">
+      <div class="shell wide sub-cta-grid"><div><h2>Architektur ist nur dann gut,<br>wenn Kontrolle sichtbar bleibt.</h2><p>Das PIF ergänzt die technische Schutzgrenze um Revision, Ursachenanalyse und menschliche Freigabe.</p></div><a class="button" href="technologie.html">PIF ansehen <span>↗</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer dark-section">
+    <div class="shell wide footer-top"><a class="logo footer-logo" href="./"><span class="logo-mark"><span>P</span></span><span>psoydo</span></a><p>Die Schutzschicht zwischen sensiblen Unternehmensdaten und leistungsfähiger KI.</p></div>
+    <div class="shell wide footer-bottom"><span>© 2026 wescaleIT AG</span><div><a href="produkt.html">Produkt</a><a href="technologie.html">Technologie</a><a href="anwendungsfaelle.html">Use Cases</a><a href="sicherheit.html">Sicherheit</a><a href="preise.html">Preise</a><a href="https://psoydo.com/de/impressum.html">Impressum</a><a href="https://psoydo.com/de/datenschutz.html">Datenschutz</a></div></div>
+  </footer>
+  <script src="../app.js"></script>
+</body>
+</html>

@@ -35,8 +35,8 @@ for (const [name, path, viewport] of captures) {
   await context.close();
 }
 
-// Motion regression: force motion even when the OS requests reduced motion.
-// This catches the iOS failure mode where JS enabled motion but CSS still disabled it.
+// Mobile motion regression: forced motion must work even when the OS requests reduced motion.
+// The current homepage uses the in-place pseudonymization demo as its primary motion proof.
 {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
@@ -45,52 +45,55 @@ for (const [name, path, viewport] of captures) {
   const page = await context.newPage();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(base + '/de/?motion=1', { waitUntil: 'networkidle' });
-  await page.waitForTimeout(650);
 
-  const state = await page.evaluate(() => {
+  const heroState = await page.evaluate(() => {
     const root = document.documentElement;
-    const eyebrow = document.querySelector('.v3-eyebrow i');
-    const core = document.querySelector('.core-orb');
-    const membrane = document.querySelector('.membrane-stage');
-    const membraneCore = document.querySelector('.membrane-core');
-    const rows = Array.from(document.querySelectorAll('.process-row,.impact-case,.control-layer'));
+    const hero = document.querySelector('.home2-hero');
+    const headline = hero?.querySelector('h1');
+    const pilot = document.querySelector('a[href="#register"]');
     return {
       forced: root.classList.contains('motion-forced'),
       ready: root.classList.contains('motion-ready'),
-      membraneActive: membrane && membrane.classList.contains('motion-active'),
-      eyebrowAnimation: eyebrow ? getComputedStyle(eyebrow).animationName : 'missing',
-      eyebrowDuration: eyebrow ? getComputedStyle(eyebrow).animationDuration : '0s',
-      eyebrowIterations: eyebrow ? getComputedStyle(eyebrow).animationIterationCount : '0',
-      coreAnimation: core ? getComputedStyle(core).animationName : 'missing',
-      coreDuration: core ? getComputedStyle(core).animationDuration : '0s',
-      coreIterations: core ? getComputedStyle(core).animationIterationCount : '0',
-      packetDisplay: membraneCore ? getComputedStyle(membraneCore, '::after').display : 'missing',
-      packetAnimation: membraneCore ? getComputedStyle(membraneCore, '::after').animationName : 'missing',
-      packetDuration: membraneCore ? getComputedStyle(membraneCore, '::after').animationDuration : '0s',
-      packetIterations: membraneCore ? getComputedStyle(membraneCore, '::after').animationIterationCount : '0',
-      minimumContentOpacity: rows.length ? Math.min(...rows.map(el => Number(getComputedStyle(el).opacity))) : 1
+      heroDisplay: hero ? getComputedStyle(hero).display : 'missing',
+      headlineOpacity: headline ? Number(getComputedStyle(headline).opacity) : 0,
+      pilotLabel: pilot?.textContent?.trim() || ''
     };
   });
 
-  console.log('forced mobile motion', state);
-  if (!state.forced || !state.ready || !state.membraneActive) {
-    throw new Error('Forced mobile motion classes are not active');
+  if (!heroState.forced || !heroState.ready || heroState.heroDisplay === 'none' || heroState.headlineOpacity < 0.9) {
+    throw new Error('Customer-first mobile hero is not reliably visible under forced motion');
   }
-  if (state.eyebrowAnimation === 'none' || state.coreAnimation === 'none') {
-    throw new Error('Forced mobile hero animations are disabled');
+  if (!heroState.pilotLabel.includes('Pilot starten')) {
+    throw new Error('Primary mobile CTA is not the pilot offer');
   }
-  if (parseFloat(state.eyebrowDuration) < 1 || parseFloat(state.coreDuration) < 1 ||
-      state.eyebrowIterations !== 'infinite' || state.coreIterations !== 'infinite') {
-    throw new Error('Forced mobile hero animations are effectively reduced or one-shot');
+
+  const demo = page.locator('[data-transform-demo]');
+  await demo.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1250);
+
+  const motionState = await page.evaluate(() => {
+    const demo = document.querySelector('[data-transform-demo]');
+    const scan = document.querySelector('.transform-scan');
+    const values = Array.from(document.querySelectorAll('[data-transform-demo] .transform-value'));
+    const scanStyle = scan ? getComputedStyle(scan) : null;
+    return {
+      demoState: demo?.getAttribute('data-state') || 'missing',
+      scanAnimation: scanStyle?.animationName || 'missing',
+      scanDuration: scanStyle?.animationDuration || '0s',
+      scanIterations: scanStyle?.animationIterationCount || '0',
+      minimumValueOpacity: values.length ? Math.min(...values.map(el => Number(getComputedStyle(el).opacity))) : 0
+    };
+  });
+
+  console.log('forced mobile homepage motion', { heroState, motionState });
+  if (motionState.demoState !== 'processing') {
+    throw new Error('Pseudonymization demo did not enter processing state on mobile');
   }
-  if (state.packetDisplay === 'none' || state.packetAnimation === 'none') {
-    throw new Error('Forced mobile boundary packet is not animating');
+  if (motionState.scanAnimation !== 'transformScan' || parseFloat(motionState.scanDuration) < 2) {
+    throw new Error('Forced mobile pseudonymization scan is not visibly animating');
   }
-  if (parseFloat(state.packetDuration) < 1 || state.packetIterations !== 'infinite') {
-    throw new Error('Forced mobile boundary packet is effectively reduced or one-shot');
-  }
-  if (state.minimumContentOpacity < 0.7) {
-    throw new Error('Motion system is hiding page content');
+  if (motionState.minimumValueOpacity < 0.7) {
+    throw new Error('Homepage motion is hiding record content');
   }
 
   await page.screenshot({

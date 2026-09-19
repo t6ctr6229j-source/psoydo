@@ -53,6 +53,70 @@
     el.classList.add('visible');
   });
 
+
+  // Motion system: meaningful product animation with reduced-motion fallback.
+  var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMotion){
+    document.documentElement.classList.add('motion-ready');
+
+    var motionSections=document.querySelectorAll(
+      '.membrane-stage,.context-stage,.process-rail,.control-room,.pif-loop-v3,.architecture-map,.control-layers,.impact-list,.closed-loop-track'
+    );
+    if('IntersectionObserver' in window){
+      var motionObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('motion-active');
+            motionObserver.unobserve(entry.target);
+          }
+        });
+      },{threshold:0.16,rootMargin:'0px 0px -8% 0px'});
+      motionSections.forEach(function(el){motionObserver.observe(el);});
+    }else{
+      motionSections.forEach(function(el){el.classList.add('motion-active');});
+    }
+
+    // Scroll progress: deliberately subtle, useful on the longer technical pages.
+    var progress=document.createElement('div');
+    progress.className='page-progress';
+    progress.setAttribute('aria-hidden','true');
+    document.body.appendChild(progress);
+    var progressTick=false;
+    function updateProgress(){
+      progressTick=false;
+      var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+      var ratio=Math.min(1,Math.max(0,window.scrollY/max));
+      progress.style.transform='scaleX('+ratio+')';
+    }
+    window.addEventListener('scroll',function(){
+      if(!progressTick){
+        progressTick=true;
+        window.requestAnimationFrame(updateProgress);
+      }
+    },{passive:true});
+    window.addEventListener('resize',updateProgress,{passive:true});
+    updateProgress();
+
+    // Pointer parallax only on precise pointers; values are consumed by CSS glows.
+    if(window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+      document.querySelectorAll('.v3-hero,.architecture-map-section').forEach(function(stage){
+        stage.addEventListener('pointermove',function(event){
+          var rect=stage.getBoundingClientRect();
+          var x=((event.clientX-rect.left)/Math.max(1,rect.width))*100;
+          var y=((event.clientY-rect.top)/Math.max(1,rect.height))*100;
+          stage.style.setProperty('--motion-x',x.toFixed(1)+'%');
+          stage.style.setProperty('--motion-y',y.toFixed(1)+'%');
+        },{passive:true});
+        stage.addEventListener('pointerleave',function(){
+          stage.style.removeProperty('--motion-x');
+          stage.style.removeProperty('--motion-y');
+        },{passive:true});
+      });
+    }
+  }else{
+    document.documentElement.classList.add('motion-reduced');
+  }
+
   var tfOpen=document.getElementById('tf-open');
   var tfContainer=document.getElementById('tf-container');
 

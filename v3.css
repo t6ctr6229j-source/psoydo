@@ -2547,15 +2547,15 @@ img{max-width:100%;height:auto}
 
 /* PROCESS — four steps enter like a controlled pipeline */
 .motion-ready .process-rail .process-row{
-  opacity:0;
-  transform:translateY(22px);
-  transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1),background-color .3s ease;
+  opacity:1;
+  transform:none;
+  transition:background-color .3s ease;
 }
-.process-rail.motion-active .process-row{opacity:1;transform:none}
-.process-rail.motion-active .process-row:nth-child(1){transition-delay:.04s}
-.process-rail.motion-active .process-row:nth-child(2){transition-delay:.14s}
-.process-rail.motion-active .process-row:nth-child(3){transition-delay:.24s}
-.process-rail.motion-active .process-row:nth-child(4){transition-delay:.34s}
+.process-rail.motion-active .process-row{animation:processReveal .65s cubic-bezier(.2,.8,.2,1) both}
+.process-rail.motion-active .process-row:nth-child(1){animation-delay:.04s}
+.process-rail.motion-active .process-row:nth-child(2){animation-delay:.14s}
+.process-rail.motion-active .process-row:nth-child(3){animation-delay:.24s}
+.process-rail.motion-active .process-row:nth-child(4){animation-delay:.34s}
 .process-row{position:relative;overflow:hidden}
 .process-row:after{
   content:"";
@@ -2700,8 +2700,8 @@ img{max-width:100%;height:auto}
 
 /* SECURITY — layers engage sequentially */
 .motion-ready .control-layers .control-layer{
-  opacity:.42;
-  transform:translateX(14px);
+  opacity:.88;
+  transform:translateX(6px);
   transition:opacity .5s ease,transform .5s ease,background-color .3s ease;
 }
 .control-layers.motion-active .control-layer{opacity:1;transform:none}
@@ -2719,11 +2719,11 @@ img{max-width:100%;height:auto}
 
 /* USE CASES + micro interactions */
 .motion-ready .impact-list .impact-case{
-  opacity:0;
-  transform:translateX(-18px);
-  transition:opacity .58s ease,transform .58s cubic-bezier(.2,.8,.2,1);
+  opacity:1;
+  transform:none;
+  transition:background-color .3s ease;
 }
-.impact-list.motion-active .impact-case{opacity:1;transform:none}
+.impact-list.motion-active .impact-case{animation:impactReveal .58s cubic-bezier(.2,.8,.2,1) both}
 .impact-list.motion-active .impact-case:nth-child(2){transition-delay:.12s}
 .impact-list.motion-active .impact-case:nth-child(3){transition-delay:.24s}
 .impact-case{transition:background-color .3s ease}
@@ -2770,6 +2770,14 @@ img{max-width:100%;height:auto}
 @keyframes contextResolve{
   0%,7%,100%{filter:brightness(1);box-shadow:none}
   11%,18%{filter:brightness(1.22);box-shadow:0 0 0 4px rgba(255,255,255,.025),0 8px 24px rgba(0,0,0,.16)}
+}
+@keyframes processReveal{
+  from{opacity:.72;transform:translateY(14px)}
+  to{opacity:1;transform:none}
+}
+@keyframes impactReveal{
+  from{opacity:.72;transform:translateX(-12px)}
+  to{opacity:1;transform:none}
 }
 @keyframes pipelineTrace{
   from{width:0;opacity:1}
@@ -2834,20 +2842,22 @@ img{max-width:100%;height:auto}
 }
 
 @media(prefers-reduced-motion:reduce){
-  .page-progress{display:none!important}
-  .motion-ready *,
-  .motion-ready *::before,
-  .motion-ready *::after{
+  html:not(.motion-forced) .page-progress{display:none!important}
+  html:not(.motion-forced).motion-ready *,
+  html:not(.motion-forced).motion-ready *::before,
+  html:not(.motion-forced).motion-ready *::after{
     animation:none!important;
     transition-duration:.01ms!important;
   }
-  .motion-ready .process-row,
-  .motion-ready .control-layer,
-  .motion-ready .impact-case{
+  html:not(.motion-forced).motion-ready .process-row,
+  html:not(.motion-forced).motion-ready .control-layer,
+  html:not(.motion-forced).motion-ready .impact-case{
     opacity:1!important;
     transform:none!important;
   }
-  .button:hover span,.text-link:hover span,.impact-case:hover .impact-arrow{transform:none!important}
+  html:not(.motion-forced) .button:hover span,
+  html:not(.motion-forced) .text-link:hover span,
+  html:not(.motion-forced) .impact-case:hover .impact-arrow{transform:none!important}
 }
 
 
@@ -2955,4 +2965,23 @@ img{max-width:100%;height:auto}
 
 @media(max-width:780px) and (prefers-reduced-motion:no-preference){
   .membrane-core:after,.architecture-map:after,.control-room:after{display:block!important}
+}
+
+
+/* V12.2 — motion reliability: visible content first, animation second */
+@media(prefers-reduced-motion:no-preference){
+  .v3-eyebrow i{animation:statusHeartbeat 2.2s ease-in-out infinite}
+  .membrane-stage .membrane-top strong{animation:labelPulse 2.8s ease-in-out infinite}
+  .core-orb{animation:corePulse 3.4s ease-in-out infinite}
+}
+@media(max-width:780px){
+  html.motion-forced .membrane-core:after,
+  html.motion-forced .architecture-map:after,
+  html.motion-forced .control-room:after{display:block!important}
+  html.motion-forced .membrane-stage.motion-active .membrane-core:after{
+    animation:mobileBoundaryPacket 3.5s cubic-bezier(.42,0,.32,1) infinite!important;
+  }
+  html.motion-forced .architecture-map.motion-active:after{
+    animation:mobileArchitecturePacket 5.2s cubic-bezier(.45,0,.3,1) infinite!important;
+  }
 }

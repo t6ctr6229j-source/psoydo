@@ -109,6 +109,8 @@ for (const [name, path, viewport] of captures) {
   const page = await context.newPage();
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto(base + '/de/?motion=1', { waitUntil: 'networkidle' });
+  await page.locator('[data-transform-demo]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(180);
 
   const before = await page.evaluate(() => {
     const demo = document.querySelector('[data-transform-demo]');

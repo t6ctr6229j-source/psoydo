@@ -2258,3 +2258,53 @@ img{max-width:100%;height:auto}
   .prompt-docs>div{min-width:620px}
   .error-card{padding:42px 0}
 }
+
+
+/* Production polish — responsive navigation and long-page rendering */
+@media(max-width:1180px){
+  .desktop-nav{display:none}
+  .menu-toggle{display:block}
+  .mobile-menu.open{
+    display:flex;
+    flex-direction:column;
+    padding:20px 32px 30px;
+    background:rgba(6,16,13,.985);
+    border-top:1px solid var(--v3-darkline);
+    box-shadow:0 24px 70px rgba(0,0,0,.24);
+  }
+  .mobile-menu.open a{
+    padding:14px 0;
+    border-bottom:1px solid var(--v3-darkline);
+    font-size:14px;
+  }
+}
+@supports(content-visibility:auto){
+  .v3-manifesto,
+  .context-test,
+  .v3-system,
+  .impact-section,
+  .home-trust,
+  .home-start,
+  .sub-section,
+  .modality-section,
+  .no-guess,
+  .closed-loop,
+  .control-room-wrap,
+  .component-system,
+  .context-lens,
+  .pif-signature,
+  .architecture-map-section,
+  .arch-state-section,
+  .deployment-plane,
+  .model-plane,
+  .case-study,
+  .more-cases,
+  .control-stack,
+  .security-evidence,
+  .price-splash,
+  .pricing-licenses,
+  .pricing-extras{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 900px;
+  }
+}

@@ -132,7 +132,7 @@ def check_page(page: Path, errors: list[str]):
     for outdated_cta in ["Psoydo testen", "30 Tage testen", "Cloud-Test registrieren"]:
         if outdated_cta in text:
             fail(errors, f"{rel}: outdated primary CTA label found: {outdated_cta}")
-    if '../assets/psoydo-logo.png' not in text or 'brand-wordmark' not in text:
+    if '../assets/psoydo-logo.svg' not in text or 'brand-wordmark' not in text:
         fail(errors, f"{rel}: original Psoydo wordmark missing from page chrome")
     if "fonts.googleapis.com" in text or "fonts.gstatic.com" in text:
         fail(errors, f"{rel}: third-party Google Fonts request must not be present")
@@ -194,7 +194,7 @@ def main() -> int:
             if 'rel="canonical"' not in page_text:
                 fail(errors, f"{page.relative_to(ROOT)}: canonical link missing")
 
-    logo_asset = ROOT / "assets" / "psoydo-logo.png"
+    logo_asset = ROOT / "assets" / "psoydo-logo.svg"
     og_asset = ROOT / "og-image.svg"
     page_404 = ROOT / "404.html"
     if not og_asset.exists():
@@ -206,9 +206,11 @@ def main() -> int:
         if 'ERROR / 404' not in page_404_text or 'name="robots" content="noindex,nofollow"' not in page_404_text:
             fail(errors, "404.html: branded error marker or noindex directive missing")
     if not logo_asset.exists():
-        fail(errors, "missing Psoydo wordmark asset: assets/psoydo-logo.png")
-    elif logo_asset.stat().st_size < 1000:
-        fail(errors, "assets/psoydo-logo.png: logo asset is unexpectedly small")
+        fail(errors, "missing Psoydo wordmark asset: assets/psoydo-logo.svg")
+    else:
+        logo_text = logo_asset.read_text(encoding="utf-8")
+        if "Psoydo AI" not in logo_text or "data:image" in logo_text:
+            fail(errors, "assets/psoydo-logo.svg: logo must be a native SVG wordmark without embedded bitmap data")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:

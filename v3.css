@@ -2423,3 +2423,40 @@ img{max-width:100%;height:auto}
   content-visibility:visible!important;
   contain-intrinsic-size:auto!important;
 }
+
+
+/* Accessibility contrast pass — preserve hierarchy while meeting WCAG AA */
+.v3-manifesto .v3-index,
+.context-test .v3-index,
+.sub-section:not(.dark) .v3-index,
+.control-stack .v3-index,
+.price-splash .v3-index,
+.pricing-licenses .v3-index,
+.arch-state-section .v3-index,
+.case-study:not(.dark) .v3-index{
+  color:#56625c;
+}
+.v3-manifesto h2 span,
+.context-test h2 span,
+.sub-section:not(.dark) h2 span,
+.price-splash h2 span,
+.pricing-licenses h2 span,
+.arch-state-head h2 span,
+.context-lens h2 span{
+  color:#737f79;
+}
+.v3-manifesto-copy aside{color:#5f6b65}
+.context-lens .v3-index{color:#59655f}
+.context-lens-copy{color:#5b6761!important}
+.context-lens-sentence small{color:#5f6b65}
+.context-lens-sentence .lens-note{color:#5f6b65}
+.arch-state small{color:#066a4a}
+.arch-state p{color:#5f6b65}
+.arch-state em{color:#59655f}
+.license-card .license-unit{color:#5f6b65}
+.license-fit span{color:#5f6b65}
+.sub-section:not(.dark) .fact-strip span{color:#65716b}
+.control-layers .control-layer>span{color:#56625c}
+.control-layers .control-layer p{color:#5f6b65}
+.case-study:not(.dark) .case-detail small{color:#56625c}
+.case-study:not(.dark) .case-detail p{color:#5f6b65}

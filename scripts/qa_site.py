@@ -115,10 +115,14 @@ def check_page(page: Path, errors: list[str]):
     rel = page.relative_to(ROOT)
     if parser.lang != "de":
         fail(errors, f"{rel}: html lang must be de")
-    if not parser.title or len(parser.title) < 8:
+    if not parser.title or len(parser.title) < 15:
         fail(errors, f"{rel}: missing/weak title")
-    if not parser.description or len(parser.description.strip()) < 40:
+    if len(parser.title) > 70:
+        fail(errors, f"{rel}: title too long ({len(parser.title)} chars)")
+    if not parser.description or len(parser.description.strip()) < 80:
         fail(errors, f"{rel}: missing/weak meta description")
+    if parser.description and len(parser.description.strip()) > 170:
+        fail(errors, f"{rel}: meta description too long ({len(parser.description.strip())} chars)")
     if parser.h1_count != 1:
         fail(errors, f"{rel}: expected exactly one h1, got {parser.h1_count}")
     if "30 Tage testen" not in text:
@@ -133,6 +137,15 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: social preview metadata missing")
     if 'application/ld+json' not in text:
         fail(errors, f"{rel}: structured data missing")
+
+    ids = re.findall(r'\sid="([^"]+)"', text)
+    duplicates = sorted({value for value in ids if ids.count(value) > 1})
+    if duplicates:
+        fail(errors, f"{rel}: duplicate ids: {', '.join(duplicates)}")
+
+    for img in re.findall(r'<img\b[^>]*>', text, flags=re.I):
+        if not re.search(r'\balt="[^"]*"', img, flags=re.I):
+            fail(errors, f"{rel}: image without alt text: {img[:100]}")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:

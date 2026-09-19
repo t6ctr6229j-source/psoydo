@@ -6,9 +6,15 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .desktop-nav a[aria-current="page"],.mobile-menu a[aria-current="page"]{color:#fff}
 .mobile-menu a[aria-current="page"]{font-weight:700}
 @media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
-  .reveal{opacity:1!important;transform:none!important}
-  .button:hover,.security-list article:hover{transform:none!important}
-  .hero-demo{transform:none!important}
+  html:not(.motion-forced){scroll-behavior:auto}
+  html:not(.motion-forced) *,html:not(.motion-forced) *::before,html:not(.motion-forced) *::after{
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important
+  }
+  html:not(.motion-forced) .reveal{opacity:1!important;transform:none!important}
+  html:not(.motion-forced) .button:hover,
+  html:not(.motion-forced) .security-list article:hover{transform:none!important}
+  html:not(.motion-forced) .hero-demo{transform:none!important}
 }

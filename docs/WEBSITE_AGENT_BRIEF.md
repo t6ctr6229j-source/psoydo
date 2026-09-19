@@ -97,3 +97,11 @@ Stop autonomous iteration when any of these is true:
 - the run would mostly add content rather than improve a measured weakness
 
 No endless loops. No more than one major feature or two small related fixes per iteration.
+
+## Commercial and IP positioning
+
+wescaleIT AG is the public-facing **provider, seller and Trusted Advisor** for Psoydo. It may be described as the customer's commercial and advisory counterpart for sales, onboarding, use-case selection, information security and deployment guidance.
+
+Do **not** claim or imply that wescaleIT developed, built, created or owns Psoydo or its IP. Avoid phrases such as “built by wescaleIT”, “developed by wescaleIT”, “Psoydo wird von wescaleIT gebaut” or “ein Produkt der wescaleIT AG”.
+
+The underlying IP owner is intentionally not part of public website messaging and must not be named or inferred from website copy. If provenance is needed, use language such as “Angeboten und vertrieben durch die wescaleIT AG” or “wescaleIT AG — Anbieter, Vertrieb und Trusted Advisor”.

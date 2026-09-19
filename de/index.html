@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="../styles.css?v=20260919-motion5">
   <link rel="stylesheet" href="../polish.css">
   <link rel="stylesheet" href="../pricing.css">
-  <link rel="stylesheet" href="../v3.css?v=20260919-motion5">
+  <link rel="stylesheet" href="../v3.css?v=20260919-motion6">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://psoydo.com/#organization","name":"wescaleIT AG","url":"https://psoydo.com/"},{"@type":"WebSite","@id":"https://psoydo.com/#website","url":"https://psoydo.com/","name":"Psoydo","publisher":{"@id":"https://psoydo.com/#organization"},"inLanguage":"de-DE"},{"@type":"SoftwareApplication","@id":"https://psoydo.com/#software","name":"Psoydo","url":"https://psoydo.com/de/","applicationCategory":"BusinessApplication","description":"Psoydo trennt sensible Identitäten vom verwertbaren Kontext, bevor Inhalte ein externes KI-Modell erreichen.","publisher":{"@id":"https://psoydo.com/#organization"}}]}</script>
 </head>
 <body>
@@ -112,6 +112,74 @@
             <div><i></i> Originalbezug und Modellkontext werden getrennt</div>
             <div><i></i> Zielmodell erhält den pseudonymisierten Arbeitskontext</div>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="transform-section" id="transformation" aria-labelledby="transform-title">
+      <div class="shell wide transform-head">
+        <div class="v3-index">LIVE / PSEUDONYMISIERUNG</div>
+        <div>
+          <h2 id="transform-title">Der Datensatz bleibt.<br><span>Direkte Identifikatoren werden ersetzt.</span></h2>
+          <p>Psoydo verändert sensible Stellen direkt dort, wo sie stehen. Kein Vorher-Nachher-Vergleich: Du siehst im selben Datensatz, was geschützt wird und was unverändert nutzbar bleibt.</p>
+        </div>
+      </div>
+
+      <div class="shell wide">
+        <div class="transform-demo" data-transform-demo data-state="original" aria-label="Animiertes, fiktives Beispiel einer Pseudonymisierung">
+          <div class="transform-demo-top">
+            <span>BEISPIELDATENSATZ · FIKTIV</span>
+            <strong data-transform-status>ORIGINAL</strong>
+          </div>
+
+          <div class="transform-canvas">
+            <div class="transform-record">
+              <div class="transform-record-head">
+                <span>PERSONALVORGANG</span>
+                <b>#HR-02471</b>
+              </div>
+
+              <div class="transform-row sensitive" data-transform-row>
+                <span class="transform-label">Name</span>
+                <strong class="transform-value" data-original="Anna Weber" data-safe="PERSON_041">Anna Weber</strong>
+                <em>IDENTITÄT</em>
+              </div>
+              <div class="transform-row sensitive" data-transform-row>
+                <span class="transform-label">E-Mail</span>
+                <strong class="transform-value" data-original="anna.weber@klinik.de" data-safe="MAIL_018">anna.weber@klinik.de</strong>
+                <em>IDENTITÄT</em>
+              </div>
+              <div class="transform-row sensitive" data-transform-row>
+                <span class="transform-label">Personal-Nr.</span>
+                <strong class="transform-value" data-original="48291" data-safe="REF_7Q2M9">48291</strong>
+                <em>IDENTITÄT</em>
+              </div>
+              <div class="transform-row stable">
+                <span class="transform-label">Abteilung</span>
+                <strong class="transform-value">Radiologie</strong>
+                <em>KONTEXT</em>
+              </div>
+              <div class="transform-row stable">
+                <span class="transform-label">Vorgang</span>
+                <strong class="transform-value">Gerätefreigabe</strong>
+                <em>KONTEXT</em>
+              </div>
+            </div>
+
+            <div class="transform-scan" aria-hidden="true"><span>PSOYDO</span></div>
+          </div>
+
+          <div class="transform-demo-bottom">
+            <div class="transform-result"><i></i><strong data-transform-foot>Direkte Identifikatoren erkannt</strong></div>
+            <div class="transform-count"><b data-transform-counter>0</b>/3 ersetzt · <span>2/2 Kontextfelder bleiben erhalten</span></div>
+          </div>
+        </div>
+
+        <div class="transform-caption">
+          <span><b>01</b> Klartext wird erkannt</span>
+          <span><b>02</b> Identifikatoren werden konsistent ersetzt</span>
+          <span><b>03</b> Fachlicher Kontext bleibt nutzbar</span>
         </div>
       </div>
     </section>
@@ -307,6 +375,6 @@
     <div><p>Das Registrierungsformular von Typeform wird erst geladen, wenn du es aktiv öffnest. Optionale Messung für Google Ads erfolgt nur nach deiner Einwilligung. Details stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p><div><button id="consent-decline">Ablehnen</button><button id="consent-accept" class="accept">Akzeptieren</button></div></div>
   </div>
 
-  <script src="../app.js?v=20260919-motion5"></script>
+  <script src="../app.js?v=20260919-motion6"></script>
 </body>
 </html>

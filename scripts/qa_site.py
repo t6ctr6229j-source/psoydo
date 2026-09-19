@@ -20,6 +20,11 @@ PUBLIC_HTML = [
     ROOT / "de" / "datenschutz.html",
 ]
 FORBIDDEN_PUBLIC = [
+    "BUILT BY",
+    "wird von wescaleIT gebaut",
+    "Produkt der wescaleIT AG",
+    "entwickelt von wescaleIT",
+    "developed by wescaleIT",
     "Frühzugang",
     "Early Access",
     "100% DSGVO",
@@ -180,7 +185,7 @@ def main() -> int:
     for phrase in [
         "Die beste KI.",
         "Die KI kann es.",
-        "Built by",
+        "ANBIETER &amp; TRUSTED ADVISOR",
         "wescaleIT AG",
         "30-TAGE-PILOT",
         "Use Case registrieren",

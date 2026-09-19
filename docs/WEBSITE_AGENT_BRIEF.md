@@ -104,4 +104,4 @@ wescaleIT AG is the public-facing **provider, seller and Trusted Advisor** for P
 
 Do **not** claim or imply that wescaleIT developed, built, created or owns Psoydo or its IP. Avoid phrases such as “built by wescaleIT”, “developed by wescaleIT”, “Psoydo wird von wescaleIT gebaut” or “ein Produkt der wescaleIT AG”.
 
-The underlying IP owner is intentionally not part of public website messaging and must not be named or inferred from website copy. If provenance is needed, use language such as “Angeboten und vertrieben durch die wescaleIT AG” or “wescaleIT AG — Anbieter, Vertrieb und Trusted Advisor”.
+Public website copy must not discuss or infer development provenance or IP ownership. If provenance is needed, use language such as “Angeboten und vertrieben durch die wescaleIT AG” or “wescaleIT AG — Anbieter, Vertrieb und Trusted Advisor”.

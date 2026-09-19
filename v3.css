@@ -2849,3 +2849,42 @@ img{max-width:100%;height:auto}
   }
   .button:hover span,.text-link:hover span,.impact-case:hover .impact-arrow{transform:none!important}
 }
+
+
+/* V12.1 — make motion unmistakable on mobile and immediately visible in hero */
+.motion-ready .v3-eyebrow i{
+  animation:statusHeartbeat 2.2s ease-in-out infinite;
+}
+.motion-ready .membrane-stage .membrane-top strong{
+  animation:labelPulse 2.8s ease-in-out infinite;
+}
+.motion-ready .core-orb{
+  animation:corePulse 3.4s ease-in-out infinite;
+}
+.motion-ready .entity-safe{
+  animation:safeTokenPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes labelPulse{
+  0%,100%{opacity:.58}
+  50%{opacity:1;text-shadow:0 0 18px rgba(93,245,184,.35)}
+}
+@keyframes boundaryPacketMobile{
+  0%,10%{left:8%;opacity:0}
+  18%{opacity:1}
+  72%{left:92%;opacity:1}
+  84%,100%{left:92%;opacity:0}
+}
+
+@media(max-width:780px){
+  .membrane-core:after{
+    display:block;
+    top:50%;
+    left:8%;
+    margin-left:-4px;
+    transform:translateY(-50%);
+  }
+  .membrane-stage.motion-active .membrane-core:after{
+    animation:boundaryPacketMobile 3.5s cubic-bezier(.42,0,.32,1) infinite;
+  }
+}

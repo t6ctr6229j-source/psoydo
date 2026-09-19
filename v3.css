@@ -2392,3 +2392,34 @@ img{max-width:100%;height:auto}
   .legal-section{padding:72px 0 96px}
   .legal-hero h1{font-size:54px}
 }
+
+
+/* QA-only: render every section before full-page browser capture */
+.qa-fullpage .v3-manifesto,
+.qa-fullpage .context-test,
+.qa-fullpage .v3-system,
+.qa-fullpage .impact-section,
+.qa-fullpage .home-trust,
+.qa-fullpage .home-start,
+.qa-fullpage .sub-section,
+.qa-fullpage .modality-section,
+.qa-fullpage .no-guess,
+.qa-fullpage .closed-loop,
+.qa-fullpage .control-room-wrap,
+.qa-fullpage .component-system,
+.qa-fullpage .context-lens,
+.qa-fullpage .pif-signature,
+.qa-fullpage .architecture-map-section,
+.qa-fullpage .arch-state-section,
+.qa-fullpage .deployment-plane,
+.qa-fullpage .model-plane,
+.qa-fullpage .case-study,
+.qa-fullpage .more-cases,
+.qa-fullpage .control-stack,
+.qa-fullpage .security-evidence,
+.qa-fullpage .price-splash,
+.qa-fullpage .pricing-licenses,
+.qa-fullpage .pricing-extras{
+  content-visibility:visible!important;
+  contain-intrinsic-size:auto!important;
+}

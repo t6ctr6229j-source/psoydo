@@ -100,4 +100,76 @@ for (const [name, path, viewport] of captures) {
   await context.close();
 }
 
+// In-place pseudonymization regression: the same record must transform while context remains unchanged.
+{
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1
+  });
+  const page = await context.newPage();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto(base + '/de/?motion=1', { waitUntil: 'networkidle' });
+
+  const before = await page.evaluate(() => {
+    const demo = document.querySelector('[data-transform-demo]');
+    const values = Array.from(demo?.querySelectorAll('[data-original][data-safe]') || []);
+    const stable = Array.from(demo?.querySelectorAll('.transform-row.stable .transform-value') || []);
+    return {
+      exists: !!demo,
+      state: demo?.getAttribute('data-state'),
+      values: values.map(el => el.textContent),
+      nodeCount: values.length,
+      stable: stable.map(el => el.textContent)
+    };
+  });
+
+  if (!before.exists || before.nodeCount !== 3) {
+    throw new Error('In-place pseudonymization demo is missing or incomplete');
+  }
+  if (before.values.join('|') !== 'Anna Weber|anna.weber@klinik.de|48291') {
+    throw new Error('Pseudonymization demo does not start with the expected original values');
+  }
+  if (before.stable.join('|') !== 'Radiologie|Gerätefreigabe') {
+    throw new Error('Pseudonymization demo context fields are incorrect before transformation');
+  }
+
+  await page.waitForTimeout(3900);
+
+  const after = await page.evaluate(() => {
+    const demo = document.querySelector('[data-transform-demo]');
+    const values = Array.from(demo?.querySelectorAll('[data-original][data-safe]') || []);
+    const stable = Array.from(demo?.querySelectorAll('.transform-row.stable .transform-value') || []);
+    const counter = demo?.querySelector('[data-transform-counter]');
+    const status = demo?.querySelector('[data-transform-status]');
+    return {
+      state: demo?.getAttribute('data-state'),
+      values: values.map(el => el.textContent),
+      nodeCount: values.length,
+      stable: stable.map(el => el.textContent),
+      counter: counter?.textContent,
+      status: status?.textContent
+    };
+  });
+
+  console.log('in-place pseudonymization', { before, after });
+  if (after.nodeCount !== before.nodeCount) {
+    throw new Error('Pseudonymization demo replaced the record instead of transforming it in place');
+  }
+  if (after.values.join('|') !== 'PERSON_041|MAIL_018|REF_7Q2M9') {
+    throw new Error('Pseudonymization demo did not reach the expected pseudonymized values');
+  }
+  if (after.stable.join('|') !== before.stable.join('|')) {
+    throw new Error('Pseudonymization demo changed fields that should remain context');
+  }
+  if (after.state !== 'safe' || after.counter !== '3' || after.status !== 'PSEUDONYMISIERT') {
+    throw new Error('Pseudonymization demo did not reach the expected final state');
+  }
+
+  const demo = page.locator('[data-transform-demo]');
+  await demo.screenshot({
+    path: '/tmp/psoydo-browser-qa/pseudonymization-demo-safe.png'
+  });
+  await context.close();
+}
+
 await browser.close();

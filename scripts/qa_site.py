@@ -16,6 +16,8 @@ PUBLIC_HTML = [
     ROOT / "de" / "anwendungsfaelle.html",
     ROOT / "de" / "sicherheit.html",
     ROOT / "de" / "preise.html",
+    ROOT / "de" / "impressum.html",
+    ROOT / "de" / "datenschutz.html",
 ]
 FORBIDDEN_PUBLIC = [
     "Frühzugang",

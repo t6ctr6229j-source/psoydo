@@ -59,9 +59,15 @@ for (const [name, path, viewport] of captures) {
       ready: root.classList.contains('motion-ready'),
       membraneActive: membrane && membrane.classList.contains('motion-active'),
       eyebrowAnimation: eyebrow ? getComputedStyle(eyebrow).animationName : 'missing',
+      eyebrowDuration: eyebrow ? getComputedStyle(eyebrow).animationDuration : '0s',
+      eyebrowIterations: eyebrow ? getComputedStyle(eyebrow).animationIterationCount : '0',
       coreAnimation: core ? getComputedStyle(core).animationName : 'missing',
+      coreDuration: core ? getComputedStyle(core).animationDuration : '0s',
+      coreIterations: core ? getComputedStyle(core).animationIterationCount : '0',
       packetDisplay: membraneCore ? getComputedStyle(membraneCore, '::after').display : 'missing',
       packetAnimation: membraneCore ? getComputedStyle(membraneCore, '::after').animationName : 'missing',
+      packetDuration: membraneCore ? getComputedStyle(membraneCore, '::after').animationDuration : '0s',
+      packetIterations: membraneCore ? getComputedStyle(membraneCore, '::after').animationIterationCount : '0',
       minimumContentOpacity: rows.length ? Math.min(...rows.map(el => Number(getComputedStyle(el).opacity))) : 1
     };
   });
@@ -73,8 +79,15 @@ for (const [name, path, viewport] of captures) {
   if (state.eyebrowAnimation === 'none' || state.coreAnimation === 'none') {
     throw new Error('Forced mobile hero animations are disabled');
   }
+  if (parseFloat(state.eyebrowDuration) < 1 || parseFloat(state.coreDuration) < 1 ||
+      state.eyebrowIterations !== 'infinite' || state.coreIterations !== 'infinite') {
+    throw new Error('Forced mobile hero animations are effectively reduced or one-shot');
+  }
   if (state.packetDisplay === 'none' || state.packetAnimation === 'none') {
     throw new Error('Forced mobile boundary packet is not animating');
+  }
+  if (parseFloat(state.packetDuration) < 1 || state.packetIterations !== 'infinite') {
+    throw new Error('Forced mobile boundary packet is effectively reduced or one-shot');
   }
   if (state.minimumContentOpacity < 0.7) {
     throw new Error('Motion system is hiding page content');

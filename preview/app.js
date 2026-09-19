@@ -1,4 +1,6 @@
 (function(){
+  try{if(new URLSearchParams(window.location.search).get('qa')==='fullpage')document.documentElement.classList.add('qa-fullpage');}catch(error){}
+
   var header=document.querySelector('.site-header');
 
   function onScroll(){
@@ -66,7 +68,7 @@
         hideFooter:true,
         inlineOnMobile:true,
         onSubmit:function(){
-          if(typeof window.gtag==='function'){
+          if(window.__psoydoAdsConsent===true&&typeof window.gtag==='function'){
             window.gtag('event','psoydo_registration_submit',{
               event_category:'registration',
               event_label:'30_day_test'
@@ -136,7 +138,10 @@
     }
   }
 
+  window.__psoydoAdsConsent=false;
+
   function loadAds(){
+    window.__psoydoAdsConsent=true;
     if(document.getElementById('google-gtag'))return;
     var script=document.createElement('script');
     script.id='google-gtag';
@@ -167,6 +172,15 @@
 
   if(no)no.addEventListener('click',function(){
     try{localStorage.setItem(KEY,'denied');}catch(error){}
+    window.__psoydoAdsConsent=false;
+    if(typeof window.gtag==='function'){
+      window.gtag('consent','update',{
+        ad_storage:'denied',
+        analytics_storage:'denied',
+        ad_user_data:'denied',
+        ad_personalization:'denied'
+      });
+    }
     hideConsent();
   });
 

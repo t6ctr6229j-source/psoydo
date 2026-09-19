@@ -27,6 +27,14 @@ for (const [name, path, viewport] of captures) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const join = path.includes('?') ? '&' : '?';
   await page.goto(base + path + join + 'qa=fullpage', { waitUntil: 'networkidle' });
+  const brokenBrandImages = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('img.brand-wordmark'))
+      .filter(img => !img.complete || img.naturalWidth === 0)
+      .map(img => img.getAttribute('src'))
+  );
+  if (brokenBrandImages.length) {
+    throw new Error(name + ': broken brand logo(s): ' + brokenBrandImages.join(', '));
+  }
   await page.screenshot({
     path: '/tmp/psoydo-browser-qa/' + name + '.png',
     fullPage: true,

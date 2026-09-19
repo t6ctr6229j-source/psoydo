@@ -206,11 +206,11 @@ def main() -> int:
         if 'ERROR / 404' not in page_404_text or 'name="robots" content="noindex,nofollow"' not in page_404_text:
             fail(errors, "404.html: branded error marker or noindex directive missing")
     if not logo_asset.exists():
-        fail(errors, "missing original Psoydo wordmark asset: assets/psoydo-logo.svg")
+        fail(errors, "missing Psoydo wordmark asset: assets/psoydo-logo.svg")
     else:
         logo_text = logo_asset.read_text(encoding="utf-8")
-        if "Psoydo AI" not in logo_text:
-            fail(errors, "assets/psoydo-logo.svg: missing accessible brand title")
+        if "Psoydo AI" not in logo_text or "data:image" in logo_text:
+            fail(errors, "assets/psoydo-logo.svg: logo must be a native SVG wordmark without embedded bitmap data")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:

@@ -2888,3 +2888,71 @@ img{max-width:100%;height:auto}
     animation:boundaryPacketMobile 3.5s cubic-bezier(.42,0,.32,1) infinite;
   }
 }
+
+
+/* V12.1 — mobile motion must remain visible, not merely decorative */
+@media(max-width:780px) and (prefers-reduced-motion:no-preference){
+  .membrane-core:after{
+    display:block;
+    top:50%;
+    left:8%;
+    margin:-4px 0 0 -4px;
+    animation:none;
+  }
+  .membrane-stage.motion-active .membrane-core:after{
+    animation:mobileBoundaryPacket 3.5s cubic-bezier(.42,0,.32,1) infinite;
+  }
+
+  .architecture-map:after{
+    display:block;
+    top:10%;
+    left:50%;
+    margin-left:-4px;
+    animation:none;
+  }
+  .architecture-map.motion-active:after{
+    animation:mobileArchitecturePacket 5.2s cubic-bezier(.45,0,.3,1) infinite;
+  }
+
+  .control-room:after{
+    display:block;
+    left:0;
+    right:0;
+    top:62px;
+  }
+
+  .membrane-stage.motion-active .model-row span:nth-child(1){animation:modelChoice 4.5s 0s ease-in-out infinite}
+  .membrane-stage.motion-active .model-row span:nth-child(2){animation:modelChoice 4.5s 1.5s ease-in-out infinite}
+  .membrane-stage.motion-active .model-row span:nth-child(3){animation:modelChoice 4.5s 3s ease-in-out infinite}
+
+  .context-stage.motion-active .context-legend div:nth-child(1){animation:legendResolve 7s 0s ease-in-out infinite}
+  .context-stage.motion-active .context-legend div:nth-child(2){animation:legendResolve 7s .7s ease-in-out infinite}
+  .context-stage.motion-active .context-legend div:nth-child(3){animation:legendResolve 7s 1.4s ease-in-out infinite}
+  .context-stage.motion-active .context-legend div:nth-child(4){animation:legendResolve 7s 2.1s ease-in-out infinite}
+  .context-stage.motion-active .context-legend div:nth-child(5){animation:legendResolve 7s 2.8s ease-in-out infinite}
+}
+
+@keyframes mobileBoundaryPacket{
+  0%,10%{left:8%;opacity:0}
+  18%{opacity:1}
+  72%{left:92%;opacity:1}
+  84%,100%{left:92%;opacity:0}
+}
+@keyframes mobileArchitecturePacket{
+  0%,8%{top:9%;opacity:0}
+  16%{opacity:1}
+  72%{top:88%;opacity:1}
+  82%,100%{top:88%;opacity:0}
+}
+@keyframes modelChoice{
+  0%,18%,100%{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.018);color:#91a098;transform:translateY(0)}
+  28%,46%{border-color:rgba(93,245,184,.34);background:rgba(93,245,184,.07);color:#d8ffef;transform:translateY(-3px)}
+}
+@keyframes legendResolve{
+  0%,8%,100%{background:transparent}
+  12%,20%{background:rgba(255,255,255,.035)}
+}
+
+@media(max-width:780px) and (prefers-reduced-motion:no-preference){
+  .membrane-core:after,.architecture-map:after,.control-room:after{display:block!important}
+}

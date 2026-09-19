@@ -127,10 +127,11 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: meta description too long ({len(parser.description.strip())} chars)")
     if parser.h1_count != 1:
         fail(errors, f"{rel}: expected exactly one h1, got {parser.h1_count}")
-    if "30 Tage testen" not in text:
-        fail(errors, f"{rel}: primary CTA must use the shared label: 30 Tage testen")
-    if "Psoydo testen" in text:
-        fail(errors, f"{rel}: outdated primary CTA label found: Psoydo testen")
+    if "Pilot starten" not in text:
+        fail(errors, f"{rel}: primary CTA must use the shared label: Pilot starten")
+    for outdated_cta in ["Psoydo testen", "30 Tage testen", "Cloud-Test registrieren"]:
+        if outdated_cta in text:
+            fail(errors, f"{rel}: outdated primary CTA label found: {outdated_cta}")
     if '../assets/psoydo-logo.svg' not in text or 'brand-wordmark' not in text:
         fail(errors, f"{rel}: original Psoydo wordmark missing from page chrome")
     if "fonts.googleapis.com" in text or "fonts.gstatic.com" in text:
@@ -173,9 +174,19 @@ def main() -> int:
 
     homepage_path = ROOT / "de" / "index.html"
     homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
-    for section_id in ["product", "pif", "usecases", "architecture", "security", "pricing", "register"]:
+    for section_id in ["product", "transformation", "usecases", "security", "pricing", "register"]:
         if f'id="{section_id}"' not in homepage:
-            fail(errors, f"de/index.html: core section must be static: #{section_id}")
+            fail(errors, f"de/index.html: core customer-facing section must be static: #{section_id}")
+    for phrase in [
+        "Die beste KI.",
+        "Die KI kann es.",
+        "Built by",
+        "wescaleIT AG",
+        "30-TAGE-PILOT",
+        "Use Case registrieren",
+    ]:
+        if phrase.lower() not in homepage.lower():
+            fail(errors, f"de/index.html: customer-first homepage proof/offer element missing: {phrase}")
 
     for page in PUBLIC_HTML:
         if page.exists():

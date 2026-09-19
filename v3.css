@@ -2460,3 +2460,392 @@ img{max-width:100%;height:auto}
 .control-layers .control-layer p{color:#5f6b65}
 .case-study:not(.dark) .case-detail small{color:#56625c}
 .case-study:not(.dark) .case-detail p{color:#5f6b65}
+
+
+/* V12 — semantic motion system
+   Movement explains flow, context, review and feedback instead of adding decorative noise. */
+.page-progress{
+  position:fixed;
+  z-index:120;
+  left:0;
+  top:0;
+  width:100%;
+  height:2px;
+  transform:scaleX(0);
+  transform-origin:0 50%;
+  background:linear-gradient(90deg,var(--v3-green2),var(--v3-green));
+  box-shadow:0 0 18px rgba(93,245,184,.45);
+  pointer-events:none;
+  will-change:transform;
+}
+
+/* ambient motion */
+.motion-ready .v3-hero:after{
+  animation:heroOrbDrift 15s ease-in-out infinite alternate;
+}
+.architecture-map-section:after{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  pointer-events:none;
+  opacity:.7;
+  background:radial-gradient(circle at var(--motion-x,68%) var(--motion-y,28%),rgba(93,245,184,.10),transparent 24%);
+  transition:background-position .18s linear;
+}
+
+/* HERO — data crosses a controlled boundary */
+.membrane-stage{isolation:isolate}
+.membrane-stage .membrane-body,
+.membrane-stage .membrane-top,
+.membrane-stage .membrane-foot{position:relative;z-index:1}
+.membrane-core:after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  left:50%;
+  top:8%;
+  width:8px;
+  height:8px;
+  margin-left:-4px;
+  border-radius:50%;
+  opacity:0;
+  background:var(--v3-green);
+  box-shadow:0 0 0 7px rgba(93,245,184,.06),0 0 28px rgba(93,245,184,.72);
+}
+.membrane-stage.motion-active .membrane-core:after{
+  opacity:1;
+  animation:boundaryPacket 3.7s cubic-bezier(.42,0,.32,1) infinite;
+}
+.membrane-stage.motion-active .core-orb{
+  animation:corePulse 3.7s ease-in-out infinite;
+}
+.membrane-stage.motion-active .entity-safe{
+  animation:safeTokenPulse 3.7s ease-in-out infinite;
+}
+.membrane-stage.motion-active .entity-map span:nth-child(1){animation:mapResolve 3.7s .15s ease-in-out infinite}
+.membrane-stage.motion-active .entity-map span:nth-child(2){animation:mapResolve 3.7s .35s ease-in-out infinite}
+.membrane-stage.motion-active .entity-map span:nth-child(3){animation:mapResolve 3.7s .55s ease-in-out infinite}
+.membrane-foot i{animation:statusHeartbeat 2.8s ease-in-out infinite}
+
+/* CONTEXT — identical-looking tokens are resolved by meaning */
+.motion-ready .context-stage .ctx{
+  transition:filter .28s ease,box-shadow .28s ease,color .28s ease;
+}
+.context-stage.motion-active .ctx{
+  animation:contextResolve 7s ease-in-out infinite;
+}
+.context-stage.motion-active .ctx:nth-of-type(1){animation-delay:0s}
+.context-stage.motion-active .ctx:nth-of-type(2){animation-delay:.7s}
+.context-stage.motion-active .ctx:nth-of-type(3){animation-delay:1.4s}
+.context-stage.motion-active .ctx:nth-of-type(4){animation-delay:2.1s}
+.context-stage.motion-active .ctx:nth-of-type(5){animation-delay:2.8s}
+.context-stage.motion-active .ctx:nth-of-type(6){animation-delay:3.5s}
+.context-stage.motion-active .ctx:nth-of-type(7){animation-delay:4.2s}
+.context-stage.motion-active .context-stage-top b{
+  animation:statusHeartbeat 2.8s ease-in-out infinite;
+}
+
+/* PROCESS — four steps enter like a controlled pipeline */
+.motion-ready .process-rail .process-row{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1),background-color .3s ease;
+}
+.process-rail.motion-active .process-row{opacity:1;transform:none}
+.process-rail.motion-active .process-row:nth-child(1){transition-delay:.04s}
+.process-rail.motion-active .process-row:nth-child(2){transition-delay:.14s}
+.process-rail.motion-active .process-row:nth-child(3){transition-delay:.24s}
+.process-rail.motion-active .process-row:nth-child(4){transition-delay:.34s}
+.process-row{position:relative;overflow:hidden}
+.process-row:after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:1px;
+  background:linear-gradient(90deg,var(--v3-green),transparent 82%);
+}
+.process-rail.motion-active .process-row:after{
+  animation:pipelineTrace 1.25s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.process-rail.motion-active .process-row:nth-child(2):after{animation-delay:.12s}
+.process-rail.motion-active .process-row:nth-child(3):after{animation-delay:.24s}
+.process-rail.motion-active .process-row:nth-child(4):after{animation-delay:.36s}
+
+/* PRODUCT CLOSED LOOP — the workflow visibly goes through every state */
+.closed-loop-track{position:relative;overflow:hidden}
+.closed-loop-track:after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:160px;
+  left:-180px;
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(93,245,184,.16),transparent);
+  transform:skewX(-12deg);
+}
+.closed-loop-track.motion-active:after{
+  opacity:1;
+  animation:closedLoopSweep 5.8s ease-in-out infinite;
+}
+.motion-ready .closed-loop-step{
+  transition:transform .32s ease,box-shadow .32s ease;
+}
+.closed-loop-step:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 45px rgba(7,16,13,.08);
+}
+
+/* REVIEW WORKSPACE — scan the review surface, don't fake data changes */
+.control-room{position:relative}
+.control-room:after{
+  content:"";
+  position:absolute;
+  z-index:4;
+  left:190px;
+  right:0;
+  top:62px;
+  height:2px;
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent 4%,rgba(93,245,184,.75) 48%,transparent 96%);
+  box-shadow:0 0 26px rgba(93,245,184,.18);
+}
+.control-room.motion-active:after{
+  opacity:.65;
+  animation:reviewScan 5.6s ease-in-out infinite;
+}
+.control-room.motion-active .cr-state{
+  animation:reviewState 2.8s ease-in-out infinite;
+}
+.motion-ready .cr-metrics div{
+  transition:transform .25s ease,border-color .25s ease;
+}
+.cr-metrics div:hover{
+  transform:translateY(-3px);
+  border-color:rgba(93,245,184,.28);
+}
+
+/* PIF — feedback travels through the learning loop */
+.pif-loop-v3{overflow:visible}
+.pif-loop-v3:after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:-4px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--v3-ink);
+  opacity:0;
+  box-shadow:0 0 0 7px rgba(6,16,13,.07),0 0 22px rgba(6,16,13,.25);
+}
+.pif-loop-v3.motion-active:after{
+  opacity:1;
+  animation:pifFeedback 6s cubic-bezier(.45,0,.25,1) infinite;
+}
+.pif-loop-v3.motion-active>div{
+  animation:pifStep 6s ease-in-out infinite;
+}
+.pif-loop-v3.motion-active>div:nth-child(2){animation-delay:1.25s}
+.pif-loop-v3.motion-active>div:nth-child(3){animation-delay:2.5s}
+.pif-loop-v3.motion-active>div:nth-child(4){animation-delay:3.75s}
+
+/* ARCHITECTURE — outbound payload and controlled return are visibly different */
+.architecture-map{isolation:isolate}
+.architecture-map:after{
+  content:"";
+  position:absolute;
+  z-index:5;
+  top:37%;
+  left:12%;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  opacity:0;
+  pointer-events:none;
+  background:var(--v3-green);
+  box-shadow:0 0 0 7px rgba(93,245,184,.06),0 0 28px rgba(93,245,184,.62);
+}
+.architecture-map.motion-active:after{
+  opacity:1;
+  animation:architectureOutbound 5.4s cubic-bezier(.45,0,.3,1) infinite;
+}
+.arch-return:after{
+  content:"";
+  position:absolute;
+  right:0;
+  bottom:-4px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  opacity:0;
+  background:#9fb4ff;
+  box-shadow:0 0 20px rgba(159,180,255,.55);
+}
+.architecture-map.motion-active .arch-return:after{
+  opacity:1;
+  animation:architectureReturn 5.4s 2.55s cubic-bezier(.45,0,.3,1) infinite;
+}
+.architecture-map.motion-active .arch-boundary-mark{
+  animation:boundaryMark 5.4s ease-in-out infinite;
+}
+.architecture-map-section{
+  --motion-x:68%;
+  --motion-y:28%;
+}
+
+/* SECURITY — layers engage sequentially */
+.motion-ready .control-layers .control-layer{
+  opacity:.42;
+  transform:translateX(14px);
+  transition:opacity .5s ease,transform .5s ease,background-color .3s ease;
+}
+.control-layers.motion-active .control-layer{opacity:1;transform:none}
+.control-layers.motion-active .control-layer:nth-child(1){transition-delay:.04s}
+.control-layers.motion-active .control-layer:nth-child(2){transition-delay:.12s}
+.control-layers.motion-active .control-layer:nth-child(3){transition-delay:.20s}
+.control-layers.motion-active .control-layer:nth-child(4){transition-delay:.28s}
+.control-layers.motion-active .control-layer:nth-child(5){transition-delay:.36s}
+.control-layer:hover{
+  background:linear-gradient(90deg,rgba(93,245,184,.05),transparent);
+}
+.control-layer:hover b{
+  box-shadow:0 0 0 5px rgba(93,245,184,.06);
+}
+
+/* USE CASES + micro interactions */
+.motion-ready .impact-list .impact-case{
+  opacity:0;
+  transform:translateX(-18px);
+  transition:opacity .58s ease,transform .58s cubic-bezier(.2,.8,.2,1);
+}
+.impact-list.motion-active .impact-case{opacity:1;transform:none}
+.impact-list.motion-active .impact-case:nth-child(2){transition-delay:.12s}
+.impact-list.motion-active .impact-case:nth-child(3){transition-delay:.24s}
+.impact-case{transition:background-color .3s ease}
+.impact-case:hover{background:rgba(255,255,255,.018)}
+.impact-case .impact-arrow{transition:transform .28s ease,color .28s ease,border-color .28s ease}
+.impact-case:hover .impact-arrow{transform:translate(4px,-4px)}
+
+.button span,.text-link span{
+  display:inline-block;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.button:hover span,.text-link:hover span{transform:translate(3px,-3px)}
+.home-trust:after{animation:oversizeTypeDrift 14s ease-in-out infinite alternate}
+.pif-signature:after{animation:oversizeTypeDrift 16s ease-in-out infinite alternate}
+
+/* Keyframes */
+@keyframes heroOrbDrift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  45%{transform:translate3d(-28px,18px,0) scale(1.035)}
+  100%{transform:translate3d(14px,38px,0) scale(.98)}
+}
+@keyframes boundaryPacket{
+  0%,12%{top:8%;opacity:0}
+  18%{opacity:1}
+  72%{top:88%;opacity:1}
+  84%,100%{top:88%;opacity:0}
+}
+@keyframes corePulse{
+  0%,100%{box-shadow:0 0 0 12px rgba(93,245,184,.035),0 0 48px rgba(93,245,184,.18)}
+  52%{box-shadow:0 0 0 18px rgba(93,245,184,.02),0 0 70px rgba(93,245,184,.30)}
+}
+@keyframes safeTokenPulse{
+  0%,30%,100%{box-shadow:none}
+  48%{box-shadow:0 0 0 2px rgba(93,245,184,.08),0 0 16px rgba(93,245,184,.12)}
+}
+@keyframes mapResolve{
+  0%,30%,100%{border-color:rgba(255,255,255,.08);background:transparent}
+  46%,58%{border-color:rgba(93,245,184,.24);background:rgba(93,245,184,.035)}
+}
+@keyframes statusHeartbeat{
+  0%,100%{opacity:.58}
+  50%{opacity:1;box-shadow:0 0 16px currentColor}
+}
+@keyframes contextResolve{
+  0%,7%,100%{filter:brightness(1);box-shadow:none}
+  11%,18%{filter:brightness(1.22);box-shadow:0 0 0 4px rgba(255,255,255,.025),0 8px 24px rgba(0,0,0,.16)}
+}
+@keyframes pipelineTrace{
+  from{width:0;opacity:1}
+  to{width:100%;opacity:.52}
+}
+@keyframes closedLoopSweep{
+  0%,8%{left:-180px;opacity:0}
+  16%{opacity:1}
+  76%{left:calc(100% + 20px);opacity:.75}
+  88%,100%{left:calc(100% + 20px);opacity:0}
+}
+@keyframes reviewScan{
+  0%,10%{top:62px;opacity:0}
+  18%{opacity:.6}
+  72%{top:calc(100% - 18px);opacity:.45}
+  86%,100%{top:calc(100% - 18px);opacity:0}
+}
+@keyframes reviewState{
+  0%,100%{box-shadow:none}
+  50%{box-shadow:0 0 0 5px rgba(93,245,184,.045),0 0 22px rgba(93,245,184,.09)}
+}
+@keyframes pifFeedback{
+  0%{left:0;opacity:0}
+  7%{opacity:1}
+  82%{left:calc(100% - 8px);opacity:1}
+  92%,100%{left:calc(100% - 8px);opacity:0}
+}
+@keyframes pifStep{
+  0%,100%{background:transparent}
+  9%,20%{background:rgba(6,16,13,.055)}
+}
+@keyframes architectureOutbound{
+  0%,8%{left:12%;opacity:0}
+  16%{opacity:1}
+  46%{left:50%;opacity:1}
+  70%{left:88%;opacity:1}
+  78%,100%{left:88%;opacity:0}
+}
+@keyframes architectureReturn{
+  0%,8%{right:0;opacity:0}
+  16%{opacity:1}
+  72%{right:100%;opacity:1}
+  82%,100%{right:100%;opacity:0}
+}
+@keyframes boundaryMark{
+  0%,100%{box-shadow:0 0 0 10px rgba(93,245,184,.05),0 0 60px rgba(93,245,184,.16)}
+  42%,56%{box-shadow:0 0 0 16px rgba(93,245,184,.035),0 0 85px rgba(93,245,184,.28)}
+}
+@keyframes oversizeTypeDrift{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-18px,12px,0)}
+}
+
+@media(max-width:780px){
+  .page-progress{height:2px}
+  .membrane-core:after,
+  .architecture-map:after,
+  .arch-return:after,
+  .control-room:after{display:none}
+  .context-stage.motion-active .ctx{animation-duration:9s}
+  .home-trust:after,.pif-signature:after{animation:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .page-progress{display:none!important}
+  .motion-ready *,
+  .motion-ready *::before,
+  .motion-ready *::after{
+    animation:none!important;
+    transition-duration:.01ms!important;
+  }
+  .motion-ready .process-row,
+  .motion-ready .control-layer,
+  .motion-ready .impact-case{
+    opacity:1!important;
+    transform:none!important;
+  }
+  .button:hover span,.text-link:hover span,.impact-case:hover .impact-arrow{transform:none!important}
+}

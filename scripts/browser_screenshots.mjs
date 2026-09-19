@@ -35,4 +35,56 @@ for (const [name, path, viewport] of captures) {
   await context.close();
 }
 
+// Motion regression: force motion even when the OS requests reduced motion.
+// This catches the iOS failure mode where JS enabled motion but CSS still disabled it.
+{
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 1
+  });
+  const page = await context.newPage();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(base + '/de/?motion=1', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(650);
+
+  const state = await page.evaluate(() => {
+    const root = document.documentElement;
+    const eyebrow = document.querySelector('.v3-eyebrow i');
+    const core = document.querySelector('.core-orb');
+    const membrane = document.querySelector('.membrane-stage');
+    const membraneCore = document.querySelector('.membrane-core');
+    const rows = Array.from(document.querySelectorAll('.process-row,.impact-case,.control-layer'));
+    return {
+      forced: root.classList.contains('motion-forced'),
+      ready: root.classList.contains('motion-ready'),
+      membraneActive: membrane && membrane.classList.contains('motion-active'),
+      eyebrowAnimation: eyebrow ? getComputedStyle(eyebrow).animationName : 'missing',
+      coreAnimation: core ? getComputedStyle(core).animationName : 'missing',
+      packetDisplay: membraneCore ? getComputedStyle(membraneCore, '::after').display : 'missing',
+      packetAnimation: membraneCore ? getComputedStyle(membraneCore, '::after').animationName : 'missing',
+      minimumContentOpacity: rows.length ? Math.min(...rows.map(el => Number(getComputedStyle(el).opacity))) : 1
+    };
+  });
+
+  console.log('forced mobile motion', state);
+  if (!state.forced || !state.ready || !state.membraneActive) {
+    throw new Error('Forced mobile motion classes are not active');
+  }
+  if (state.eyebrowAnimation === 'none' || state.coreAnimation === 'none') {
+    throw new Error('Forced mobile hero animations are disabled');
+  }
+  if (state.packetDisplay === 'none' || state.packetAnimation === 'none') {
+    throw new Error('Forced mobile boundary packet is not animating');
+  }
+  if (state.minimumContentOpacity < 0.7) {
+    throw new Error('Motion system is hiding page content');
+  }
+
+  await page.screenshot({
+    path: '/tmp/psoydo-browser-qa/home-mobile-motion-forced.png',
+    fullPage: false
+  });
+  await context.close();
+}
+
 await browser.close();

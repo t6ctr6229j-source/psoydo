@@ -1,0 +1,120 @@
+name: Website QA
+
+on:
+  push:
+    branches:
+      - main
+      - redesign/register-landingpage
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - 'scripts/**'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'og-image.svg'
+      - '.github/workflows/website-qa.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static site QA
+        run: python scripts/qa_site.py
+      - name: JavaScript syntax
+        run: node --check app.js
+      - name: Start local site
+        run: |
+          python -m http.server 8080 >/tmp/psoydo-http.log 2>&1 &
+          echo $! > /tmp/psoydo-http.pid
+          sleep 2
+      - name: Smoke test public pages
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/produkt.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/technologie.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/architektur.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/anwendungsfaelle.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/sicherheit.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/preise.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/impressum.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/de/datenschutz.html >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/404.html >/dev/null
+
+      - name: Lighthouse browser audits
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p /tmp/psoydo-browser-qa
+          npx --yes lighthouse http://127.0.0.1:8080/de/             --output=json --output-path=/tmp/psoydo-browser-qa/home-mobile.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/home-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/produkt.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/product-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/technologie.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/technology-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/architektur.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/architecture-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/anwendungsfaelle.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/usecases-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/sicherheit.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/security-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/preise.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/pricing-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+
+      - name: Assert Lighthouse floors
+        if: github.event_name == 'pull_request'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          floors = {
+              "performance": 0.80,
+              "accessibility": 0.94,
+              "best-practices": 0.90,
+              "seo": 0.95,
+          }
+          failed = []
+          for path in sorted(Path("/tmp/psoydo-browser-qa").glob("*.json")):
+              report = json.loads(path.read_text())
+              scores = {k: report["categories"][k]["score"] for k in floors}
+              print(path.name, {k: round(v * 100) for k, v in scores.items()})
+              for key, floor in floors.items():
+                  if scores[key] < floor:
+                      failed.append(f"{path.name}: {key} {scores[key]:.2f} < {floor:.2f}")
+          if failed:
+              raise SystemExit("Lighthouse thresholds failed:\n- " + "\n- ".join(failed))
+          PY
+
+      - name: Browser screenshots
+        if: github.event_name == 'pull_request'
+        run: |
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          npm install --no-save --no-package-lock playwright@1.55.0
+          CHROME="$CHROME" BASE_URL="http://127.0.0.1:8080" node scripts/browser_screenshots.mjs
+
+      - name: Upload browser QA reports
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: psoydo-browser-qa
+          path: /tmp/psoydo-browser-qa
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Stop local site
+        if: always()
+        run: |
+          if [ -f /tmp/psoydo-http.pid ]; then
+            kill "$(cat /tmp/psoydo-http.pid)" || true
+          fi

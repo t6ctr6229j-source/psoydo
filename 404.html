@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Seite nicht gefunden — Psoydo</title>
+  <meta name="theme-color" content="#06100d">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="v3.css">
+  <style>
+    body{background:#06100d;color:#fff}
+    .error-shell{min-height:100svh;display:grid;place-items:center;padding:40px}
+    .error-card{width:min(1080px,100%);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);padding:70px 0;display:grid;grid-template-columns:220px 1fr;gap:70px}
+    .error-code{font:500 11px var(--mono);letter-spacing:.12em;color:#667970}
+    .error-card h1{font-size:clamp(58px,8vw,118px);line-height:.88;letter-spacing:-.075em;margin:0}
+    .error-card h1 span{color:#5df5b8}
+    .error-card p{max-width:620px;color:#84948c;font-size:16px;line-height:1.7;margin:32px 0}
+    .error-logo{position:fixed;top:34px;left:40px}
+    .error-logo img{display:block;width:145px;height:auto}
+    @media(max-width:760px){.error-shell{padding:28px}.error-card{grid-template-columns:1fr;gap:24px}.error-logo{left:28px;top:26px}.error-card h1{font-size:58px}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <a class="error-logo" href="/de/" aria-label="Psoydo Startseite"><img src="assets/psoydo-logo.svg" alt="Psoydo AI"></a>
+  <main id="main" class="error-shell">
+    <section class="error-card">
+      <span class="error-code">ERROR / 404</span>
+      <div>
+        <h1>Hier ist<br><span>nichts zu schützen.</span></h1>
+        <p>Die gesuchte Seite existiert nicht oder wurde verschoben. Zurück zur Psoydo Startseite und von dort weiter.</p>
+        <a class="button button-primary" href="/de/">Zur Startseite <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

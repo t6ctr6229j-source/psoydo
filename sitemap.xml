@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://psoydo.com/de/</loc></url>
-  <url><loc>https://psoydo.com/de/impressum.html</loc></url>
-  <url><loc>https://psoydo.com/de/datenschutz.html</loc></url>
+  <url><loc>https://psoydo.com/de/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/produkt.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/technologie.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/architektur.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/anwendungsfaelle.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/sicherheit.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/preise.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/impressum.html</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://psoydo.com/de/datenschutz.html</loc><lastmod>2026-09-19</lastmod></url>
 </urlset>

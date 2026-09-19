@@ -185,7 +185,7 @@ def main() -> int:
     for phrase in [
         "Die beste KI.",
         "Die KI kann es.",
-        "ANBIETER & TRUSTED ADVISOR",
+        "ANBIETER &amp; TRUSTED ADVISOR",
         "wescaleIT AG",
         "30-TAGE-PILOT",
         "Use Case registrieren",

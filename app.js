@@ -1,4 +1,6 @@
 (function(){
+  try{if(new URLSearchParams(window.location.search).get('qa')==='fullpage')document.documentElement.classList.add('qa-fullpage');}catch(error){}
+
   var header=document.querySelector('.site-header');
 
   function onScroll(){

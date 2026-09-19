@@ -127,6 +127,12 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: outdated primary CTA label found: Psoydo testen")
     if '../assets/psoydo-logo.svg' not in text or 'brand-wordmark' not in text:
         fail(errors, f"{rel}: original Psoydo wordmark missing from page chrome")
+    if "fonts.googleapis.com" in text or "fonts.gstatic.com" in text:
+        fail(errors, f"{rel}: third-party Google Fonts request must not be present")
+    if 'property="og:image"' not in text or 'name="twitter:image"' not in text:
+        fail(errors, f"{rel}: social preview metadata missing")
+    if 'application/ld+json' not in text:
+        fail(errors, f"{rel}: structured data missing")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:
@@ -163,6 +169,16 @@ def main() -> int:
                 fail(errors, f"{page.relative_to(ROOT)}: canonical link missing")
 
     logo_asset = ROOT / "assets" / "psoydo-logo.svg"
+    og_asset = ROOT / "og-image.svg"
+    page_404 = ROOT / "404.html"
+    if not og_asset.exists():
+        fail(errors, "missing social preview asset: og-image.svg")
+    if not page_404.exists():
+        fail(errors, "missing branded 404.html")
+    else:
+        page_404_text = page_404.read_text(encoding="utf-8")
+        if 'ERROR / 404' not in page_404_text or 'name="robots" content="noindex,nofollow"' not in page_404_text:
+            fail(errors, "404.html: branded error marker or noindex directive missing")
     if not logo_asset.exists():
         fail(errors, "missing original Psoydo wordmark asset: assets/psoydo-logo.svg")
     else:
@@ -212,7 +228,7 @@ def main() -> int:
         return 1
 
     print("SITE QA PASSED")
-    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, CTA consistency, brand assets, pricing guardrails, public claims, assets and sitemap.")
+    print(f"Checked {len(PUBLIC_HTML)} public HTML pages, CTA consistency, brand/social assets, structured data, font privacy, pricing guardrails, public claims, assets and sitemap.")
     return 0
 
 

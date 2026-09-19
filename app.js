@@ -55,7 +55,7 @@
 
 
   // Motion system: meaningful product animation with reduced-motion fallback.
-  var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionParams;try{motionParams=new URLSearchParams(window.location.search);}catch(error){motionParams=null;}\n  var forceMotion=motionParams&&motionParams.get('motion')==='1';\n  var reduceMotion=!forceMotion&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduceMotion){
     document.documentElement.classList.add('motion-ready');
 

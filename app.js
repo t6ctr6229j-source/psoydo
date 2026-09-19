@@ -125,6 +125,121 @@
     document.documentElement.classList.add('motion-reduced');
   }
 
+  // In-place pseudonymization demo: one record transforms without side-by-side comparison.
+  var transformDemo=document.querySelector('[data-transform-demo]');
+  if(transformDemo){
+    var transformValues=Array.prototype.slice.call(transformDemo.querySelectorAll('[data-original][data-safe]'));
+    var transformStatus=transformDemo.querySelector('[data-transform-status]');
+    var transformFoot=transformDemo.querySelector('[data-transform-foot]');
+    var transformCounter=transformDemo.querySelector('[data-transform-counter]');
+    var transformTimers=[];
+    var scrambleChars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789_#';
+
+    function clearTransformTimers(){
+      transformTimers.forEach(function(timer){window.clearTimeout(timer);});
+      transformTimers=[];
+    }
+
+    function transformLater(delay,fn){
+      transformTimers.push(window.setTimeout(fn,delay));
+    }
+
+    function setTransformValue(el,mode){
+      el.textContent=el.getAttribute(mode==='safe'?'data-safe':'data-original');
+      var row=el.closest('[data-transform-row]');
+      if(row){
+        row.classList.remove('is-changing','is-safe');
+        if(mode==='safe')row.classList.add('is-safe');
+      }
+    }
+
+    function scrambleTransformValue(el,target,duration,onDone){
+      var row=el.closest('[data-transform-row]');
+      if(row){
+        row.classList.remove('is-safe');
+        row.classList.add('is-changing');
+      }
+      var started=window.performance&&performance.now?performance.now():Date.now();
+      var targetLength=target.length;
+      var sourceLength=el.textContent.length;
+      var width=Math.max(targetLength,sourceLength);
+
+      function frame(now){
+        var current=typeof now==='number'?now:Date.now();
+        var progress=Math.min(1,(current-started)/duration);
+        var settled=Math.floor(progress*targetLength);
+        var out='';
+        for(var i=0;i<width;i++){
+          if(i<settled&&i<targetLength){
+            out+=target.charAt(i);
+          }else if(i<targetLength||progress<.62){
+            out+=scrambleChars.charAt(Math.floor(Math.random()*scrambleChars.length));
+          }
+        }
+        el.textContent=progress>=1?target:out;
+        if(progress<1){
+          window.requestAnimationFrame(frame);
+        }else{
+          if(row){
+            row.classList.remove('is-changing');
+            row.classList.add('is-safe');
+          }
+          if(onDone)onDone();
+        }
+      }
+      window.requestAnimationFrame(frame);
+    }
+
+    function setTransformState(state,status,foot,count){
+      transformDemo.setAttribute('data-state',state);
+      if(transformStatus)transformStatus.textContent=status;
+      if(transformFoot)transformFoot.textContent=foot;
+      if(transformCounter)transformCounter.textContent=String(count);
+    }
+
+    function resetTransformDemo(){
+      transformDemo.classList.remove('is-scanning');
+      transformValues.forEach(function(el){setTransformValue(el,'original');});
+      setTransformState('original','ORIGINAL','Direkte Identifikatoren erkannt',0);
+    }
+
+    function finishTransformDemo(){
+      transformDemo.classList.remove('is-scanning');
+      setTransformState('safe','PSEUDONYMISIERT','Direkte Identifikatoren ersetzt. Kontext bleibt erhalten.',transformValues.length);
+    }
+
+    function runTransformDemo(){
+      clearTransformTimers();
+      resetTransformDemo();
+
+      transformLater(900,function(){
+        transformDemo.setAttribute('data-state','processing');
+        if(transformStatus)transformStatus.textContent='PSOYDO VERARBEITET';
+        if(transformFoot)transformFoot.textContent='Identifikatoren werden direkt im Datensatz ersetzt';
+        transformDemo.classList.add('is-scanning');
+      });
+
+      transformValues.forEach(function(el,index){
+        transformLater(1350+(index*470),function(){
+          var target=el.getAttribute('data-safe');
+          scrambleTransformValue(el,target,430,function(){
+            if(transformCounter)transformCounter.textContent=String(index+1);
+          });
+        });
+      });
+
+      transformLater(3300,finishTransformDemo);
+      transformLater(6750,runTransformDemo);
+    }
+
+    if(reduceMotion){
+      transformValues.forEach(function(el){setTransformValue(el,'safe');});
+      finishTransformDemo();
+    }else{
+      runTransformDemo();
+    }
+  }
+
   var tfOpen=document.getElementById('tf-open');
   var tfContainer=document.getElementById('tf-container');
 

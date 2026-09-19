@@ -64,7 +64,15 @@
         container:tfContainer,
         hideHeaders:true,
         hideFooter:true,
-        inlineOnMobile:true
+        inlineOnMobile:true,
+        onSubmit:function(){
+          if(typeof window.gtag==='function'){
+            window.gtag('event','psoydo_registration_submit',{
+              event_category:'registration',
+              event_label:'30_day_test'
+            });
+          }
+        }
       });
       return;
     }

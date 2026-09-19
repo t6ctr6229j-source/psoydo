@@ -19,6 +19,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   qa:
     runs-on: ubuntu-latest
@@ -52,7 +56,7 @@ jobs:
           curl --fail --silent --show-error http://127.0.0.1:8080/404.html >/dev/null
 
       - name: Lighthouse browser audits
-        if: github.ref == 'refs/heads/polish/committee-90' || github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: |
           mkdir -p /tmp/psoydo-browser-qa
           npx --yes lighthouse http://127.0.0.1:8080/de/             --output=json --output-path=/tmp/psoydo-browser-qa/home-mobile.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
@@ -65,7 +69,7 @@ jobs:
           npx --yes lighthouse http://127.0.0.1:8080/de/preise.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/pricing-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
 
       - name: Assert Lighthouse floors
-        if: github.ref == 'refs/heads/polish/committee-90' || github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: |
           python - <<'PY'
           import json
@@ -90,7 +94,7 @@ jobs:
           PY
 
       - name: Browser screenshots
-        if: github.ref == 'refs/heads/polish/committee-90' || github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: |
           CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$CHROME"
@@ -98,7 +102,7 @@ jobs:
           CHROME="$CHROME" BASE_URL="http://127.0.0.1:8080" node scripts/browser_screenshots.mjs
 
       - name: Upload browser QA reports
-        if: (github.ref == 'refs/heads/polish/committee-90' || github.event_name == 'pull_request') && always()
+        if: github.event_name == 'pull_request' && always()
         uses: actions/upload-artifact@v4
         with:
           name: psoydo-browser-qa

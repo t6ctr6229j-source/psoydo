@@ -208,7 +208,10 @@
       setTransformState('safe','PSEUDONYMISIERT','Direkte Identifikatoren ersetzt. Kontext bleibt erhalten.',transformValues.length);
     }
 
+    var transformStarted=false;
+
     function runTransformDemo(){
+      transformStarted=true;
       clearTransformTimers();
       resetTransformDemo();
 
@@ -232,11 +235,26 @@
       transformLater(6750,runTransformDemo);
     }
 
+    function startTransformDemo(){
+      if(transformStarted)return;
+      runTransformDemo();
+    }
+
     if(reduceMotion){
       transformValues.forEach(function(el){setTransformValue(el,'safe');});
       finishTransformDemo();
+    }else if('IntersectionObserver' in window){
+      var transformObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            startTransformDemo();
+            transformObserver.disconnect();
+          }
+        });
+      },{threshold:0.28,rootMargin:'0px 0px -8% 0px'});
+      transformObserver.observe(transformDemo);
     }else{
-      runTransformDemo();
+      startTransformDemo();
     }
   }
 

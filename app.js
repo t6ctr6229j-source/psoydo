@@ -58,24 +58,30 @@
   var motionParams;try{motionParams=new URLSearchParams(window.location.search);}catch(error){motionParams=null;}
   var forceMotion=motionParams&&motionParams.get('motion')==='1';
   var reduceMotion=!forceMotion&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(forceMotion)document.documentElement.classList.add('motion-forced');
   if(!reduceMotion){
     document.documentElement.classList.add('motion-ready');
 
     var motionSections=document.querySelectorAll(
       '.membrane-stage,.context-stage,.process-rail,.control-room,.pif-loop-v3,.architecture-map,.control-layers,.impact-list,.closed-loop-track'
     );
-    if('IntersectionObserver' in window){
+    function activateMotion(el){el.classList.add('motion-active');}
+    var compactMotion=window.matchMedia&&window.matchMedia('(max-width: 780px)').matches;
+    if(compactMotion){
+      motionSections.forEach(activateMotion);
+    }else if('IntersectionObserver' in window){
       var motionObserver=new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
           if(entry.isIntersecting){
-            entry.target.classList.add('motion-active');
+            activateMotion(entry.target);
             motionObserver.unobserve(entry.target);
           }
         });
-      },{threshold:0.16,rootMargin:'0px 0px -8% 0px'});
+      },{threshold:0.10,rootMargin:'0px 0px -4% 0px'});
       motionSections.forEach(function(el){motionObserver.observe(el);});
+      window.setTimeout(function(){motionSections.forEach(activateMotion);},1800);
     }else{
-      motionSections.forEach(function(el){el.classList.add('motion-active');});
+      motionSections.forEach(activateMotion);
     }
 
     // Scroll progress: deliberately subtle, useful on the longer technical pages.

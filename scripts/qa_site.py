@@ -184,7 +184,10 @@ def main() -> int:
             fail(errors, f"de/index.html: core customer-facing section must be static: #{section_id}")
     for phrase in [
         "Die beste KI.",
-        "Die KI kann es.",
+        "Die KI ist längst gut genug.",
+        "Personenbezug",
+        "Vertraulichkeit",
+        "Geschäftskontext",
         "ANBIETER &amp; TRUSTED ADVISOR",
         "wescaleIT AG",
         "30-TAGE-PILOT",
@@ -192,6 +195,19 @@ def main() -> int:
     ]:
         if phrase.lower() not in homepage.lower():
             fail(errors, f"de/index.html: customer-first homepage proof/offer element missing: {phrase}")
+
+    if "home2-situations" in homepage:
+        fail(errors, "de/index.html: problem section must not duplicate the business use-case list")
+
+    lightbox_pages = {
+        "de/index.html": 1,
+        "de/produkt.html": 2,
+        "de/sicherheit.html": 1,
+    }
+    for rel, minimum in lightbox_pages.items():
+        page = (ROOT / rel).read_text(encoding="utf-8")
+        if page.count("data-lightbox") < minimum:
+            fail(errors, f"{rel}: expected at least {minimum} screenshot lightbox trigger(s)")
 
     for page in PUBLIC_HTML:
         if page.exists():

@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="../styles.css?v=20260919-motion5">
   <link rel="stylesheet" href="../polish.css">
   <link rel="stylesheet" href="../pricing.css">
-  <link rel="stylesheet" href="../v3.css?v=20260919-homev2">
+  <link rel="stylesheet" href="../v3.css?v=20260921-lightbox1">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://psoydo.com/#organization","name":"wescaleIT AG","url":"https://wescaleit.com/"},{"@type":"WebSite","@id":"https://psoydo.com/#website","url":"https://psoydo.com/","name":"Psoydo","publisher":{"@id":"https://psoydo.com/#organization"},"inLanguage":"de-DE"},{"@type":"SoftwareApplication","@id":"https://psoydo.com/#software","name":"Psoydo","url":"https://psoydo.com/de/","applicationCategory":"BusinessApplication","description":"Psoydo trennt sensible Identitäten vom verwertbaren Kontext, bevor Inhalte ein externes KI-Modell erreichen."}]}</script>
 </head>
 <body>
@@ -87,18 +87,18 @@
       <div class="shell wide home2-problem-head">
         <div class="v3-index">DAS EIGENTLICHE PROBLEM</div>
         <div>
-          <h2>Die KI kann es.<br><span>Deine Daten dürfen nicht.</span></h2>
-          <p>Die Modelle sind da. Die Use Cases auch. Dazwischen liegen Daten, die zu sensibel sind, um sie einfach in ein externes KI-System zu kopieren.</p>
+          <h2>Die KI ist längst gut genug.<br><span>Die Daten sind der Engpass.</span></h2>
+          <p>Unternehmen wollen leistungsfähige externe Modelle nutzen. Genau dort liegen aber oft Daten, die nicht einfach im Klartext an ein fremdes System übergeben werden sollen.</p>
         </div>
       </div>
-      <div class="shell wide home2-situations">
-        <article><small>01 / LEGAL</small><h3>„Wir würden gern 20.000 Verträge mit Claude analysieren.“</h3><p>Aber Vertragsparteien, Ansprechpartner und interne Informationen sollen nicht im Klartext an ein externes Modell.</p></article>
-        <article><small>02 / HR</small><h3>„Die KI könnte unsere Personalfälle viel schneller vorsortieren.“</h3><p>Aber Namen, Mailadressen, Personalnummern und andere direkte Identifikatoren machen den Upload zum Problem.</p></article>
-        <article><small>03 / IT &amp; SECURITY</small><h3>„Unsere Logs enthalten genau die Muster, die eine gute KI finden könnte.“</h3><p>Aber Nutzer, Systeme und andere sensible Bezüge sollen nicht unkontrolliert Teil des externen Prompts werden.</p></article>
+      <div class="shell wide home2-frictions" aria-label="Warum sensible Daten KI-Use-Cases blockieren">
+        <article><small>01</small><strong>Personenbezug</strong><span>Namen, Kontaktdaten, Personalnummern und andere direkte Identifikatoren.</span></article>
+        <article><small>02</small><strong>Vertraulichkeit</strong><span>Verträge, interne Vorgänge, Tickets und Informationen mit begrenztem Empfängerkreis.</span></article>
+        <article><small>03</small><strong>Geschäftskontext</strong><span>Informationen, deren Zusammenhang wertvoll ist — die aber nicht ungefiltert nach außen gehören.</span></article>
       </div>
       <div class="shell wide home2-problem-statement">
-        <span>Was heute passiert:</span>
-        <strong>Ausgerechnet die wertvollsten Daten bleiben von der leistungsfähigsten KI getrennt.</strong>
+        <span>Der Engpass:</span>
+        <strong>Nicht die KI fehlt. Es fehlt eine kontrollierte Schicht zwischen Originaldaten und Modell.</strong>
       </div>
     </section>
 
@@ -210,10 +210,11 @@
         </div>
       </div>
       <figure class="shell wide real-product-shot real-product-shot-home">
-        <div class="real-product-shot-frame">
+        <button class="real-product-shot-frame real-product-shot-button" type="button" data-lightbox data-lightbox-title="Sichtabgleich: Original und pseudonymisierte Ausgabe" aria-label="Psoydo Sichtabgleich vergrößern">
           <img loading="lazy" decoding="async" src="../assets/web/sichtabgleich.webp" alt="Psoydo Sichtabgleich mit internem Originaldokument und pseudonymisierter Ausgabe">
-        </div>
-        <figcaption><span>ECHTER SCREENSHOT · SICHTABGLEICH</span><strong>Original intern. Pseudonymisierte Ausgabe kontrollierbar.</strong><a href="produkt.html">Produkt ansehen ↗</a></figcaption>
+          <span class="shot-zoom">Vergrößern <b>+</b></span>
+        </button>
+        <figcaption><span>ECHTER SCREENSHOT · SICHTABGLEICH</span><strong>Original intern. Pseudonymisierte Ausgabe kontrollierbar.</strong><em>Klick zum Vergrößern</em></figcaption>
       </figure>
     </section>
 
@@ -312,6 +313,6 @@
     <div><p>Das Registrierungsformular von Typeform wird erst geladen, wenn du es aktiv öffnest. Optionale Messung für Google Ads erfolgt nur nach deiner Einwilligung. Details stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p><div><button id="consent-decline">Ablehnen</button><button id="consent-accept" class="accept">Akzeptieren</button></div></div>
   </div>
 
-  <script src="../app.js?v=20260919-motion6"></script>
+  <script src="../app.js?v=20260921-lightbox1"></script>
 </body>
 </html>

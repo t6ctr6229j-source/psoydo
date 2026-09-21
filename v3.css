@@ -3699,3 +3699,11 @@ img{max-width:100%;height:auto}
   .real-product-shot.compact img{width:900px}
   .real-product-secondary{margin-top:72px;padding-top:52px}
 }
+
+.footer-provider{display:flex!important;align-items:center;gap:12px;text-transform:none}
+.footer-provider img{display:block;width:88px;height:auto;object-fit:contain}
+.footer-provider>span{font:500 8px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#66766e}
+@media(max-width:780px){
+  .footer-provider{align-items:flex-start}
+  .footer-provider img{width:76px}
+}

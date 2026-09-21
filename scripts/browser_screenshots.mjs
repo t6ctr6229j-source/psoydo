@@ -27,6 +27,18 @@ for (const [name, path, viewport] of captures) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const join = path.includes('?') ? '&' : '?';
   await page.goto(base + path + join + 'qa=fullpage', { waitUntil: 'networkidle' });
+  const navState = await page.evaluate(() => ({
+    desktop: Array.from(document.querySelectorAll('.desktop-nav > a')).map(a => a.textContent.trim()),
+    mobile: Array.from(document.querySelectorAll('#mobile-menu > a')).map(a => a.textContent.trim())
+  }));
+  const expectedDesktop = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise'];
+  const expectedMobile = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise', 'Pilot starten'];
+  if (JSON.stringify(navState.desktop) !== JSON.stringify(expectedDesktop)) {
+    throw new Error(name + ': desktop navigation is inconsistent: ' + JSON.stringify(navState.desktop));
+  }
+  if (JSON.stringify(navState.mobile) !== JSON.stringify(expectedMobile)) {
+    throw new Error(name + ': mobile navigation is inconsistent: ' + JSON.stringify(navState.mobile));
+  }
   await page.evaluate(() => {
     document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img, .home-proof-gallery img')
       .forEach(img => { img.loading = 'eager'; });

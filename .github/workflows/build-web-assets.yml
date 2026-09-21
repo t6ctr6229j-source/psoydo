@@ -1,0 +1,57 @@
+name: Build Web Assets
+
+on:
+  push:
+    branches:
+      - redesign/real-assets-product-proof
+    paths:
+      - '.github/workflows/build-web-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: redesign/real-assets-product-proof
+      - name: Optimize selected brand and product assets
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          out=Path("assets/web")
+          out.mkdir(parents=True, exist_ok=True)
+
+          jobs=[
+            ("assets/Psoydo_logo_negativ.png","psoydo-negative.webp",700,92),
+            ("assets/psoydo_logo.png","psoydo.webp",700,92),
+            ("assets/wescaleIT_Logo_RGB_RZ.png","wescaleit.webp",700,92),
+            ("assets/wescaleIT_Logo_RGB_negativ_RZ.png","wescaleit-negative.webp",700,92),
+            ("assets/Psoydo Screenshots/Bildschirmfoto 2026-09-21 um 07.02.18.png","sichtabgleich.webp",1800,82),
+            ("assets/Psoydo Screenshots/Bildschirmfoto 2026-09-21 um 07.01.37.png","revision.webp",1800,82),
+            ("assets/Psoydo Screenshots/Bildschirmfoto 2026-09-21 um 07.07.22.png","download.webp",1800,82),
+          ]
+
+          for src,name,maxw,quality in jobs:
+            with Image.open(src) as im:
+              im=im.convert("RGBA") if im.mode in ("RGBA","LA","P") else im.convert("RGB")
+              if im.width>maxw:
+                h=round(im.height*maxw/im.width)
+                im=im.resize((maxw,h),Image.Resampling.LANCZOS)
+              im.save(out/name,"WEBP",quality=quality,method=6)
+              print(name, im.size, (out/name).stat().st_size)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/web
+          if git diff --cached --quiet; then
+            echo "No optimized assets changed"
+          else
+            git commit -m "Add optimized web brand and product assets"
+            git push origin HEAD:redesign/real-assets-product-proof
+          fi

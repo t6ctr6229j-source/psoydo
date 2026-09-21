@@ -1,0 +1,43 @@
+name: Asset Review
+
+on:
+  push:
+    branches:
+      - redesign/real-assets-product-proof
+    paths:
+      - 'assets/Psoydo Screenshots/**'
+      - '.github/workflows/asset-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OCR tooling
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-deu
+          python -m pip install --quiet pillow pytesseract
+      - name: Inspect screenshots
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import pytesseract, re
+          folder=Path("assets/Psoydo Screenshots")
+          for p in sorted(folder.glob("*.png")):
+              with Image.open(p) as im:
+                  w,h=im.size
+                  # Downscale only for OCR speed; source remains untouched.
+                  sample=im.copy()
+                  sample.thumbnail((1800,1800))
+                  text=pytesseract.image_to_string(sample, lang="deu+eng", config="--psm 6")
+                  text=re.sub(r"\s+"," ",text).strip()
+                  print("\n===ASSET===")
+                  print("FILE:",p.name)
+                  print("SIZE:",w,"x",h)
+                  print("OCR:",text[:1400])
+          PY

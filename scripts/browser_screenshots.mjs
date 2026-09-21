@@ -52,6 +52,59 @@ for (const [name, path, viewport] of captures) {
 }
 
 
+// Public AI decision quiz regression: answer all five scenarios and reach the in-page result.
+{
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1
+  });
+  const page = await context.newPage();
+  await page.goto(base + '/de/?qa=quiz', { waitUntil: 'networkidle' });
+
+  const quiz = page.locator('[data-ai-quiz]');
+  await quiz.scrollIntoViewIfNeeded();
+
+  const expectedAnswers = ['allow', 'protect', 'block', 'protect', 'protect'];
+  for (let i = 0; i < expectedAnswers.length; i += 1) {
+    const count = await page.locator('[data-ai-quiz-count]').textContent();
+    if (!count || !count.includes(String(i + 1).padStart(2, '0'))) {
+      throw new Error('AI quiz did not render expected question ' + (i + 1));
+    }
+
+    await page.locator('[data-ai-answer="' + expectedAnswers[i] + '"]').click();
+    const feedback = page.locator('[data-ai-quiz-feedback]');
+    await feedback.waitFor({ state: 'visible' });
+
+    const feedbackState = await page.evaluate(() => ({
+      verdict: document.querySelector('[data-ai-quiz-verdict]')?.textContent || '',
+      title: document.querySelector('[data-ai-quiz-feedback-title]')?.textContent || '',
+      correctVisible: !!document.querySelector('[data-ai-answer].is-correct')
+    }));
+    if (!feedbackState.verdict.includes('EMPFEHLUNG') || !feedbackState.title || !feedbackState.correctVisible) {
+      throw new Error('AI quiz feedback is incomplete at question ' + (i + 1));
+    }
+
+    await page.locator('[data-ai-quiz-next]').click();
+  }
+
+  await page.locator('[data-ai-quiz-finish]').waitFor({ state: 'visible' });
+  const finishState = await page.evaluate(() => ({
+    result: document.querySelector('[data-ai-quiz-result]')?.textContent || '',
+    mentionsGeschGehG: document.querySelector('[data-ai-quiz-finish]')?.textContent?.includes('GeschGehG') || false,
+    transformationLink: document.querySelector('[data-ai-quiz-finish] a[href="#transformation"]')?.textContent?.trim() || ''
+  }));
+
+  console.log('public AI quiz finish', finishState);
+  if (!finishState.result.includes('5 von 5') || !finishState.mentionsGeschGehG || !finishState.transformationLink) {
+    throw new Error('AI quiz did not reach the expected final state');
+  }
+
+  await quiz.screenshot({
+    path: '/tmp/psoydo-browser-qa/public-ai-quiz-finished.png'
+  });
+  await context.close();
+}
+
 // Screenshot lightbox regression: open in-page, show enlarged image, close with Escape and restore focus.
 {
   const context = await browser.newContext({

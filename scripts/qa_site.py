@@ -200,7 +200,7 @@ def main() -> int:
         fail(errors, "de/index.html: problem section must not duplicate the business use-case list")
 
     lightbox_pages = {
-        "de/index.html": 1,
+        "de/index.html": 3,
         "de/produkt.html": 2,
         "de/sicherheit.html": 1,
     }

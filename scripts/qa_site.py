@@ -137,8 +137,8 @@ def check_page(page: Path, errors: list[str]):
     for outdated_cta in ["Psoydo testen", "30 Tage testen", "Cloud-Test registrieren"]:
         if outdated_cta in text:
             fail(errors, f"{rel}: outdated primary CTA label found: {outdated_cta}")
-    if '../assets/psoydo-logo.svg' not in text or 'brand-wordmark' not in text:
-        fail(errors, f"{rel}: original Psoydo wordmark missing from page chrome")
+    if '../assets/Psoydo_logo_negativ.png' not in text or 'brand-wordmark' not in text:
+        fail(errors, f"{rel}: official negative Psoydo wordmark missing from page chrome")
     if "fonts.googleapis.com" in text or "fonts.gstatic.com" in text:
         fail(errors, f"{rel}: third-party Google Fonts request must not be present")
     if 'property="og:image"' not in text or 'name="twitter:image"' not in text:
@@ -199,7 +199,10 @@ def main() -> int:
             if 'rel="canonical"' not in page_text:
                 fail(errors, f"{page.relative_to(ROOT)}: canonical link missing")
 
-    logo_asset = ROOT / "assets" / "psoydo-logo.svg"
+    logo_asset = ROOT / "assets" / "Psoydo_logo_negativ.png"
+    logo_light_asset = ROOT / "assets" / "psoydo_logo.png"
+    provider_logo = ROOT / "assets" / "wescaleIT_Logo_RGB_RZ.png"
+    provider_logo_negative = ROOT / "assets" / "wescaleIT_Logo_RGB_negativ_RZ.png"
     og_asset = ROOT / "og-image.svg"
     page_404 = ROOT / "404.html"
     if not og_asset.exists():
@@ -210,12 +213,25 @@ def main() -> int:
         page_404_text = page_404.read_text(encoding="utf-8")
         if 'ERROR / 404' not in page_404_text or 'name="robots" content="noindex,nofollow"' not in page_404_text:
             fail(errors, "404.html: branded error marker or noindex directive missing")
-    if not logo_asset.exists():
-        fail(errors, "missing Psoydo wordmark asset: assets/psoydo-logo.svg")
-    else:
-        logo_text = logo_asset.read_text(encoding="utf-8")
-        if "Psoydo AI" not in logo_text or "data:image" in logo_text:
-            fail(errors, "assets/psoydo-logo.svg: logo must be a native SVG wordmark without embedded bitmap data")
+    for asset, label in [
+        (logo_asset, "Psoydo negative logo"),
+        (logo_light_asset, "Psoydo normal logo"),
+        (provider_logo, "wescaleIT normal logo"),
+        (provider_logo_negative, "wescaleIT negative logo"),
+    ]:
+        if not asset.exists():
+            fail(errors, f"missing official brand asset: {label}")
+        elif asset.stat().st_size < 1000:
+            fail(errors, f"official brand asset is unexpectedly small: {label}")
+
+    screenshot_assets = [
+        ROOT / "assets" / "Psoydo Screenshots" / "Bildschirmfoto 2026-09-21 um 07.02.18.png",
+        ROOT / "assets" / "Psoydo Screenshots" / "Bildschirmfoto 2026-09-21 um 07.01.37.png",
+        ROOT / "assets" / "Psoydo Screenshots" / "Bildschirmfoto 2026-09-21 um 07.07.22.png",
+    ]
+    for asset in screenshot_assets:
+        if not asset.exists() or asset.stat().st_size < 10000:
+            fail(errors, f"missing or invalid curated product screenshot: {asset.name}")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:

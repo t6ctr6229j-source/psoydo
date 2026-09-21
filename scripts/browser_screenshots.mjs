@@ -51,6 +51,60 @@ for (const [name, path, viewport] of captures) {
   await context.close();
 }
 
+
+// Screenshot lightbox regression: open in-page, show enlarged image, close with Escape and restore focus.
+{
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1
+  });
+  const page = await context.newPage();
+  await page.goto(base + '/de/produkt.html?qa=lightbox', { waitUntil: 'networkidle' });
+
+  const trigger = page.locator('[data-lightbox]').first();
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  await page.waitForSelector('.product-lightbox.is-open');
+
+  const openState = await page.evaluate(() => {
+    const lightbox = document.querySelector('.product-lightbox');
+    const image = lightbox?.querySelector('.product-lightbox-body img');
+    const close = lightbox?.querySelector('.product-lightbox-close');
+    return {
+      open: !!lightbox?.classList.contains('is-open'),
+      ariaHidden: lightbox?.getAttribute('aria-hidden'),
+      imageLoaded: !!image?.complete && Number(image?.naturalWidth || 0) > 0,
+      bodyLocked: document.body.classList.contains('lightbox-open'),
+      closeFocused: document.activeElement === close
+    };
+  });
+
+  console.log('screenshot lightbox open', openState);
+  if (!openState.open || openState.ariaHidden !== 'false' || !openState.imageLoaded || !openState.bodyLocked) {
+    throw new Error('Product screenshot lightbox did not open correctly');
+  }
+
+  await page.screenshot({
+    path: '/tmp/psoydo-browser-qa/product-lightbox-open.png',
+    fullPage: false
+  });
+
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.querySelector('.product-lightbox')?.classList.contains('is-open'));
+
+  const closeState = await page.evaluate(() => ({
+    closed: !document.querySelector('.product-lightbox')?.classList.contains('is-open'),
+    bodyUnlocked: !document.body.classList.contains('lightbox-open'),
+    focusReturned: document.activeElement?.matches('[data-lightbox]') || false
+  }));
+  console.log('screenshot lightbox close', closeState);
+  if (!closeState.closed || !closeState.bodyUnlocked || !closeState.focusReturned) {
+    throw new Error('Product screenshot lightbox did not close cleanly or restore focus');
+  }
+
+  await context.close();
+}
+
 // Mobile motion regression: forced motion must work even when the OS requests reduced motion.
 // The current homepage uses the in-place pseudonymization demo as its primary motion proof.
 {

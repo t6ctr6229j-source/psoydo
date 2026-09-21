@@ -216,6 +216,42 @@ def main() -> int:
         if page.count("data-lightbox") < minimum:
             fail(errors, f"{rel}: expected at least {minimum} screenshot lightbox trigger(s)")
 
+    expected_primary_nav = [
+        ("produkt.html", "Produkt"),
+        ("anwendungsfaelle.html", "Use Cases"),
+        ("sicherheit.html", "Sicherheit"),
+        ("preise.html", "Preise"),
+    ]
+    for page in PUBLIC_HTML:
+        if not page.exists():
+            continue
+        rel = str(page.relative_to(ROOT))
+        page_text = page.read_text(encoding="utf-8")
+
+        desktop_match = re.search(r'<nav class="desktop-nav" aria-label="Hauptnavigation">(.*?)</nav>', page_text, re.S)
+        if not desktop_match:
+            fail(errors, f"{rel}: desktop primary navigation missing")
+        else:
+            desktop_links = [
+                (href, re.sub(r"<[^>]+>", "", label).strip())
+                for href, label in re.findall(r'<a href="([^"]+)"[^>]*>(.*?)</a>', desktop_match.group(1), re.S)
+            ]
+            if desktop_links != expected_primary_nav:
+                fail(errors, f"{rel}: desktop navigation differs from canonical primary navigation: {desktop_links}")
+
+        mobile_match = re.search(r'<div class="mobile-menu" id="mobile-menu" aria-hidden="true">(.*?)</div>', page_text, re.S)
+        if not mobile_match:
+            fail(errors, f"{rel}: mobile primary navigation missing")
+        else:
+            mobile_links = [
+                (href, re.sub(r"<[^>]+>", "", label).strip())
+                for href, label in re.findall(r'<a href="([^"]+)"[^>]*>(.*?)</a>', mobile_match.group(1), re.S)
+            ]
+            expected_pilot = "#register" if rel == "de/index.html" else "./#register"
+            expected_mobile = expected_primary_nav + [(expected_pilot, "Pilot starten")]
+            if mobile_links != expected_mobile:
+                fail(errors, f"{rel}: mobile navigation differs from canonical primary navigation: {mobile_links}")
+
     for page in PUBLIC_HTML:
         if page.exists():
             page_text = page.read_text(encoding="utf-8")

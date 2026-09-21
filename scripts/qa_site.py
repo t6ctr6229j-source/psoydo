@@ -137,8 +137,8 @@ def check_page(page: Path, errors: list[str]):
     for outdated_cta in ["Psoydo testen", "30 Tage testen", "Cloud-Test registrieren"]:
         if outdated_cta in text:
             fail(errors, f"{rel}: outdated primary CTA label found: {outdated_cta}")
-    if '../assets/Psoydo_logo_negativ.png' not in text or 'brand-wordmark' not in text:
-        fail(errors, f"{rel}: official negative Psoydo wordmark missing from page chrome")
+    if '../assets/web/psoydo-negative.webp' not in text or 'brand-wordmark' not in text:
+        fail(errors, f"{rel}: optimized official negative Psoydo wordmark missing from page chrome")
     if "fonts.googleapis.com" in text or "fonts.gstatic.com" in text:
         fail(errors, f"{rel}: third-party Google Fonts request must not be present")
     if 'property="og:image"' not in text or 'name="twitter:image"' not in text:
@@ -232,6 +232,19 @@ def main() -> int:
     for asset in screenshot_assets:
         if not asset.exists() or asset.stat().st_size < 10000:
             fail(errors, f"missing or invalid curated product screenshot: {asset.name}")
+
+    optimized_assets = [
+        ROOT / "assets" / "web" / "psoydo-negative.webp",
+        ROOT / "assets" / "web" / "psoydo.webp",
+        ROOT / "assets" / "web" / "wescaleit.webp",
+        ROOT / "assets" / "web" / "wescaleit-negative.webp",
+        ROOT / "assets" / "web" / "sichtabgleich.webp",
+        ROOT / "assets" / "web" / "revision.webp",
+        ROOT / "assets" / "web" / "download.webp",
+    ]
+    for asset in optimized_assets:
+        if not asset.exists() or asset.stat().st_size < 5000:
+            fail(errors, f"missing or invalid optimized web asset: {asset.name}")
 
     pricing = (ROOT / "de" / "preise.html").read_text(encoding="utf-8") if (ROOT / "de" / "preise.html").exists() else ""
     for price in EXPECTED_PRICES:

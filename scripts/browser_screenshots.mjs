@@ -28,15 +28,15 @@ for (const [name, path, viewport] of captures) {
   const join = path.includes('?') ? '&' : '?';
   await page.goto(base + path + join + 'qa=fullpage', { waitUntil: 'networkidle' });
   await page.evaluate(() => {
-    document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img')
+    document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img, .home-proof-gallery img')
       .forEach(img => { img.loading = 'eager'; });
   });
   await page.waitForFunction(() =>
-    Array.from(document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img'))
+    Array.from(document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img, .home-proof-gallery img'))
       .every(img => img.complete)
   );
   const brokenImages = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img'))
+    Array.from(document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img, .home-proof-gallery img'))
       .filter(img => img.naturalWidth === 0)
       .map(img => img.getAttribute('src'))
   );

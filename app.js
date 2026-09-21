@@ -317,6 +317,87 @@
 
   if(tfOpen)tfOpen.addEventListener('click',loadTypeform);
 
+  // Product screenshot lightbox: enlarge real UI screenshots in-place without navigation.
+  var lightboxTriggers=Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
+  if(lightboxTriggers.length){
+    var lightbox=document.createElement('div');
+    lightbox.className='product-lightbox';
+    lightbox.id='product-lightbox';
+    lightbox.setAttribute('role','dialog');
+    lightbox.setAttribute('aria-modal','true');
+    lightbox.setAttribute('aria-hidden','true');
+    lightbox.setAttribute('aria-labelledby','product-lightbox-title');
+    lightbox.innerHTML='<div class="product-lightbox-dialog" role="document"><div class="product-lightbox-head"><strong id="product-lightbox-title">Psoydo Produktscreenshot</strong><button class="product-lightbox-close" type="button" aria-label="Großansicht schließen">×</button></div><div class="product-lightbox-body"><img alt=""></div><span class="product-lightbox-hint">ESC ZUM SCHLIESSEN</span></div>';
+    document.body.appendChild(lightbox);
+
+    var lightboxImage=lightbox.querySelector('.product-lightbox-body img');
+    var lightboxTitle=lightbox.querySelector('#product-lightbox-title');
+    var lightboxClose=lightbox.querySelector('.product-lightbox-close');
+    var lightboxReturnFocus=null;
+
+    function closeLightbox(){
+      if(!lightbox.classList.contains('is-open'))return;
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden','true');
+      document.body.classList.remove('lightbox-open');
+      if(lightboxImage){
+        lightboxImage.removeAttribute('src');
+        lightboxImage.alt='';
+      }
+      if(lightboxReturnFocus&&typeof lightboxReturnFocus.focus==='function'){
+        lightboxReturnFocus.focus();
+      }
+      lightboxReturnFocus=null;
+    }
+
+    function openLightbox(trigger){
+      var image=trigger.querySelector('img');
+      if(!image)return;
+      lightboxReturnFocus=trigger;
+      if(lightboxImage){
+        lightboxImage.src=trigger.getAttribute('data-lightbox-src')||image.currentSrc||image.src;
+        lightboxImage.alt=image.alt||'Psoydo Produktscreenshot';
+      }
+      if(lightboxTitle)lightboxTitle.textContent=trigger.getAttribute('data-lightbox-title')||image.alt||'Psoydo Produktscreenshot';
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden','false');
+      document.body.classList.add('lightbox-open');
+      if(lightboxClose)window.setTimeout(function(){lightboxClose.focus();},0);
+    }
+
+    lightboxTriggers.forEach(function(trigger){
+      trigger.setAttribute('aria-haspopup','dialog');
+      trigger.setAttribute('aria-controls','product-lightbox');
+      trigger.addEventListener('click',function(){openLightbox(trigger);});
+    });
+
+    if(lightboxClose)lightboxClose.addEventListener('click',closeLightbox);
+    lightbox.addEventListener('click',function(event){
+      if(event.target===lightbox)closeLightbox();
+    });
+    lightbox.addEventListener('keydown',function(event){
+      if(event.key==='Escape'){
+        event.preventDefault();
+        closeLightbox();
+        return;
+      }
+      if(event.key!=='Tab')return;
+      var focusable=Array.prototype.slice.call(lightbox.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])')).filter(function(el){
+        return !el.hasAttribute('disabled')&&el.offsetParent!==null;
+      });
+      if(focusable.length<2)return;
+      var first=focusable[0];
+      var last=focusable[focusable.length-1];
+      if(event.shiftKey&&document.activeElement===first){
+        event.preventDefault();
+        last.focus();
+      }else if(!event.shiftKey&&document.activeElement===last){
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
   var box=document.getElementById('consent');
   if(!box)return;
 

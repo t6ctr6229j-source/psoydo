@@ -179,7 +179,7 @@ def main() -> int:
 
     homepage_path = ROOT / "de" / "index.html"
     homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
-    for section_id in ["product", "transformation", "usecases", "security", "pricing", "register"]:
+    for section_id in ["product", "ki-check", "transformation", "usecases", "security", "pricing", "register"]:
         if f'id="{section_id}"' not in homepage:
             fail(errors, f"de/index.html: core customer-facing section must be static: #{section_id}")
     for phrase in [
@@ -188,6 +188,10 @@ def main() -> int:
         "Personenbezug",
         "Vertraulichkeit",
         "Geschäftskontext",
+        "30-SEKUNDEN-CHECK",
+        "Würdest du das einer",
+        "GeschGehG",
+        "technische Vorprüfung",
         "ANBIETER &amp; TRUSTED ADVISOR",
         "wescaleIT AG",
         "30-TAGE-PILOT",
@@ -198,6 +202,9 @@ def main() -> int:
 
     if "home2-situations" in homepage:
         fail(errors, "de/index.html: problem section must not duplicate the business use-case list")
+
+    if homepage.count("data-ai-answer=") != 3 or "data-ai-quiz" not in homepage:
+        fail(errors, "de/index.html: public AI decision quiz controls are missing or incomplete")
 
     lightbox_pages = {
         "de/index.html": 3,

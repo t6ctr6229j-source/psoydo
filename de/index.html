@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="../styles.css?v=20260919-motion5">
   <link rel="stylesheet" href="../polish.css">
   <link rel="stylesheet" href="../pricing.css">
-  <link rel="stylesheet" href="../v3.css?v=20260921-gallery1">
+  <link rel="stylesheet" href="../v3.css?v=20260921-quiz1">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://psoydo.com/#organization","name":"wescaleIT AG","url":"https://wescaleit.com/"},{"@type":"WebSite","@id":"https://psoydo.com/#website","url":"https://psoydo.com/","name":"Psoydo","publisher":{"@id":"https://psoydo.com/#organization"},"inLanguage":"de-DE"},{"@type":"SoftwareApplication","@id":"https://psoydo.com/#software","name":"Psoydo","url":"https://psoydo.com/de/","applicationCategory":"BusinessApplication","description":"Psoydo trennt sensible Identitäten vom verwertbaren Kontext, bevor Inhalte ein externes KI-Modell erreichen."}]}</script>
 </head>
 <body>
@@ -99,6 +99,57 @@
       <div class="shell wide home2-problem-statement">
         <span>Der Engpass:</span>
         <strong>Nicht die KI fehlt. Es fehlt eine kontrollierte Schicht zwischen Originaldaten und Modell.</strong>
+      </div>
+    </section>
+
+    <section class="ai-quiz-section" id="ki-check" aria-labelledby="ai-quiz-title">
+      <div class="shell wide ai-quiz-grid">
+        <div class="ai-quiz-intro">
+          <span class="v3-index">30-SEKUNDEN-CHECK</span>
+          <h2 id="ai-quiz-title">Würdest du das einer<br><span>öffentlichen KI geben?</span></h2>
+          <p>Fünf Situationen aus dem Unternehmensalltag. Entscheide spontan. Wir gehen dabei von einem öffentlich zugänglichen Consumer-KI-Dienst ohne individuell vereinbartes Unternehmens-Setup aus.</p>
+          <div class="ai-quiz-key" aria-hidden="true">
+            <span><i></i> Rein damit</span>
+            <span><i></i> Erst prüfen &amp; schützen</span>
+            <span><i></i> Auf keinen Fall</span>
+          </div>
+        </div>
+
+        <div class="ai-quiz-card" data-ai-quiz>
+          <div class="ai-quiz-progress">
+            <span data-ai-quiz-count>01 / 05</span>
+            <div><i data-ai-quiz-bar></i></div>
+          </div>
+
+          <div class="ai-quiz-stage" data-ai-quiz-stage>
+            <span class="ai-quiz-eyebrow" data-ai-quiz-eyebrow>ÖFFENTLICH</span>
+            <h3 data-ai-quiz-question>Die Pressemitteilung steht bereits auf eurer Website. Du möchtest sie von einer KI kürzen lassen.</h3>
+            <p data-ai-quiz-context>Es werden keine zusätzlichen internen Informationen ergänzt.</p>
+
+            <div class="ai-quiz-actions" data-ai-quiz-actions>
+              <button type="button" data-ai-answer="allow"><span>A</span>Rein damit</button>
+              <button type="button" data-ai-answer="protect"><span>B</span>Erst prüfen &amp; schützen</button>
+              <button type="button" data-ai-answer="block"><span>C</span>Auf keinen Fall</button>
+            </div>
+
+            <div class="ai-quiz-feedback" data-ai-quiz-feedback hidden aria-live="polite">
+              <span class="ai-quiz-verdict" data-ai-quiz-verdict></span>
+              <strong data-ai-quiz-feedback-title></strong>
+              <p data-ai-quiz-feedback-copy></p>
+              <button class="ai-quiz-next" type="button" data-ai-quiz-next>Nächste Situation <span>→</span></button>
+            </div>
+          </div>
+
+          <div class="ai-quiz-finish" data-ai-quiz-finish hidden>
+            <span class="ai-quiz-result" data-ai-quiz-result></span>
+            <h3>„Keine Namen drin“ heißt noch lange nicht „unkritisch“.</h3>
+            <p>Die entscheidende Frage ist: <strong>Was muss das Modell wirklich wissen?</strong> Psoydo prüft deshalb nicht nur direkte Identifikatoren. Inhalte können zusätzlich auf Hinweise auf mögliche Geschäftsgeheimnisse nach den Kriterien des GeschGehG geprüft werden.</p>
+            <div class="ai-quiz-finish-tags"><span>Personenbezug</span><span>Geschäftsgeheimnisse</span><span>Kontext</span></div>
+            <a class="button" href="#transformation">So löst Psoydo das <span>↓</span></a>
+          </div>
+
+          <div class="ai-quiz-note">Vereinfachte Beispiele. Die tatsächliche Zulässigkeit hängt unter anderem von Daten, Verträgen, Betriebsmodell und internen Regeln ab. Die GeschGehG-Prüfung ist eine technische Vorprüfung und keine Rechtsberatung.</div>
+        </div>
       </div>
     </section>
 
@@ -332,6 +383,6 @@
     <div><p>Das Registrierungsformular von Typeform wird erst geladen, wenn du es aktiv öffnest. Optionale Messung für Google Ads erfolgt nur nach deiner Einwilligung. Details stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p><div><button id="consent-decline">Ablehnen</button><button id="consent-accept" class="accept">Akzeptieren</button></div></div>
   </div>
 
-  <script src="../app.js?v=20260921-lightbox1"></script>
+  <script src="../app.js?v=20260921-quiz1"></script>
 </body>
 </html>

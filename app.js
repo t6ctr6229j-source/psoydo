@@ -258,6 +258,149 @@
     }
   }
 
+  // 30-second public AI decision check.
+  var aiQuiz=document.querySelector('[data-ai-quiz]');
+  if(aiQuiz){
+    var aiQuizQuestions=[
+      {
+        eyebrow:'ÖFFENTLICH',
+        question:'Die Pressemitteilung steht bereits auf eurer Website. Du möchtest sie von einer KI kürzen lassen.',
+        context:'Es werden keine zusätzlichen internen Informationen ergänzt.',
+        correct:'allow',
+        recommendation:'Rein damit',
+        title:'Bereits öffentlich ist etwas anderes als intern.',
+        copy:'Wenn wirklich nur bereits veröffentlichte Inhalte enthalten sind, entsteht durch den Upload keine zusätzliche Offenlegung interner Informationen. Unternehmensregeln und Anbieterbedingungen gelten natürlich trotzdem.'
+      },
+      {
+        eyebrow:'PERSONENBEZUG',
+        question:'Für eine Auswertung sind 800 Support-Tickets fachlich freigegeben. Darin stehen aber Namen, E-Mail-Adressen und Kundennummern.',
+        context:'Das Modell braucht Problemtyp, Verlauf und Lösung – nicht die Identität des Kunden.',
+        correct:'protect',
+        recommendation:'Erst prüfen & schützen',
+        title:'Genau hier wird Pseudonymisierung interessant.',
+        copy:'Direkte Identifikatoren können vor der Übergabe konsistent ersetzt werden, während der fachliche Zusammenhang für die Analyse erhalten bleibt.'
+      },
+      {
+        eyebrow:'GESCHÄFTSGEHEIMNIS',
+        question:'Ein internes Strategiepapier enthält keine Personendaten. Dafür unveröffentlichte Preise, Margen und mögliche Übernahmeziele.',
+        context:'Die Information selbst ist sensibel – nicht die Identität einer Person.',
+        correct:'block',
+        recommendation:'Auf keinen Fall',
+        title:'Keine Namen heißt nicht unkritisch.',
+        copy:'Solche Inhalte können Geschäftsgeheimnisse sein. Psoydo prüft deshalb zusätzlich auf Hinweise auf mögliche Geschäftsgeheimnisse nach den Kriterien des GeschGehG. Pseudonymisierung allein würde hier das Kernproblem nicht lösen.'
+      },
+      {
+        eyebrow:'VERTRAGSANALYSE',
+        question:'Eine große Vertragsmenge soll extern analysiert werden. Der Vertragsinhalt ist für diesen Analyseweg freigegeben, reale Ansprechpartner aber nicht.',
+        context:'Klauseln und Beziehungen sind relevant. Namen, E-Mails, Adressen und Unterschriften stehen trotzdem in den Dokumenten.',
+        correct:'protect',
+        recommendation:'Erst prüfen & schützen',
+        title:'Kontext behalten. Identität ersetzen.',
+        copy:'Wenn der fachliche Inhalt genutzt werden darf, aber direkte Identifikatoren nicht zum Modell sollen, kann Psoydo genau diese Trennung herstellen.'
+      },
+      {
+        eyebrow:'IT & SECURITY',
+        question:'Für Angriffskorrelation sollen Logs ausgewertet werden. Sie enthalten Usernamen, IP-Adressen und interne Hostnamen.',
+        context:'Zeitstempel, Ereignisse und Beziehungen braucht das Modell. Reale Nutzerbezüge nicht; interne Systemnamen können zusätzlich vertraulich sein.',
+        correct:'protect',
+        recommendation:'Erst prüfen & schützen',
+        title:'Hier reicht eine reine Namenssuche nicht.',
+        copy:'Psoydo kann Identifikatoren pseudonymisieren und den Inhalt zusätzlich auf Hinweise auf mögliche Geschäftsgeheimnisse prüfen. Welche Informationen als geschützter Kontext verbleiben dürfen, muss für den Einsatz feststehen.'
+      }
+    ];
+
+    var aiQuizIndex=0;
+    var aiQuizScore=0;
+    var aiQuizAnswered=false;
+    var aiQuizCount=aiQuiz.querySelector('[data-ai-quiz-count]');
+    var aiQuizBar=aiQuiz.querySelector('[data-ai-quiz-bar]');
+    var aiQuizEyebrow=aiQuiz.querySelector('[data-ai-quiz-eyebrow]');
+    var aiQuizQuestion=aiQuiz.querySelector('[data-ai-quiz-question]');
+    var aiQuizContext=aiQuiz.querySelector('[data-ai-quiz-context]');
+    var aiQuizActions=aiQuiz.querySelector('[data-ai-quiz-actions]');
+    var aiQuizButtons=Array.prototype.slice.call(aiQuiz.querySelectorAll('[data-ai-answer]'));
+    var aiQuizFeedback=aiQuiz.querySelector('[data-ai-quiz-feedback]');
+    var aiQuizVerdict=aiQuiz.querySelector('[data-ai-quiz-verdict]');
+    var aiQuizFeedbackTitle=aiQuiz.querySelector('[data-ai-quiz-feedback-title]');
+    var aiQuizFeedbackCopy=aiQuiz.querySelector('[data-ai-quiz-feedback-copy]');
+    var aiQuizNext=aiQuiz.querySelector('[data-ai-quiz-next]');
+    var aiQuizStage=aiQuiz.querySelector('[data-ai-quiz-stage]');
+    var aiQuizFinish=aiQuiz.querySelector('[data-ai-quiz-finish]');
+    var aiQuizResult=aiQuiz.querySelector('[data-ai-quiz-result]');
+
+    function padQuizNumber(value){
+      return value<10?'0'+value:String(value);
+    }
+
+    function renderAiQuizQuestion(){
+      var item=aiQuizQuestions[aiQuizIndex];
+      aiQuizAnswered=false;
+      if(aiQuizCount)aiQuizCount.textContent=padQuizNumber(aiQuizIndex+1)+' / '+padQuizNumber(aiQuizQuestions.length);
+      if(aiQuizBar)aiQuizBar.style.transform='scaleX('+((aiQuizIndex+1)/aiQuizQuestions.length)+')';
+      if(aiQuizEyebrow)aiQuizEyebrow.textContent=item.eyebrow;
+      if(aiQuizQuestion)aiQuizQuestion.textContent=item.question;
+      if(aiQuizContext)aiQuizContext.textContent=item.context;
+      if(aiQuizFeedback)aiQuizFeedback.hidden=true;
+      if(aiQuizActions)aiQuizActions.hidden=false;
+      aiQuizButtons.forEach(function(button){
+        button.disabled=false;
+        button.classList.remove('is-selected','is-correct','is-wrong');
+      });
+    }
+
+    function finishAiQuiz(){
+      if(aiQuizStage)aiQuizStage.hidden=true;
+      if(aiQuizFinish)aiQuizFinish.hidden=false;
+      if(aiQuizCount)aiQuizCount.textContent='FERTIG';
+      if(aiQuizBar)aiQuizBar.style.transform='scaleX(1)';
+      if(aiQuizResult)aiQuizResult.textContent=aiQuizScore+' von '+aiQuizQuestions.length+' Situationen passend eingeschätzt';
+      var finishLink=aiQuizFinish?aiQuizFinish.querySelector('a'):null;
+      if(finishLink)window.setTimeout(function(){finishLink.focus();},0);
+    }
+
+    aiQuizButtons.forEach(function(button){
+      button.addEventListener('click',function(){
+        if(aiQuizAnswered)return;
+        aiQuizAnswered=true;
+        var item=aiQuizQuestions[aiQuizIndex];
+        var answer=button.getAttribute('data-ai-answer');
+        var correct=answer===item.correct;
+        if(correct)aiQuizScore+=1;
+
+        aiQuizButtons.forEach(function(option){
+          option.disabled=true;
+          if(option.getAttribute('data-ai-answer')===item.correct)option.classList.add('is-correct');
+        });
+        button.classList.add('is-selected');
+        if(!correct)button.classList.add('is-wrong');
+
+        if(aiQuizVerdict)aiQuizVerdict.textContent='EMPFEHLUNG · '+item.recommendation.toUpperCase();
+        if(aiQuizFeedbackTitle)aiQuizFeedbackTitle.textContent=item.title;
+        if(aiQuizFeedbackCopy)aiQuizFeedbackCopy.textContent=item.copy;
+        if(aiQuizActions)aiQuizActions.hidden=false;
+        if(aiQuizFeedback)aiQuizFeedback.hidden=false;
+        if(aiQuizNext)aiQuizNext.innerHTML=(aiQuizIndex===aiQuizQuestions.length-1?'Auswertung ansehen':'Nächste Situation')+' <span>→</span>';
+        if(aiQuizFeedback)window.setTimeout(function(){aiQuizFeedback.focus&&aiQuizFeedback.focus();},0);
+      });
+    });
+
+    if(aiQuizNext){
+      aiQuizNext.addEventListener('click',function(){
+        if(!aiQuizAnswered)return;
+        if(aiQuizIndex>=aiQuizQuestions.length-1){
+          finishAiQuiz();
+          return;
+        }
+        aiQuizIndex+=1;
+        renderAiQuizQuestion();
+        var firstButton=aiQuizButtons[0];
+        if(firstButton)window.setTimeout(function(){firstButton.focus();},0);
+      });
+    }
+
+    renderAiQuizQuestion();
+  }
+
   var tfOpen=document.getElementById('tf-open');
   var tfContainer=document.getElementById('tf-container');
 

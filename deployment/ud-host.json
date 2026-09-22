@@ -1,0 +1,9 @@
+{
+  "host": "access-5020757126.ud-webspace.de",
+  "port": 22,
+  "key_type": "ssh-ed25519",
+  "fingerprint": "SHA256:1gx2w8Rtv3wCgi7Jh8myf/KVd72cRQbow03UP8P095Q",
+  "trust": "First-use key observed through GitHub Actions; not independently confirmed by the hosting provider",
+  "observed_at": "2026-09-22",
+  "observation_run": "https://github.com/t6ctr6229j-source/psoydo_website/actions/runs/35787312323"
+}

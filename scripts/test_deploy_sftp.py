@@ -3,7 +3,7 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
-from deploy_sftp import deploy, PinnedHost
+from deploy_sftp import deploy, PinnedHost, host_pin
 import paramiko
 
 class LocalSFTP:
@@ -46,6 +46,11 @@ class DeploymentTest(unittest.TestCase):
             with self.assertRaises(FileNotFoundError): deploy(LocalSFTP(root), {}, {}, '1-1')
             self.assertEqual((root/'psoydo/index.html').read_text(), 'keep')
             self.assertFalse((root/'psoydo-release-1-1').exists())
+    def test_pin_bound_to_host_and_port(self):
+        self.assertTrue(host_pin('access-5020757126.ud-webspace.de', 22).startswith('SHA256:'))
+        for host, port in [('other.example', 22), ('access-5020757126.ud-webspace.de', 2222)]:
+            with self.assertRaises(ValueError): host_pin(host, port)
+
     def test_wrong_host_rejected(self):
         key = paramiko.RSAKey.generate(2048)
         with self.assertRaises(paramiko.SSHException):

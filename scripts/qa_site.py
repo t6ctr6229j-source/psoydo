@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -19,6 +20,9 @@ PUBLIC_HTML = [
     ROOT / "de" / "impressum.html",
     ROOT / "de" / "datenschutz.html",
 ]
+INDEXABLE_HTML = PUBLIC_HTML[:7]
+NOINDEX_HTML = PUBLIC_HTML[7:]
+
 FORBIDDEN_PUBLIC = [
     "BUILT BY",
     "wird von wescaleIT gebaut",

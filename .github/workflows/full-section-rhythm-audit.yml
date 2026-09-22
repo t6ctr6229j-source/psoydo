@@ -1,0 +1,136 @@
+name: Full Section Rhythm Audit
+
+on:
+  push:
+    branches:
+      - qa/full-section-rhythm-audit
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start local site
+        run: |
+          python -m http.server 8080 >/tmp/psoydo-http.log 2>&1 &
+          echo $! > /tmp/psoydo-http.pid
+          sleep 2
+      - name: Install browser runner
+        run: npm install --no-save --no-package-lock playwright@1.55.0
+      - name: Audit every section on desktop and mobile
+        run: |
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          CHROME="$CHROME" node - <<'NODE'
+          const { chromium } = require('playwright');
+          const browser = await chromium.launch({
+            executablePath: process.env.CHROME,
+            headless: true,
+            args: ['--no-sandbox','--disable-dev-shm-usage']
+          });
+
+          const pages = [
+            ['/de/','home'],
+            ['/de/produkt.html','product'],
+            ['/de/technologie.html','technology'],
+            ['/de/architektur.html','architecture'],
+            ['/de/anwendungsfaelle.html','usecases'],
+            ['/de/sicherheit.html','security'],
+            ['/de/preise.html','pricing'],
+            ['/de/impressum.html','imprint'],
+            ['/de/datenschutz.html','privacy']
+          ];
+          const viewports = [
+            ['desktop',{width:1440,height:900}],
+            ['mobile',{width:390,height:844}]
+          ];
+
+          function rgbKey(value){
+            return String(value || '').replace(/\s+/g,'');
+          }
+
+          for (const [mode, viewport] of viewports) {
+            for (const [path, name] of pages) {
+              const context = await browser.newContext({viewport, deviceScaleFactor:1});
+              const page = await context.newPage();
+              await page.emulateMedia({reducedMotion:'reduce'});
+              await page.goto('http://127.0.0.1:8080' + path + '?qa=section-audit',{waitUntil:'networkidle'});
+
+              const audit = await page.evaluate(() => {
+                function effectiveBg(el){
+                  let node=el;
+                  while(node){
+                    const bg=getComputedStyle(node).backgroundColor;
+                    if(bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
+                    node=node.parentElement;
+                  }
+                  return 'transparent';
+                }
+                const sections=Array.from(document.querySelectorAll('main > section')).map((el,index)=>{
+                  const cs=getComputedStyle(el);
+                  const rect=el.getBoundingClientRect();
+                  return {
+                    index:index+1,
+                    cls:el.className || '(no-class)',
+                    id:el.id || '',
+                    background:effectiveBg(el),
+                    ownBackground:cs.backgroundColor,
+                    paddingTop:parseFloat(cs.paddingTop)||0,
+                    paddingBottom:parseFloat(cs.paddingBottom)||0,
+                    height:Math.round(rect.height),
+                    width:Math.round(rect.width),
+                    left:Math.round(rect.left),
+                    right:Math.round(rect.right),
+                    top:Math.round(rect.top + window.scrollY),
+                    bottom:Math.round(rect.bottom + window.scrollY)
+                  };
+                });
+                return {
+                  scrollWidth:document.documentElement.scrollWidth,
+                  clientWidth:document.documentElement.clientWidth,
+                  sections
+                };
+              });
+
+              const repeated=[];
+              for(let i=1;i<audit.sections.length;i++){
+                const a=rgbKey(audit.sections[i-1].background);
+                const b=rgbKey(audit.sections[i].background);
+                if(a===b) repeated.push([i,i+1,audit.sections[i-1].cls,audit.sections[i].cls,a]);
+              }
+
+              const spacingFlags=audit.sections
+                .filter(s => !/hero|proofbar/.test(s.cls))
+                .filter(s => s.paddingTop < (mode==='mobile'?60:80) || s.paddingBottom < (mode==='mobile'?60:80))
+                .map(s=>({index:s.index,cls:s.cls,pt:s.paddingTop,pb:s.paddingBottom}));
+
+              const overflow=audit.scrollWidth > audit.clientWidth + 2;
+
+              console.log('\n===AUDIT===');
+              console.log('MODE:',mode,'PAGE:',name,'PATH:',path);
+              console.log('VIEWPORT:',viewport.width+'x'+viewport.height,'SCROLL_WIDTH:',audit.scrollWidth,'OVERFLOW:',overflow);
+              console.log('REPEATED_BACKGROUNDS:',JSON.stringify(repeated));
+              console.log('SPACING_FLAGS:',JSON.stringify(spacingFlags));
+              for(const s of audit.sections){
+                console.log([
+                  'SECTION',s.index,
+                  'CLASS='+s.cls,
+                  'BG='+s.background,
+                  'PT='+s.paddingTop,
+                  'PB='+s.paddingBottom,
+                  'H='+s.height,
+                  'TOP='+s.top,
+                  'BOTTOM='+s.bottom
+                ].join(' | '));
+              }
+              await context.close();
+            }
+          }
+          await browser.close();
+          NODE
+      - name: Stop local site
+        if: always()
+        run: |
+          if [ -f /tmp/psoydo-http.pid ]; then kill "$(cat /tmp/psoydo-http.pid)" || true; fi

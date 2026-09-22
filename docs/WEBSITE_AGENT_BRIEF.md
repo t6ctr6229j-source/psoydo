@@ -58,7 +58,7 @@ The 30-day cloud test is for evaluation and internal testing, not permanent prod
 
 ## Design direction
 - premium enterprise technology, not generic cyber-SaaS
-- user-approved 2026-09-22 palette: deep petrol #071D22 + warm off-white #F5F2EB + electric mint #5DF5B8; coral #FF806C for selected brand statements
+- user-approved 2026-09-22 palette: deep petrol #071D22 + warm off-white #F5F2EB + electric mint #5DF5B8; coral #FF806C only for text highlights and small details, never full section backgrounds
 - mint owns primary actions and pseudonymization; coral is editorial, never a replacement for quiz/error/entity semantic colors
 - large editorial typography, restrained cards, meaningful visual rhythm
 - show product/process rather than decorate with generic cyber imagery

@@ -177,3 +177,22 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - Static QA and browser captures extended to the new pages. Deployment/indexing and real form receipt still require live checks.
 - Built on the open registration-readiness PR; merge/publication awaits explicit approval under the repository brief.
 - Validation: static QA passes on all eighteen pages; Chromium checks pass at 390/1024/1440px (54 page/viewport combinations), including no horizontal overflow or navigation collisions, working article anchors and mobile menu. Desktop hub and mobile article screenshots visually reviewed. External calls were blocked; no leads submitted. CI additionally audits hub/article Lighthouse scores.
+
+
+## 2026-09-22 — Approved preview publication and hosting package
+- User approved continuing toward go-live after the explicit PR #20 merge/publication proposal. Squash-merged PR #20 as d5219dd590a75219e5f63a89c12adf866b93c050 and fast-forwarded the publishing branch. Pages run 35759274316 succeeded. PR #19 is superseded by the combined release.
+- Prepared a public-file upload ZIP builder, dependency/integrity checks, SHA-256 manifest and artifact-only GitHub workflow. No external deployment connection or credentials.
+- Actual United Domains product, document root, SFTP configuration, TLS and live form receipt remain account-side checks. Hosting guide documents rollback and URL/404 requirements.
+
+
+## 2026-09-22 — GA4 and shared consent
+- Added user-supplied GA4 ID G-EYFT82SFN7. Statistics and existing Ads tracking are separate opt-ins on all 18 pages. Old Ads-only consent does not grant Analytics.
+- Production-host allowlist excludes Pages/local previews; sanitized page/referrer URLs, fixed registration event payloads, and duplicate-callback guards.
+- Withdrawal disables the runtime and reloads with saved choices. Mock Chromium tests cover consent lifecycle and registration events on mobile/desktop; no real measurements or inquiries sent.
+- Account-side retention, tag destinations, enhanced measurement and live receipt remain open in MEASUREMENT.md.
+- SFTP deployment workflow remains the next hosting task; user reports the three UD_SFTP secrets have been saved per repository. No password read or production upload performed.
+
+## Deployment preparation — 2026-09-22
+- User authorized go-live. PR22 CI revealed delayed consent stealing focus from the product lightbox; consent now opens immediately and the lightbox test dismisses it explicitly.
+- Added manual main-only United Domains SFTP workflow: pinned host fingerprint, checksum read-back, isolated staging, retained previous release and activation rollback.
+- Remaining external requirements: verified UD_SFTP_FINGERPRINT secret, domain psoydo.com mapped to psoydo directory, HTTPS and public smoke test. No production upload claimed.

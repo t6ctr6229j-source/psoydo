@@ -21,7 +21,7 @@ export async function checkRegistration(browser) {
       if (relative.endsWith('/')) relative += 'index.html';
       await route.fulfill({ path: fileURLToPath(new URL(relative, root)) });
     });
-    await page.addInitScript(() => localStorage.setItem('psoydo-consent-v2', 'denied'));
+    await page.addInitScript(() => localStorage.setItem('psoydo-consent-v3', JSON.stringify({analytics:false,ads:false})));
     await page.goto('https://psoydo.test/de/');
     assert.equal(embeds, 0, 'Typeform must wait for user action');
     await page.locator('#tf-open').click();
@@ -50,7 +50,7 @@ export async function checkRegistration(browser) {
       const path = u.pathname.endsWith('/') ? u.pathname + 'index.html' : u.pathname;
       return route.fulfill({path:fileURLToPath(new URL(path.slice(1),root))});
     });
-    await stalledPage.addInitScript(() => localStorage.setItem('psoydo-consent-v2', 'denied'));
+    await stalledPage.addInitScript(() => localStorage.setItem('psoydo-consent-v3', JSON.stringify({analytics:false,ads:false})));
     await stalledPage.goto('https://psoydo.test/de/');
     await stalledPage.clock.install();
     await stalledPage.locator('#tf-open').click();

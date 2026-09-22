@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
 import { checkErrorPage } from './check_error_page.mjs';
+import { checkMeasurement } from './check_measurement.mjs';
 import { checkRegistration } from './check_registration.mjs';
 
 const base = process.env.BASE_URL || 'http://127.0.0.1:8080';
@@ -244,6 +245,7 @@ for (const [name, path, viewport] of captures) {
   });
   const page = await context.newPage();
   await page.goto(base + '/de/produkt.html?qa=lightbox', { waitUntil: 'networkidle' });
+  await page.locator('#consent-decline').click();
 
   const trigger = page.locator('[data-lightbox]').first();
   await trigger.scrollIntoViewIfNeeded();
@@ -433,4 +435,5 @@ for (const [name, path, viewport] of captures) {
 
 await checkErrorPage(browser);
 await checkRegistration(browser);
+await checkMeasurement(browser);
 await browser.close();

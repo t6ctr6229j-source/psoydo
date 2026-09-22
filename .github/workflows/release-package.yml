@@ -1,0 +1,32 @@
+name: Upload package
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/build_release.py'
+      - '.github/workflows/release-package.yml'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate website
+        run: python scripts/qa_site.py
+      - name: Build and verify upload archive
+        run: python scripts/build_release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: psoydo-upload-${{ github.sha }}
+          path: |
+            dist/psoydo-upload.zip
+            dist/psoydo-manifest.json
+          if-no-files-found: error
+          retention-days: 30

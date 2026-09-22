@@ -26,10 +26,10 @@
   <link rel="canonical" href="https://psoydo.com/de/">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css?v=20260922-insights1">
-  <link rel="stylesheet" href="../polish.css?v=20260922-insights1">
-  <link rel="stylesheet" href="../pricing.css?v=20260922-insights1">
-  <link rel="stylesheet" href="../v3.css?v=20260922-insights1">
+  <link rel="stylesheet" href="../styles.css?v=20260922-ga4-1">
+  <link rel="stylesheet" href="../polish.css?v=20260922-ga4-1">
+  <link rel="stylesheet" href="../pricing.css?v=20260922-ga4-1">
+  <link rel="stylesheet" href="../v3.css?v=20260922-ga4-1">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://psoydo.com/#organization","name":"wescaleIT AG","url":"https://wescaleit.com/"},{"@type":"WebSite","@id":"https://psoydo.com/#website","url":"https://psoydo.com/","name":"Psoydo","publisher":{"@id":"https://psoydo.com/#organization"},"inLanguage":"de-DE"},{"@type":"WebPage","@id":"https://psoydo.com/de/#webpage","url":"https://psoydo.com/de/","name":"Sensible Daten sicher mit KI nutzen | Psoydo","description":"Psoydo pseudonymisiert personenbezogene Daten und prüft Inhalte auf mögliche Geschäftsgeheimnisse, bevor sie externe KI-Modelle erreichen.","isPartOf":{"@id":"https://psoydo.com/#website"},"about":{"@id":"https://psoydo.com/#software"},"inLanguage":"de-DE"},{"@type":"SoftwareApplication","@id":"https://psoydo.com/#software","name":"Psoydo","url":"https://psoydo.com/de/","applicationCategory":"BusinessApplication","description":"Psoydo pseudonymisiert sensible Identifikatoren, erhält fachlichen Kontext und kann Inhalte zusätzlich auf Hinweise auf mögliche Geschäftsgeheimnisse prüfen.","featureList":["Kontextbezogene Pseudonymisierung","Konsistente Pseudonyme","Review und Sichtabgleich","Prüfung auf Hinweise auf mögliche Geschäftsgeheimnisse"],"offers":{"@id":"https://psoydo.com/#pilot"}},{"@type":"Offer","@id":"https://psoydo.com/#pilot","name":"Psoydo 30-Tage-Pilot","price":"990","priceCurrency":"EUR","url":"https://psoydo.com/de/preise.html#test","seller":{"@id":"https://psoydo.com/#organization"}},{"@type":"FAQPage","@id":"https://psoydo.com/de/#faq","mainEntity":[{"@type":"Question","name":"Was ist Pseudonymisierung für KI?","acceptedAnswer":{"@type":"Answer","text":"Bei der Pseudonymisierung werden identifizierende Angaben durch konsistente Pseudonyme ersetzt. Der fachliche Kontext kann erhalten bleiben, während die Zuordnung zum Original getrennt gehalten wird. Pseudonymisierung ist keine Anonymisierung."}},{"@type":"Question","name":"Darf man personenbezogene Daten in ChatGPT oder andere öffentliche KI-Dienste hochladen?","acceptedAnswer":{"@type":"Answer","text":"Das lässt sich nicht pauschal beantworten. Entscheidend sind unter anderem Zweck, Rechtsgrundlage und Verträge, das konkrete Betriebsmodell des KI-Dienstes, interne Vorgaben und die Art der Daten. Psoydo setzt davor an und reduziert die Daten, die das Zielmodell tatsächlich sehen muss."}},{"@type":"Question","name":"Was ist der Unterschied zwischen Anonymisierung und Pseudonymisierung?","acceptedAnswer":{"@type":"Answer","text":"Anonymisierte Daten lassen sich nicht mehr einer Person zuordnen. Bei pseudonymisierten Daten bleibt eine getrennt geschützte Zuordnung grundsätzlich möglich. Genau deshalb muss auch mit pseudonymisierten Daten weiterhin kontrolliert umgegangen werden."}},{"@type":"Question","name":"Prüft Psoydo auch auf Geschäftsgeheimnisse nach GeschGehG?","acceptedAnswer":{"@type":"Answer","text":"Psoydo kann Inhalte zusätzlich auf Hinweise auf mögliche Geschäftsgeheimnisse anhand definierter Kriterien prüfen. Das ist eine technische Vorprüfung und keine rechtsverbindliche Bewertung oder Rechtsberatung."}},{"@type":"Question","name":"Bleiben Zusammenhänge nach der Pseudonymisierung erhalten?","acceptedAnswer":{"@type":"Answer","text":"Ja, das ist ein Kernprinzip von Psoydo: Gleiche Entitäten können innerhalb eines Falls konsistent pseudonymisiert werden, damit Beziehungen und fachlicher Kontext für die KI-Analyse erhalten bleiben."}},{"@type":"Question","name":"Wo kann Psoydo betrieben werden?","acceptedAnswer":{"@type":"Answer","text":"Psoydo ist für kontrollierte Betriebsmodelle ausgelegt. Welche konkrete Variante für Pilot oder Produktivbetrieb unterstützt wird, wird im jeweiligen Angebot und anhand des Use Cases festgelegt."}}]}]}</script>
 </head>
 <body>
@@ -419,10 +419,11 @@
     </div>
   </footer>
 
-  <div id="consent" class="consent" role="dialog" aria-label="Cookie-Einstellungen" aria-hidden="true">
-    <div><p>Das Registrierungsformular von Typeform wird erst geladen, wenn du es aktiv öffnest. Optionale Messung für Google Ads erfolgt nur nach deiner Einwilligung. Details stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p><div><button id="consent-decline">Ablehnen</button><button id="consent-accept" class="accept">Akzeptieren</button></div></div>
-  </div>
-
-  <script src="../app.js?v=20260922-insights1"></script>
+  <div id="consent" class="consent" role="dialog" aria-label="Cookie-Einstellungen" aria-hidden="true"><div>
+    <div class="consent-copy"><p>Du entscheidest: Google Analytics misst Seitenaufrufe und die Nutzung der Registrierung. Google Ads misst die Nutzung im Zusammenhang mit Anzeigen. Beide Dienste laden erst nach deiner jeweiligen Zustimmung. Deine Auswahl kannst du jederzeit im Seitenfuß ändern. <a href="datenschutz.html">Datenschutzerklärung</a></p>
+    <div class="consent-options"><label><input type="checkbox" id="consent-analytics"> Statistik (Google Analytics)</label><label><input type="checkbox" id="consent-ads"> Anzeigenmessung (Google Ads)</label></div></div>
+    <div class="consent-actions"><button id="consent-decline">Alle ablehnen</button><button id="consent-accept" class="accept">Auswahl speichern</button></div>
+  </div></div>
+  <script src="../app.js?v=20260922-ga4-1"></script>
 </body>
 </html>

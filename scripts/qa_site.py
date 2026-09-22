@@ -168,6 +168,10 @@ def check_page(page: Path, errors: list[str]):
             except json.JSONDecodeError as exc:
                 fail(errors, f"{rel}: invalid JSON-LD: {exc}")
 
+    for consent_id in ['consent', 'consent-reopen', 'consent-analytics', 'consent-ads', 'consent-accept', 'consent-decline']:
+        if f'id="{consent_id}"' not in text:
+            fail(errors, f"{rel}: shared measurement consent control missing: {consent_id}")
+
     ids = re.findall(r'\sid="([^"]+)"', text)
     duplicates = sorted({value for value in ids if ids.count(value) > 1})
     if duplicates:

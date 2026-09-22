@@ -137,3 +137,13 @@ The workflow also renders full-page desktop/mobile screenshots and stores them a
 
 ## Quality gate
 The gate stays OPEN. Code/content quality, static QA, automated browser rendering and Lighthouse thresholds are green. Remaining blockers are real product UI proof, final technical-documentation reconciliation, hosting/privacy verification and final manual visual approval.
+
+
+## 2026-09-22 — Petrol / mint / coral brand refinement
+- User-approved palette: petrol #071D22, mint #5DF5B8, coral #FF806C, warm off-white #F5F2EB.
+- Updated shared surfaces, panels, transparent header backgrounds and browser theme colors across all nine pages and the 404.
+- Coral accents the home headline, home outcomes, product context statement and use-case closing section. Mint retains action and pseudonymization roles; quiz/entity semantics and original product screenshots are preserved.
+- Warmer neutral reading sections and mint CTA buttons keep technical/security/pricing pages restrained.
+- Added stylesheet cache versions, including query-safe stylesheet detection on the 404.
+- Static QA and JavaScript syntax pass. Local intercepted-file Chromium review covers 1440px and 390px; targeted grid/heading wrapping addresses long German text overflow. GitHub CI provides the full Lighthouse and browser gate.
+- This color iteration awaits explicit merge approval under the repository rule; no production publication yet.

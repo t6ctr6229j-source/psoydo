@@ -64,6 +64,99 @@ for (const [name, path, viewport] of captures) {
 }
 
 
+// Section rhythm regression: every public page must work on desktop and mobile,
+ // must not overflow horizontally, must keep usable vertical breathing room,
+ // and consecutive sections must not resolve to the same background.
+{
+  const rhythmPages = [
+    ['/de/', 'home'],
+    ['/de/produkt.html', 'product'],
+    ['/de/technologie.html', 'technology'],
+    ['/de/architektur.html', 'architecture'],
+    ['/de/anwendungsfaelle.html', 'usecases'],
+    ['/de/sicherheit.html', 'security'],
+    ['/de/preise.html', 'pricing'],
+    ['/de/impressum.html', 'imprint'],
+    ['/de/datenschutz.html', 'privacy']
+  ];
+  const rhythmViewports = [
+    ['desktop', { width: 1440, height: 900 }, 80],
+    ['mobile', { width: 390, height: 844 }, 60]
+  ];
+
+  for (const [mode, viewport, spacingFloor] of rhythmViewports) {
+    for (const [path, pageName] of rhythmPages) {
+      const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
+      const page = await context.newPage();
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.goto(base + path + (path.includes('?') ? '&' : '?') + 'qa=rhythm', { waitUntil: 'networkidle' });
+
+      const rhythm = await page.evaluate(() => {
+        function effectiveBackground(element) {
+          let node = element;
+          while (node) {
+            const value = getComputedStyle(node).backgroundColor;
+            if (value && value !== 'rgba(0, 0, 0, 0)' && value !== 'transparent') return value;
+            node = node.parentElement;
+          }
+          return 'transparent';
+        }
+
+        const sections = Array.from(document.querySelectorAll('main > section')).map((section, index) => {
+          const style = getComputedStyle(section);
+          return {
+            index: index + 1,
+            cls: section.className || '(no-class)',
+            background: effectiveBackground(section),
+            paddingTop: parseFloat(style.paddingTop) || 0,
+            paddingBottom: parseFloat(style.paddingBottom) || 0
+          };
+        });
+
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: document.documentElement.clientWidth,
+          sections
+        };
+      });
+
+      if (rhythm.scrollWidth > rhythm.clientWidth + 2) {
+        throw new Error(pageName + ' ' + mode + ': horizontal overflow ' + rhythm.scrollWidth + ' > ' + rhythm.clientWidth);
+      }
+
+      for (let i = 1; i < rhythm.sections.length; i += 1) {
+        const previous = rhythm.sections[i - 1];
+        const current = rhythm.sections[i];
+        if (previous.background.replace(/\s+/g, '') === current.background.replace(/\s+/g, '')) {
+          throw new Error(
+            pageName + ' ' + mode + ': consecutive sections share background ' +
+            previous.cls + ' -> ' + current.cls + ' (' + current.background + ')'
+          );
+        }
+      }
+
+      const spacingFailures = rhythm.sections.filter(section => {
+        if (/hero|proofbar/.test(section.cls)) return false;
+        return section.paddingTop < spacingFloor || section.paddingBottom < spacingFloor;
+      });
+      if (spacingFailures.length) {
+        throw new Error(
+          pageName + ' ' + mode + ': section spacing below floor ' +
+          JSON.stringify(spacingFailures)
+        );
+      }
+
+      console.log('section rhythm', pageName, mode, {
+        sections: rhythm.sections.length,
+        overflow: false,
+        backgroundsUnique: true,
+        spacingFloor
+      });
+      await context.close();
+    }
+  }
+}
+
 // Public AI decision quiz regression: answer all five scenarios and reach the in-page result.
 {
   const context = await browser.newContext({

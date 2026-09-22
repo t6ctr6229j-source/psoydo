@@ -147,17 +147,36 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: third-party Google Fonts request must not be present")
     if 'property="og:image"' not in text or 'name="twitter:image"' not in text:
         fail(errors, f"{rel}: social preview metadata missing")
-    if 'application/ld+json' not in text:
+    if 'https://psoydo.com/og-image.png' not in text:
+        fail(errors, f"{rel}: social preview must use the PNG asset")
+    if 'property="og:locale" content="de_DE"' not in text:
+        fail(errors, f"{rel}: og:locale de_DE missing")
+
+    expected_robots = "noindex,follow" if page in NOINDEX_HTML else "index,follow,max-image-preview:large"
+    if f'name="robots" content="{expected_robots}"' not in text:
+        fail(errors, f"{rel}: expected robots directive {expected_robots}")
+
+    jsonld_blocks = re.findall(r'<script type="application/ld\\+json">(.*?)</script>', text, flags=re.S)
+    if not jsonld_blocks:
         fail(errors, f"{rel}: structured data missing")
+    else:
+        for block in jsonld_blocks:
+            try:
+                json.loads(block)
+            except json.JSONDecodeError as exc:
+                fail(errors, f"{rel}: invalid JSON-LD: {exc}")
 
     ids = re.findall(r'\sid="([^"]+)"', text)
     duplicates = sorted({value for value in ids if ids.count(value) > 1})
     if duplicates:
         fail(errors, f"{rel}: duplicate ids: {', '.join(duplicates)}")
 
-    for img in re.findall(r'<img\b[^>]*>', text, flags=re.I):
-        if not re.search(r'\balt="[^"]*"', img, flags=re.I):
+    for img in re.findall(r'<img\\b[^>]*>', text, flags=re.I):
+        if not re.search(r'\\balt="[^"]*"', img, flags=re.I):
             fail(errors, f"{rel}: image without alt text: {img[:100]}")
+        if "../assets/web/" in img:
+            if not re.search(r'\\bwidth="\\d+"', img) or not re.search(r'\\bheight="\\d+"', img):
+                fail(errors, f"{rel}: optimized web image missing intrinsic dimensions: {img[:120]}")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:

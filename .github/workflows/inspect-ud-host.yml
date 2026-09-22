@@ -1,0 +1,17 @@
+name: Inspect United Domains host key
+on:
+  push:
+    branches: [ops/ud-host-key]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Read public SSH host key without authentication
+        run: |
+          ssh-keyscan -T 15 -t ed25519 access-5020757126.ud-webspace.de > /tmp/ud-known-hosts
+          test -s /tmp/ud-known-hosts
+          cat /tmp/ud-known-hosts
+          ssh-keygen -lf /tmp/ud-known-hosts -E sha256

@@ -156,7 +156,7 @@ def check_page(page: Path, errors: list[str]):
     if f'name="robots" content="{expected_robots}"' not in text:
         fail(errors, f"{rel}: expected robots directive {expected_robots}")
 
-    jsonld_blocks = re.findall(r'<script type="application/ld\\+json">(.*?)</script>', text, flags=re.S)
+    jsonld_blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', text, flags=re.S)
     if not jsonld_blocks:
         fail(errors, f"{rel}: structured data missing")
     else:
@@ -171,11 +171,11 @@ def check_page(page: Path, errors: list[str]):
     if duplicates:
         fail(errors, f"{rel}: duplicate ids: {', '.join(duplicates)}")
 
-    for img in re.findall(r'<img\\b[^>]*>', text, flags=re.I):
-        if not re.search(r'\\balt="[^"]*"', img, flags=re.I):
+    for img in re.findall(r'<img\b[^>]*>', text, flags=re.I):
+        if not re.search(r'\balt="[^"]*"', img, flags=re.I):
             fail(errors, f"{rel}: image without alt text: {img[:100]}")
         if "../assets/web/" in img:
-            if not re.search(r'\\bwidth="\\d+"', img) or not re.search(r'\\bheight="\\d+"', img):
+            if not re.search(r'\bwidth="\d+"', img) or not re.search(r'\bheight="\d+"', img):
                 fail(errors, f"{rel}: optimized web image missing intrinsic dimensions: {img[:120]}")
 
     lowered = text.lower()

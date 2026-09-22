@@ -32,17 +32,22 @@ https://www.united-domains.de/help/faq-article/wie-lade-ich-meine-website-mit-fi
 
 No .htaccess or hosting-specific configuration is bundled until the actual hosting product is verified. This package is prepared for upload, not evidence of a production launch.
 
-## Manueller GitHub-SFTP-Upload (2026-09-22)
+## GitHub-SFTP-Upload (2026-09-22)
 
-Workflow: **Deploy United Domains**, ausschließlich manuell auf `main`.
-Webspace S benötigt hierfür nur SFTP, keinen SSH-Shell-Zugang.
+Workflow: **Deploy United Domains**, auf `main` manuell startbar. Ein ausdrücklich
+mit `[deploy-ud]` markierter Main-Commit löst ebenfalls den Upload aus; normale
+Merges veröffentlichen nicht automatisch. Die Markierung nur nach bestandenen
+Prüfungen für einen freigegebenen Deployment-Stand verwenden.
+Webspace S benötigt nur SFTP, keinen SSH-Shell-Zugang.
 
-Repository-Secrets: `UD_SFTP_HOST`, `UD_SFTP_USER`, `UD_SFTP_PASSWORD`
-und zusätzlich **`UD_SFTP_FINGERPRINT`**. Letzteres ist der SHA256-Fingerprint
-(`SHA256:…`) des vom Server angebotenen SSH-Hostschlüssels. Den Wert über
-United Domains bestätigen lassen; ein unbestätigtes `ssh-keyscan` allein
-belegt nicht die Echtheit. Bei fehlendem/falschem Fingerprint wird vor der
-Passwortübertragung abgebrochen.
+Repository-Secrets: `UD_SFTP_HOST`, `UD_SFTP_USER`, `UD_SFTP_PASSWORD`.
+`UD_SFTP_PORT` ist optional (Standard: 22). Kein Fingerprint-Secret erforderlich.
+Der öffentliche ED25519-Fingerprint ist in `deployment/ud-host.json` hinterlegt
+und an Host und Port gebunden. Er wurde nach der vom Nutzer freigegebenen
+Erstübernahme ausgelesen (Trust on First Use), nicht unabhängig durch den
+Provider bestätigt. Spätere Verbindungen müssen exakt denselben Schlüssel
+liefern; bei Änderungen wird vor der Passwortübertragung abgebrochen.
+Ein legitimer Schlüsselwechsel benötigt eine bewusste Aktualisierung der Datei.
 
 Unter Actions → Deploy United Domains → Run workflow → main starten.
 Der Workflow prüft und lädt das gesamte Paket in einen neuen Nachbarordner,
@@ -55,7 +60,7 @@ Zwischen den beiden Renames kann eine kurze Unterbrechung entstehen.
 Abgebrochene Uploads und Backups werden nicht automatisch gelöscht.
 
 Im United-Domains-Portfolio muss **psoydo.com mit dem Verzeichnis psoydo**
-verknüpft und HTTPS aktiviert sein. Erfolgreicher SFTP-Upload beweist diese
-Domain-/TLS-Konfiguration nicht. Anschließend öffentliche Seiten, Formular,
-HTTPS, Weiterleitungen und echte 404-Antwort prüfen. Der Workflow ändert
-weder DNS noch Zertifikate oder E-Mail-Einstellungen.
+verknüpft sein. Erfolgreicher SFTP-Upload beweist diese Domainzuordnung nicht.
+HTTPS war beim letzten Abruf bereits aktiv; der öffentliche Stand war noch alt.
+Anschließend öffentliche Seiten, Formular, HTTPS, Weiterleitungen und echte
+404-Antwort prüfen. Der Workflow ändert weder DNS noch Zertifikate oder E-Mail.

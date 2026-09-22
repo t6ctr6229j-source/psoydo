@@ -196,3 +196,9 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - User authorized go-live. PR22 CI revealed delayed consent stealing focus from the product lightbox; consent now opens immediately and the lightbox test dismisses it explicitly.
 - Added manual main-only United Domains SFTP workflow: pinned host fingerprint, checksum read-back, isolated staging, retained previous release and activation rollback.
 - Remaining external requirements: verified UD_SFTP_FINGERPRINT secret, domain psoydo.com mapped to psoydo directory, HTTPS and public smoke test. No production upload claimed.
+
+## Continue deployment — 2026-09-22
+- PR22 merged at 47c43631faeb36b88f49af71caff57fa7360a31b; complete Website QA and preview deployment passed.
+- User requested continuing without an additional fingerprint secret. Public ED25519 key captured in unauthenticated GitHub run 35787312323 and pinned in deployment/ud-host.json (first-use trust, no provider confirmation claimed).
+- Deployment uses the existing three secrets plus optional port; [deploy-ud] on an approved main commit is an explicit release trigger alongside manual dispatch.
+- Actual SFTP upload and live domain validation still pending at this commit.

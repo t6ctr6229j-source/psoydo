@@ -49,6 +49,13 @@ class PinnedHost(paramiko.MissingHostKeyPolicy):
             raise paramiko.SSHException('SFTP server fingerprint does not match the configured fingerprint')
 
 
+def host_pin(host, port):
+    pin = json.loads((ROOT / 'deployment/ud-host.json').read_text())
+    if host != pin['host'] or port != pin['port']:
+        raise ValueError('SFTP host/port does not match the committed host key')
+    return pin['fingerprint']
+
+
 def exists(sftp, path):
     try:
         return sftp.lstat(path)
@@ -103,19 +110,19 @@ def deploy(sftp, manifest, files, run_id):
 
 
 def main():
-    values = {key: os.environ.get(key, '').strip() for key in ('UD_SFTP_HOST', 'UD_SFTP_USER', 'UD_SFTP_FINGERPRINT')}
+    values = {key: os.environ.get(key, '').strip() for key in ('UD_SFTP_HOST', 'UD_SFTP_USER')}
     password = os.environ.get('UD_SFTP_PASSWORD', '')
     if not all(values.values()) or not password:
-        raise ValueError('Required repository secrets: UD_SFTP_HOST, UD_SFTP_USER, UD_SFTP_PASSWORD, UD_SFTP_FINGERPRINT')
-    if not re.fullmatch(r'SHA256:[A-Za-z0-9+/]{43}', values['UD_SFTP_FINGERPRINT']):
-        raise ValueError('UD_SFTP_FINGERPRINT must be a verified SHA256 SSH host fingerprint')
+        raise ValueError('Required repository secrets: UD_SFTP_HOST, UD_SFTP_USER, UD_SFTP_PASSWORD')
+    port = int(os.environ.get('UD_SFTP_PORT') or '22')
+    fingerprint = host_pin(values['UD_SFTP_HOST'], port)
     run_id = os.environ.get('GITHUB_RUN_ID', '') + '-' + os.environ.get('GITHUB_RUN_ATTEMPT', '')
     if not re.fullmatch(r'\d+-\d+', run_id):
         raise ValueError('Run this deployment through GitHub Actions')
     manifest, files = release()
     with paramiko.SSHClient() as client:
-        client.set_missing_host_key_policy(PinnedHost(values['UD_SFTP_FINGERPRINT']))
-        client.connect(values['UD_SFTP_HOST'], port=22, username=values['UD_SFTP_USER'],
+        client.set_missing_host_key_policy(PinnedHost(fingerprint))
+        client.connect(values['UD_SFTP_HOST'], port=port, username=values['UD_SFTP_USER'],
                        password=password, allow_agent=False, look_for_keys=False,
                        timeout=30, auth_timeout=30, banner_timeout=30)
         with client.open_sftp() as sftp:

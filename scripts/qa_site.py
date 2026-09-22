@@ -200,9 +200,28 @@ def main() -> int:
     for page in PUBLIC_HTML:
         check_page(page, errors)
 
+    titles = {}
+    descriptions = {}
+    for page in INDEXABLE_HTML:
+        if not page.exists():
+            continue
+        page_text = page.read_text(encoding="utf-8")
+        title_match = re.search(r"<title>(.*?)</title>", page_text, re.S)
+        desc_match = re.search(r'<meta name="description" content="([^"]*)">', page_text)
+        if title_match:
+            title = re.sub(r"\s+", " ", title_match.group(1)).strip()
+            if title in titles:
+                fail(errors, f"{page.relative_to(ROOT)}: duplicate title with {titles[title]}")
+            titles[title] = page.relative_to(ROOT)
+        if desc_match:
+            desc = desc_match.group(1).strip()
+            if desc in descriptions:
+                fail(errors, f"{page.relative_to(ROOT)}: duplicate meta description with {descriptions[desc]}")
+            descriptions[desc] = page.relative_to(ROOT)
+
     homepage_path = ROOT / "de" / "index.html"
     homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
-    for section_id in ["product", "ki-check", "transformation", "usecases", "security", "pricing", "register"]:
+    for section_id in ["product", "ki-check", "transformation", "usecases", "security", "faq", "pricing", "register"]:
         if f'id="{section_id}"' not in homepage:
             fail(errors, f"de/index.html: core customer-facing section must be static: #{section_id}")
     for phrase in [
@@ -228,6 +247,12 @@ def main() -> int:
 
     if homepage.count("data-ai-answer=") != 3 or "data-ai-quiz" not in homepage:
         fail(errors, "de/index.html: public AI decision quiz controls are missing or incomplete")
+
+    if homepage.count("<details>") < 6 or '"@type":"FAQPage"' not in homepage:
+        fail(errors, "de/index.html: visible SEO FAQ or FAQPage structured data is incomplete")
+    for phrase in ["Pseudonymisierung ist keine Anonymisierung", "GeschGehG", "technische Vorprüfung"]:
+        if phrase not in homepage:
+            fail(errors, f"de/index.html: SEO FAQ guardrail missing: {phrase}")
 
     lightbox_pages = {
         "de/index.html": 3,

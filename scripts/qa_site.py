@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -19,6 +20,9 @@ PUBLIC_HTML = [
     ROOT / "de" / "impressum.html",
     ROOT / "de" / "datenschutz.html",
 ]
+INDEXABLE_HTML = PUBLIC_HTML[:7]
+NOINDEX_HTML = PUBLIC_HTML[7:]
+
 FORBIDDEN_PUBLIC = [
     "BUILT BY",
     "wird von wescaleIT gebaut",
@@ -143,8 +147,24 @@ def check_page(page: Path, errors: list[str]):
         fail(errors, f"{rel}: third-party Google Fonts request must not be present")
     if 'property="og:image"' not in text or 'name="twitter:image"' not in text:
         fail(errors, f"{rel}: social preview metadata missing")
-    if 'application/ld+json' not in text:
+    if 'https://psoydo.com/og-image.png' not in text:
+        fail(errors, f"{rel}: social preview must use the PNG asset")
+    if 'property="og:locale" content="de_DE"' not in text:
+        fail(errors, f"{rel}: og:locale de_DE missing")
+
+    expected_robots = "noindex,follow" if page in NOINDEX_HTML else "index,follow,max-image-preview:large"
+    if f'name="robots" content="{expected_robots}"' not in text:
+        fail(errors, f"{rel}: expected robots directive {expected_robots}")
+
+    jsonld_blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', text, flags=re.S)
+    if not jsonld_blocks:
         fail(errors, f"{rel}: structured data missing")
+    else:
+        for block in jsonld_blocks:
+            try:
+                json.loads(block)
+            except json.JSONDecodeError as exc:
+                fail(errors, f"{rel}: invalid JSON-LD: {exc}")
 
     ids = re.findall(r'\sid="([^"]+)"', text)
     duplicates = sorted({value for value in ids if ids.count(value) > 1})
@@ -154,6 +174,9 @@ def check_page(page: Path, errors: list[str]):
     for img in re.findall(r'<img\b[^>]*>', text, flags=re.I):
         if not re.search(r'\balt="[^"]*"', img, flags=re.I):
             fail(errors, f"{rel}: image without alt text: {img[:100]}")
+        if "../assets/web/" in img:
+            if not re.search(r'\bwidth="\d+"', img) or not re.search(r'\bheight="\d+"', img):
+                fail(errors, f"{rel}: optimized web image missing intrinsic dimensions: {img[:120]}")
 
     lowered = text.lower()
     for phrase in FORBIDDEN_PUBLIC:
@@ -177,9 +200,28 @@ def main() -> int:
     for page in PUBLIC_HTML:
         check_page(page, errors)
 
+    titles = {}
+    descriptions = {}
+    for page in INDEXABLE_HTML:
+        if not page.exists():
+            continue
+        page_text = page.read_text(encoding="utf-8")
+        title_match = re.search(r"<title>(.*?)</title>", page_text, re.S)
+        desc_match = re.search(r'<meta name="description" content="([^"]*)">', page_text)
+        if title_match:
+            title = re.sub(r"\s+", " ", title_match.group(1)).strip()
+            if title in titles:
+                fail(errors, f"{page.relative_to(ROOT)}: duplicate title with {titles[title]}")
+            titles[title] = page.relative_to(ROOT)
+        if desc_match:
+            desc = desc_match.group(1).strip()
+            if desc in descriptions:
+                fail(errors, f"{page.relative_to(ROOT)}: duplicate meta description with {descriptions[desc]}")
+            descriptions[desc] = page.relative_to(ROOT)
+
     homepage_path = ROOT / "de" / "index.html"
     homepage = homepage_path.read_text(encoding="utf-8") if homepage_path.exists() else ""
-    for section_id in ["product", "ki-check", "transformation", "usecases", "security", "pricing", "register"]:
+    for section_id in ["product", "ki-check", "transformation", "usecases", "security", "faq", "pricing", "register"]:
         if f'id="{section_id}"' not in homepage:
             fail(errors, f"de/index.html: core customer-facing section must be static: #{section_id}")
     for phrase in [
@@ -205,6 +247,12 @@ def main() -> int:
 
     if homepage.count("data-ai-answer=") != 3 or "data-ai-quiz" not in homepage:
         fail(errors, "de/index.html: public AI decision quiz controls are missing or incomplete")
+
+    if homepage.count("<details>") < 6 or '"@type":"FAQPage"' not in homepage:
+        fail(errors, "de/index.html: visible SEO FAQ or FAQPage structured data is incomplete")
+    for phrase in ["Pseudonymisierung ist keine Anonymisierung", "GeschGehG", "technische Vorprüfung"]:
+        if phrase not in homepage:
+            fail(errors, f"de/index.html: SEO FAQ guardrail missing: {phrase}")
 
     lightbox_pages = {
         "de/index.html": 3,
@@ -263,9 +311,12 @@ def main() -> int:
     provider_logo = ROOT / "assets" / "wescaleIT_Logo_RGB_RZ.png"
     provider_logo_negative = ROOT / "assets" / "wescaleIT_Logo_RGB_negativ_RZ.png"
     og_asset = ROOT / "og-image.svg"
+    og_png_asset = ROOT / "og-image.png"
     page_404 = ROOT / "404.html"
     if not og_asset.exists():
-        fail(errors, "missing social preview asset: og-image.svg")
+        fail(errors, "missing social preview source asset: og-image.svg")
+    if not og_png_asset.exists() or og_png_asset.stat().st_size < 50000:
+        fail(errors, "missing or invalid 1200x630 social preview asset: og-image.png")
     if not page_404.exists():
         fail(errors, "missing branded 404.html")
     else:
@@ -324,21 +375,31 @@ def main() -> int:
                 fail(errors, f"app.js: core content must remain static, found {dynamic_builder}")
 
     sitemap = ROOT / "sitemap.xml"
+    expected_sitemap_urls = [
+        "https://psoydo.com/de/",
+        "https://psoydo.com/de/produkt.html",
+        "https://psoydo.com/de/technologie.html",
+        "https://psoydo.com/de/architektur.html",
+        "https://psoydo.com/de/anwendungsfaelle.html",
+        "https://psoydo.com/de/sicherheit.html",
+        "https://psoydo.com/de/preise.html",
+    ]
     if sitemap.exists():
         sitemap_text = sitemap.read_text(encoding="utf-8")
-        for url in [
-            "https://psoydo.com/de/",
-            "https://psoydo.com/de/produkt.html",
-            "https://psoydo.com/de/technologie.html",
-            "https://psoydo.com/de/architektur.html",
-            "https://psoydo.com/de/anwendungsfaelle.html",
-            "https://psoydo.com/de/sicherheit.html",
-            "https://psoydo.com/de/preise.html",
-        ]:
-            if url not in sitemap_text:
-                fail(errors, f"sitemap.xml: missing {url}")
+        actual_urls = re.findall(r"<loc>(.*?)</loc>", sitemap_text)
+        if actual_urls != expected_sitemap_urls:
+            fail(errors, f"sitemap.xml: expected only indexable content URLs in canonical order, got {actual_urls}")
+        if "impressum" in sitemap_text or "datenschutz" in sitemap_text:
+            fail(errors, "sitemap.xml: noindex legal pages must not be listed")
+        for date in re.findall(r"<lastmod>(.*?)</lastmod>", sitemap_text):
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
+                fail(errors, f"sitemap.xml: invalid lastmod date {date}")
     else:
         fail(errors, "missing sitemap.xml")
+
+    seo_plan = ROOT / "docs" / "SEO_CONTENT_PLAN.md"
+    if not seo_plan.exists():
+        fail(errors, "missing docs/SEO_CONTENT_PLAN.md")
 
     if errors:
         print("SITE QA FAILED")

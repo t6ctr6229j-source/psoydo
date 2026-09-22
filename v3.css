@@ -4292,3 +4292,112 @@ body.lightbox-open{overflow:hidden}
   color:var(--v3-ink);
   border-top:1px solid rgba(7,16,13,.08);
 }
+
+
+/* V20 — compact SEO FAQ, visible content first */
+.home2-faq{
+  padding:140px 0;
+  background:#f3f2ee;
+  color:var(--v3-text);
+}
+.home2-faq-head{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:72px;
+  align-items:start;
+}
+.home2-faq-head h2{
+  margin:0;
+  max-width:1050px;
+  font-size:clamp(56px,6.3vw,92px);
+  line-height:.91;
+  letter-spacing:-.07em;
+  font-weight:500;
+}
+.home2-faq-head h2 span{color:#7c8982}
+.home2-faq-head p{
+  max-width:760px;
+  margin:28px 0 0;
+  font-size:16px;
+  line-height:1.7;
+  color:#68746e;
+}
+.home2-faq-list{
+  margin-top:72px;
+  border-top:1px solid var(--v3-line);
+}
+.home2-faq-list details{
+  border-bottom:1px solid var(--v3-line);
+}
+.home2-faq-list summary{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 36px;
+  gap:30px;
+  align-items:center;
+  min-height:94px;
+  padding:24px 0;
+  cursor:pointer;
+  font-size:clamp(21px,2.2vw,31px);
+  line-height:1.15;
+  letter-spacing:-.035em;
+  font-weight:500;
+}
+.home2-faq-list summary::-webkit-details-marker{display:none}
+.home2-faq-list summary span{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border:1px solid rgba(7,16,13,.16);
+  border-radius:50%;
+  font:400 20px/1 var(--mono);
+  transition:transform .2s ease,background .2s ease;
+}
+.home2-faq-list details[open] summary span{
+  transform:rotate(45deg);
+  background:#dfe4dc;
+}
+.home2-faq-list details>div{
+  max-width:960px;
+  padding:0 66px 30px 0;
+}
+.home2-faq-list details p{
+  margin:0;
+  font-size:15px;
+  line-height:1.75;
+  color:#59665f;
+}
+.home2-faq-list details p strong{
+  color:#17211d;
+  font-weight:600;
+}
+.home2-faq-list details a{
+  display:inline-block;
+  margin-top:15px;
+  font:600 9px var(--mono);
+  letter-spacing:.05em;
+  color:#087c57;
+}
+.home2-faq-list summary:focus-visible{
+  outline:3px solid #087c57;
+  outline-offset:5px;
+}
+
+@media(max-width:980px){
+  .home2-faq-head{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:780px){
+  .home2-faq{padding:96px 0}
+  .home2-faq-head h2{font-size:48px}
+  .home2-faq-list{margin-top:46px}
+  .home2-faq-list summary{
+    min-height:82px;
+    grid-template-columns:1fr 32px;
+    gap:16px;
+    font-size:21px;
+  }
+  .home2-faq-list summary span{width:30px;height:30px;font-size:17px}
+  .home2-faq-list details>div{padding:0 0 26px}
+  .home2-faq-list details p{font-size:14px}
+}

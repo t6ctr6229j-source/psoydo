@@ -3,7 +3,7 @@
 Reviewed 2026-09-22 against main `6d8f162` (PR #18). This is an evidence checklist, not a claim of production readiness.
 
 ## Confirmed
-- Nine public pages, navigation, prices, product images, SEO metadata and sitemap exist.
+- Eighteen public pages, navigation, prices, product images, SEO metadata and sitemap exist.
 - PR #18 Website QA and GitHub Pages deployment passed.
 - Pages currently publishes from `redesign/register-landingpage`; publishing main alone is insufficient.
 - Approved palette: petrol, mint, warm off-white. No coral.
@@ -20,10 +20,10 @@ Reviewed 2026-09-22 against main `6d8f162` (PR #18). This is an evidence checkli
 ## Release blockers / decisions
 | Item | Evidence / missing information | Acceptance |
 | --- | --- | --- |
-| Final hosting | Privacy section 3 names united-domains, but the current published preview runs on GitHub Pages. Registrar and hosting can be different providers. | Flo confirms the actual production host. Match hosting copy, processing-contract statement and log-retention claims to verified facts. |
+| Final hosting | Flo confirmed United Domains hosting and psoydo.com. GitHub Pages remains the preview. | Deploy to the confirmed host; verify processing-contract and log-retention statements against the actual service. |
 | Domain / HTTPS | psoydo.com is the intended canonical domain. A public retrieval did not succeed in this environment; this does not prove a DNS or website outage. | Verify apex/www routing, certificate, HTTPS and all nine pages at the target host; follow SEO_RELEASE_CHECKLIST.md. |
 | Registration delivery | Code references Typeform ID 01KVRJN19YZ8J86JFQYX9N09QG. Live form configuration is not verified. | Verify live publication, required fields, success screen and recipient. With approval, submit one marked test and confirm receipt and response process. |
-| Commercial next step | Website presents a EUR 990 net / 30-day evaluation. No checkout or automatic provisioning was established by this review. | Confirm whether registration is an inquiry followed by offer/invoice or an order; align form and follow-up to that decision. |
+| Commercial next step | Flo confirmed registration as an inquiry; offer, invoice and activation are arranged personally. Stripe is deferred. | Verify that the live form and response process match this inquiry flow. |
 | Ads / consent | Ads ID AW-18355213487 exists; custom submit event is not evidence of a configured Google Ads conversion. | Confirm whether Ads is needed at launch. Test deny/accept/revoke/reaccept and actual network behavior; verify conversion configuration before campaigns. |
 | Final product facts | Claims about cloud trial, available deployment models and operating responsibilities need a product-owner check. | Confirm current offer and operational terms against real service delivery. |
 

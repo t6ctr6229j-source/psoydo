@@ -4425,3 +4425,6 @@ body.lightbox-open{overflow:hidden}
 
 .form-card #tf-container.registration-error{grid-template-rows:auto auto auto;align-content:center;gap:16px}
 .registration-error .registration-open{align-self:start;margin-top:0}
+
+/* Editorial entry follows the warm pilot section. */
+.sub-cta.home-insights-entry{background:#e1e5dc}

@@ -70,6 +70,9 @@ jobs:
           npx --yes lighthouse http://127.0.0.1:8080/de/sicherheit.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/security-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
           npx --yes lighthouse http://127.0.0.1:8080/de/preise.html             --preset=desktop             --output=json --output-path=/tmp/psoydo-browser-qa/pricing-desktop.json             --only-categories=performance,accessibility,best-practices,seo             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
 
+          npx --yes lighthouse http://127.0.0.1:8080/de/insights.html --output=json --output-path=/tmp/psoydo-browser-qa/insights-mobile.json --only-categories=performance,accessibility,best-practices,seo --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+          npx --yes lighthouse http://127.0.0.1:8080/de/ki-pseudonymisierung.html --preset=desktop --output=json --output-path=/tmp/psoydo-browser-qa/article-desktop.json --only-categories=performance,accessibility,best-practices,seo --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --quiet
+
       - name: Assert Lighthouse floors
         if: github.event_name == 'pull_request'
         run: |

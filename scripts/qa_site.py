@@ -20,8 +20,10 @@ PUBLIC_HTML = [
     ROOT / "de" / "impressum.html",
     ROOT / "de" / "datenschutz.html",
 ]
-INDEXABLE_HTML = PUBLIC_HTML[:7]
 NOINDEX_HTML = PUBLIC_HTML[7:]
+INSIGHTS_HTML = [ROOT / "de" / (slug + ".html") for slug in ['insights', 'ki-pseudonymisierung', 'anonymisierung-vs-pseudonymisierung', 'personenbezogene-daten-ki', 'geschaeftsgeheimnisse-ki', 'ki-on-premises-private-cloud', 'ki-vertragsanalyse', 'ki-support-tickets', 'ki-log-analyse']]
+PUBLIC_HTML += INSIGHTS_HTML
+INDEXABLE_HTML = [page for page in PUBLIC_HTML if page not in NOINDEX_HTML]
 
 FORBIDDEN_PUBLIC = [
     "BUILT BY",
@@ -269,6 +271,7 @@ def main() -> int:
         ("anwendungsfaelle.html", "Use Cases"),
         ("sicherheit.html", "Sicherheit"),
         ("preise.html", "Preise"),
+        ("insights.html", "Insights"),
     ]
     for page in PUBLIC_HTML:
         if not page.exists():
@@ -384,6 +387,7 @@ def main() -> int:
         "https://psoydo.com/de/sicherheit.html",
         "https://psoydo.com/de/preise.html",
     ]
+    expected_sitemap_urls += ["https://psoydo.com/de/" + page.name for page in INSIGHTS_HTML]
     if sitemap.exists():
         sitemap_text = sitemap.read_text(encoding="utf-8")
         actual_urls = re.findall(r"<loc>(.*?)</loc>", sitemap_text)

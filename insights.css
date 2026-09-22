@@ -1,0 +1,82 @@
+/* Psoydo editorial surfaces: static articles, readable without JavaScript. */
+.insights-page{background:#f5f2eb;color:#071d22}
+.insights-kicker{font:600 12px/1.5 var(--mono,monospace);letter-spacing:.1em;text-transform:uppercase;margin:0 0 24px}
+.insights-hub-hero{background:#071d22;color:#f5f2eb;padding:170px 0 80px}
+.insights-hub-hero h1{font-size:clamp(52px,7.3vw,108px);line-height:1.02;letter-spacing:-.055em;max-width:1100px;margin:0}
+.insights-hub-hero h1 span{color:#5df5b8}
+.insights-hub-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-top:42px;border-top:1px solid #425459;padding-top:28px}
+.insights-hub-intro p{font-size:20px;line-height:1.65;max-width:760px;margin:0;color:#d2ddd9}
+.insights-hub-intro>span{flex-shrink:0;font:12px/1.8 monospace;letter-spacing:.06em;color:#5df5b8}
+.insights-feature{padding:72px 0;background:#e8e5dc}
+.insights-feature-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:70px;align-items:center}
+.insights-feature h2,.insights-cta h2{font-size:clamp(36px,4vw,60px);line-height:1.08;letter-spacing:-.045em;margin:0 0 22px}
+.insights-feature p:not(.insights-kicker){font-size:18px;line-height:1.65;max-width:620px;margin-bottom:26px}
+.insights-feature .button{white-space:normal;text-align:left}
+.insights-example{background:#071d22;color:#f5f2eb;padding:40px;position:relative;border-radius:2px}
+.insights-example>span{font:11px/1.5 monospace;color:#bdd0c8;letter-spacing:.1em}
+.insights-example p{font-size:20px!important;margin:28px 0!important}
+.insights-example-rule{width:64px;height:3px;background:#5df5b8;margin:26px 0}
+.insights-example strong{font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-.035em;color:#5df5b8}
+.insights-example small{display:block;max-width:330px;font-size:13px;line-height:1.6;color:#c0cec8;margin-top:26px}
+.insights-catalog{padding:80px 0 90px}
+.insights-catalog-head>h2,.insight-related h2{font-size:clamp(32px,3.3vw,48px);line-height:1.15;letter-spacing:-.04em;margin:0 0 28px}
+.insights-categories{display:flex;flex-wrap:wrap;gap:10px}
+.insights-categories a{padding:10px 17px;border:1px solid #6f7c73;border-radius:30px;font-size:14px}
+.insights-categories a:hover{background:#071d22;color:#5df5b8}
+.insights-category{padding-top:60px;scroll-margin-top:120px}
+.insights-category>h2{font-size:16px;letter-spacing:.03em;padding-bottom:16px;border-bottom:1px solid #b3bcb2;margin-bottom:24px}
+.insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.insight-card{min-width:0;position:relative;display:flex;flex-direction:column;border-top:3px solid #071d22;background:#ebe8df;padding:28px}
+.insight-card-meta{display:flex;justify-content:space-between;gap:12px;font:11px/1.5 monospace;text-transform:uppercase;letter-spacing:.045em;color:#3e5554;margin-bottom:28px}
+.insight-card h3{font-size:26px;line-height:1.22;letter-spacing:-.03em;margin:0 0 18px}
+.insight-card h3 a:after{content:"";position:absolute;inset:0}
+.insight-card p{font-size:16px;line-height:1.65;color:#3f5351;margin:0 0 30px}
+.insight-card-more{display:block;margin-top:auto;padding-top:20px;border-top:1px solid #b3bcb2;font-size:13px;font-weight:600}
+.insight-card:has(a:hover){background:#e0e8dc;border-top-color:#167448}
+.insight-card:focus-within{outline:3px solid #167448;outline-offset:4px}
+.insights-cta{padding:85px 0;background:#071d22;color:#f5f2eb}
+.insights-cta .insights-kicker{color:#5df5b8}
+.insights-cta p:not(.insights-kicker){max-width:730px;font-size:18px;line-height:1.7;color:#d2ddd9;margin:0 0 28px}
+.insight-hero{padding:140px 0 60px;background:#071d22;color:#f5f2eb}
+.insight-breadcrumb{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;line-height:1.5;color:#c0cec8;margin-bottom:45px}
+.insight-breadcrumb a:hover{text-decoration:underline}
+.insight-hero .insights-kicker{color:#5df5b8}
+.insight-hero h1{font-size:clamp(38px,4.7vw,70px);line-height:1.08;letter-spacing:-.045em;max-width:1080px;margin:0 0 28px;overflow-wrap:break-word;hyphens:auto}
+.insight-lead{font-size:clamp(19px,1.9vw,24px);line-height:1.6;max-width:920px;color:#d2ddd9;margin:0}
+.insight-byline{font-size:12px;line-height:1.7;margin-top:30px;color:#c0cec8}
+.insight-layout{display:grid;grid-template-columns:250px minmax(0,760px);justify-content:space-between;gap:60px;padding-top:64px;padding-bottom:80px}
+.insight-toc{align-self:start;position:sticky;top:115px;font-size:14px;line-height:1.5}
+.insight-toc strong{display:block;margin-bottom:18px;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.insight-toc nav a{display:block;padding:12px 0;border-top:1px solid #b3bcb2;color:#3f5351}
+.insight-toc a:hover{color:#071d22;text-decoration:underline;text-underline-offset:4px}
+.insight-back{display:block;margin-top:28px;font-weight:600}
+.insight-body{min-width:0;font-size:18px;line-height:1.85}
+.insight-body section{margin-top:46px;scroll-margin-top:110px}
+.insight-body h2{font-size:30px;line-height:1.22;letter-spacing:-.025em;margin:0 0 20px}
+.insight-body p{margin:0 0 20px}
+.insight-body a{text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.insight-answer{background:#dceadd;border-left:4px solid #167448;padding:28px 32px}
+.insight-answer h2{font-size:14px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+.insight-answer p{margin:0;font-size:20px;line-height:1.65}
+.insight-check{border-top:2px solid #071d22;padding-top:28px}
+.insight-check ul,.insight-sources ul{padding-left:23px;list-style:disc}
+.insight-check li{padding-left:6px;margin-bottom:12px}
+.insight-sources{font-size:14px;line-height:1.7;border-top:1px solid #b3bcb2;padding-top:24px}
+.insight-sources h2{font-size:20px}
+.insight-product-link{padding-top:30px;font-size:15px}
+.insight-related{padding:65px 0;background:#e1e5dc}
+.insight-related .insight-card{background:#f5f2eb}
+.insights-page a:focus-visible{outline:3px solid #16804d;outline-offset:5px}
+.insight-hero a:focus-visible,.insights-cta a:focus-visible{outline-color:#5df5b8}
+@media(max-width:1100px){.insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.insight-layout{grid-template-columns:210px minmax(0,1fr);gap:40px}.insights-feature-grid{gap:35px}.insight-card h3{font-size:24px}}
+@media(max-width:760px){.insights-hub-hero{padding:130px 0 50px}.insights-hub-intro{display:block}.insights-hub-intro>span{display:block;margin-top:25px}.insights-feature-grid{grid-template-columns:1fr}.insights-feature{padding:46px 0}.insight-layout{display:block;padding-top:36px;padding-bottom:45px}.insight-toc{position:static;margin-bottom:38px}.insight-toc nav a{padding:10px 0}.insight-back{display:none}.insight-hero{padding:110px 0 40px}.insight-breadcrumb{margin-bottom:32px}.insight-body{font-size:17px;line-height:1.8}.insight-body h2{font-size:27px}.insight-answer{padding:24px}.insight-answer p{font-size:18px}.insight-answer h2{font-size:13px}.insights-catalog{padding:46px 0}.insights-cta{padding:55px 0}.insight-related{padding:45px 0}}
+@media(max-width:540px){.insight-grid{grid-template-columns:1fr}.insight-card{padding:24px}.insights-example{padding:28px}.insights-hub-hero h1{font-size:49px}.insights-hub-intro p{font-size:18px}.insights-categories a{font-size:12px;padding:9px 12px}.insights-category{padding-top:42px}.insight-hero h1{font-size:38px}.insight-hero .insights-kicker{font-size:10px}.insight-byline{font-size:11px}}
+
+.insights-feature .button,.insights-cta .button{display:inline-flex;align-items:center;gap:18px;padding:17px 24px;border-radius:30px;background:#5df5b8;color:#071d22;font-size:14px;font-weight:600;line-height:1.4}
+.insights-category:not(#praxis) .insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#architektur .insight-grid{grid-template-columns:1fr}
+#architektur .insight-card{display:grid;grid-template-columns:1fr 1fr;column-gap:45px}
+#architektur .insight-card-meta,#architektur .insight-card-more{grid-column:1/-1}
+#architektur .insight-card-more{margin-top:8px}
+@media(max-width:760px){.insights-category:not(#praxis) .insight-grid{grid-template-columns:1fr}#architektur .insight-card{display:flex}}
+#architektur .insight-card{grid-column:1/-1}

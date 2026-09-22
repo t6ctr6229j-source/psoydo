@@ -2,6 +2,10 @@
 
 Stand: 2026-09-22
 
+## Implemented Insights expansion — 2026-09-22
+
+The /de/insights.html hub and eight linked articles implement the core topics below, plus a deployment-model comparison. Dedicated /de/personenbezogene-daten-ki.html covers the practical privacy decision framework; no duplicate generic privacy page has been added. All article URLs are in the sitemap and site navigation reaches the hub. Live indexing and production-domain verification remain open.
+
 ## Ziel
 
 Die bestehende Website bleibt die zentrale Conversion-Site für Psoydo. Zusätzliche SEO-Landingpages sollen Suchende früher im Problem abholen und gezielt in Produkt, Sicherheit, Architektur, Use Cases und den 30-Tage-Pilot führen.

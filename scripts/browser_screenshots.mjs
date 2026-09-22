@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
 import { checkErrorPage } from './check_error_page.mjs';
+import { checkRegistration } from './check_registration.mjs';
 
 const base = process.env.BASE_URL || 'http://127.0.0.1:8080';
 const executablePath = process.env.CHROME;
@@ -32,6 +33,11 @@ const captures = [
   ['privacy-mobile', '/de/datenschutz.html', { width: 390, height: 844 }]
 ];
 
+for (const slug of ["insights", "ki-pseudonymisierung", "anonymisierung-vs-pseudonymisierung", "personenbezogene-daten-ki", "geschaeftsgeheimnisse-ki", "ki-on-premises-private-cloud", "ki-vertragsanalyse", "ki-support-tickets", "ki-log-analyse"]) {
+  captures.push([slug + '-desktop', '/de/' + slug + '.html', {width:1440,height:900}]);
+  captures.push([slug + '-mobile', '/de/' + slug + '.html', {width:390,height:844}]);
+}
+
 for (const [name, path, viewport] of captures) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
   const page = await context.newPage();
@@ -42,13 +48,22 @@ for (const [name, path, viewport] of captures) {
     desktop: Array.from(document.querySelectorAll('.desktop-nav > a')).map(a => a.textContent.trim()),
     mobile: Array.from(document.querySelectorAll('#mobile-menu > a')).map(a => a.textContent.trim())
   }));
-  const expectedDesktop = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise'];
-  const expectedMobile = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise', 'Pilot starten'];
+  const expectedDesktop = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise', 'Insights'];
+  const expectedMobile = ['Produkt', 'Use Cases', 'Sicherheit', 'Preise', 'Insights', 'Pilot starten'];
   if (JSON.stringify(navState.desktop) !== JSON.stringify(expectedDesktop)) {
     throw new Error(name + ': desktop navigation is inconsistent: ' + JSON.stringify(navState.desktop));
   }
   if (JSON.stringify(navState.mobile) !== JSON.stringify(expectedMobile)) {
     throw new Error(name + ': mobile navigation is inconsistent: ' + JSON.stringify(navState.mobile));
+  }
+  if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2)) {
+    throw new Error(name + ': horizontal overflow');
+  }
+  if (path === '/de/ki-pseudonymisierung.html') {
+    await page.getByRole('link', {name: 'Praxischeck', exact: true}).click();
+    const top = await page.locator('#praxischeck').evaluate(el => el.getBoundingClientRect().top);
+    if (top < 75 || top > 160) throw new Error(name + ': contents target hidden by header');
+    await page.evaluate(() => scrollTo(0, 0));
   }
   await page.evaluate(() => {
     document.querySelectorAll('img.brand-wordmark, img.provider-logo, .real-product-shot img, .home-proof-gallery img')
@@ -417,4 +432,5 @@ for (const [name, path, viewport] of captures) {
 }
 
 await checkErrorPage(browser);
+await checkRegistration(browser);
 await browser.close();

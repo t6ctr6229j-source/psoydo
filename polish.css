@@ -1,5 +1,5 @@
 /* Committee polish pass: spacing, hierarchy, architecture and premium-tech refinement */
-:root{--hairline:rgba(7,16,13,.11);--soft-green:rgba(89,247,186,.12)}
+:root{--hairline:rgba(7,29,34,.11);--soft-green:rgba(89,247,186,.12)}
 
 /* More deliberate rhythm and less template-like density */
 .hero{padding-top:156px;min-height:940px}
@@ -23,15 +23,15 @@
 .architecture-heading h2{font-size:clamp(48px,5.8vw,82px);line-height:.97;letter-spacing:-.062em;margin:16px 0 0;max-width:1000px}
 .architecture-heading h2 span{color:#77837d}
 .arch-kicker{display:block;color:#4b5a53;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.architecture-board{margin-top:84px;display:grid;grid-template-columns:1fr 92px 1fr;gap:0;border:1px solid var(--hairline);border-radius:24px;overflow:hidden;background:#eeeee8;min-height:570px}
+.architecture-board{margin-top:84px;display:grid;grid-template-columns:1fr 92px 1fr;gap:0;border:1px solid var(--hairline);border-radius:24px;overflow:hidden;background:#eee9e0;min-height:570px}
 .arch-zone{padding:30px;position:relative;display:flex;flex-direction:column;gap:16px}
-.trusted-zone{background:linear-gradient(160deg,#0a1411,#0f1c17);color:#fff}
+.trusted-zone{background:linear-gradient(160deg,#0a2026,#0f1c17);color:#fff}
 .external-zone{background:#f6f6f1;color:var(--ink)}
 .arch-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font:500 9px var(--mono);letter-spacing:.1em}
 .trusted-zone .arch-zone-head{color:#819189}.external-zone .arch-zone-head{color:#707c76}
 .arch-zone-head b{font-weight:500;padding:6px 9px;border-radius:999px;border:1px solid currentColor;opacity:.72}
 .arch-card{border:1px solid rgba(255,255,255,.12);border-radius:15px;padding:22px;display:grid;grid-template-columns:34px 1fr;column-gap:12px;row-gap:7px;background:rgba(255,255,255,.025)}
-.external-zone .arch-card{border-color:rgba(7,16,13,.1);background:#fff}
+.external-zone .arch-card{border-color:rgba(7,29,34,.1);background:#fff}
 .arch-card small{grid-row:1/3;font:500 9px var(--mono);color:#68776f;padding-top:3px}
 .arch-card strong{font-size:17px;letter-spacing:-.025em}
 .arch-card span{font:400 10px/1.6 var(--mono);color:#7f8c85}
@@ -41,13 +41,13 @@
 .arch-vault{margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:10px}
 .vault-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(89,247,186,.06)}
 .arch-vault strong{display:block;font-size:12px}.arch-vault small{display:block;font:400 9px var(--mono);color:#69776f;margin-top:4px}.arch-vault em{font:500 8px var(--mono);color:var(--green);font-style:normal;text-transform:uppercase;letter-spacing:.08em}
-.arch-boundary{position:relative;background:linear-gradient(180deg,#e7e7df,#f4f4ef);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.arch-boundary:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:repeating-linear-gradient(to bottom,rgba(7,16,13,.35) 0 7px,transparent 7px 14px)}
+.arch-boundary{position:relative;background:linear-gradient(180deg,#e7e7df,#f5f2eb);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.arch-boundary:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:repeating-linear-gradient(to bottom,rgba(7,29,34,.35) 0 7px,transparent 7px 14px)}
 .arch-boundary span{position:relative;z-index:2;writing-mode:vertical-rl;transform:rotate(180deg);background:#f0f0ea;padding:14px 8px;font:500 8px var(--mono);letter-spacing:.13em;color:#66736c}
 .arch-boundary i{position:absolute;width:10px;height:10px;border-top:1px solid var(--ink);border-right:1px solid var(--ink);transform:rotate(45deg);left:39px;opacity:.5}
 .arch-boundary i:first-of-type{top:35%}.arch-boundary i:last-of-type{top:66%}
 .arch-models{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:4px 0}
-.arch-models span{border:1px solid rgba(7,16,13,.1);border-radius:10px;padding:14px 8px;text-align:center;background:#fafaf6;font:500 9px var(--mono);color:#65716b}
+.arch-models span{border:1px solid rgba(7,29,34,.1);border-radius:10px;padding:14px 8px;text-align:center;background:#fafaf6;font:500 9px var(--mono);color:#65716b}
 .result-card{margin-top:auto}
 .architecture-facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hairline);margin-top:48px}
 .architecture-facts>div{padding:30px 34px 8px 0;border-right:1px solid var(--hairline)}
@@ -57,7 +57,7 @@
 /* Trust section feels more like evidence than a feature list */
 .security{border-top:1px solid var(--hairline)}
 .security-list article{transition:transform .25s ease,background .25s ease}
-.security-list article:hover{transform:translateX(4px);background:rgba(7,16,13,.025)}
+.security-list article:hover{transform:translateX(4px);background:rgba(7,29,34,.025)}
 .trust-strip{border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
 
 /* Registration should feel like onboarding, not lead-gen */
@@ -65,17 +65,17 @@
 .registration-note{margin-top:34px;padding-top:22px;border-top:1px solid var(--hairline);display:grid;gap:7px;max-width:610px}
 .registration-note strong{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .registration-note span{font-size:13px;line-height:1.6;color:#67736d}
-.form-card{box-shadow:0 26px 90px rgba(7,16,13,.09)}
+.form-card{box-shadow:0 26px 90px rgba(7,29,34,.09)}
 
 /* Editorial separators */
 .statement,.difference,.security,.register{position:relative}
-.statement:before,.difference:before,.security:before,.register:before{content:"";position:absolute;left:24px;right:24px;top:0;height:1px;background:rgba(7,16,13,.055)}
+.statement:before,.difference:before,.security:before,.register:before{content:"";position:absolute;left:24px;right:24px;top:0;height:1px;background:rgba(7,29,34,.055)}
 
 @media (max-width:1050px){
   .architecture-heading{grid-template-columns:1fr;gap:24px}
   .architecture-board{grid-template-columns:1fr;min-height:0}
   .arch-boundary{height:70px}
-  .arch-boundary:before{left:0;right:0;top:50%;bottom:auto;width:auto;height:1px;background:repeating-linear-gradient(to right,rgba(7,16,13,.35) 0 7px,transparent 7px 14px)}
+  .arch-boundary:before{left:0;right:0;top:50%;bottom:auto;width:auto;height:1px;background:repeating-linear-gradient(to right,rgba(7,29,34,.35) 0 7px,transparent 7px 14px)}
   .arch-boundary span{writing-mode:horizontal-tb;transform:none}
   .arch-boundary i{transform:rotate(135deg);left:35%}.arch-boundary i:last-of-type{left:65%;top:30px}.arch-boundary i:first-of-type{top:30px}
 }
@@ -90,7 +90,7 @@
 
 /* PIF teaser on the homepage */
 .pif-home{padding:145px 0 125px;border-top:1px solid var(--hairline);position:relative;overflow:hidden}
-.pif-home:after{content:"PIF";position:absolute;right:-24px;top:50px;font:800 clamp(140px,24vw,360px)/.8 var(--sans);letter-spacing:-.08em;color:rgba(7,16,13,.025);pointer-events:none}
+.pif-home:after{content:"PIF";position:absolute;right:-24px;top:50px;font:800 clamp(140px,24vw,360px)/.8 var(--sans);letter-spacing:-.08em;color:rgba(7,29,34,.025);pointer-events:none}
 .pif-home-grid{display:grid;grid-template-columns:260px 1fr;gap:70px;position:relative;z-index:1}
 .pif-home-copy{max-width:930px}.pif-kicker{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#087b57}
 .pif-home h2{font-size:clamp(50px,6.4vw,88px);line-height:.95;letter-spacing:-.065em;margin:18px 0 0}.pif-home h2 span{color:#7a8580}

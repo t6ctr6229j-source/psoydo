@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Seite nicht gefunden — Psoydo</title>
-  <meta name="theme-color" content="#06100d">
+  <meta name="theme-color" content="#071d22">
   <script>
     // A custom 404 keeps the requested URL, including nested directories.
     var project = location.hostname.endsWith('.github.io')
@@ -13,9 +13,9 @@
     var siteRoot = location.origin + (project ? '/' + project + '/' : '/');
     // Create URLs before requesting assets; speculative loading must not use
     // the missing page's directory.
-    ['styles.css', 'v3.css', 'favicon.svg'].forEach(function (asset) {
+    ['styles.css?v=20260922-colors1', 'v3.css?v=20260922-colors1', 'favicon.svg'].forEach(function (asset) {
       var link = document.createElement('link');
-      link.rel = asset.endsWith('.css') ? 'stylesheet' : 'icon';
+      link.rel = asset.split('?')[0].endsWith('.css') ? 'stylesheet' : 'icon';
       link.href = siteRoot + asset;
       document.head.appendChild(link);
     });
@@ -28,10 +28,10 @@
   </script>
   <noscript>
     <link rel="stylesheet" href="https://psoydo.com/styles.css">
-    <link rel="stylesheet" href="https://psoydo.com/v3.css">
+    <link rel="stylesheet" href="https://psoydo.com/v3.css?v=20260922-colors1">
   </noscript>
   <style>
-    body{background:#06100d;color:#fff}
+    body{background:#071d22;color:#fff}
     .error-shell{min-height:100svh;display:grid;place-items:center;padding:40px}
     .error-card{width:min(1080px,100%);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);padding:70px 0;display:grid;grid-template-columns:220px 1fr;gap:70px}
     .error-code{font:500 11px var(--mono);letter-spacing:.12em;color:#667970}

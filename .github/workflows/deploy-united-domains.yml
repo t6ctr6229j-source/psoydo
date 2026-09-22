@@ -1,0 +1,34 @@
+name: Deploy United Domains
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: united-domains-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate site and build committed release
+        run: |
+          python scripts/qa_site.py
+          node --check app.js
+          python scripts/build_release.py
+      - name: Install SFTP client
+        run: python -m pip install paramiko==5.0.0
+      - name: Verify deployment safeguards
+        run: python scripts/test_deploy_sftp.py
+      - name: Upload verified release and retain previous version
+        env:
+          UD_SFTP_HOST: ${{ secrets.UD_SFTP_HOST }}
+          UD_SFTP_USER: ${{ secrets.UD_SFTP_USER }}
+          UD_SFTP_PASSWORD: ${{ secrets.UD_SFTP_PASSWORD }}
+          UD_SFTP_FINGERPRINT: ${{ secrets.UD_SFTP_FINGERPRINT }}
+        run: python scripts/deploy_sftp.py

@@ -678,7 +678,7 @@
   }catch(error){}
   // Prior Ads-only consent does not authorize newly introduced Analytics.
   if(stored)loadMeasurement(stored);
-  else window.setTimeout(showConsent,900);
+  else showConsent();
 
   var yes=document.getElementById('consent-accept');
   var no=document.getElementById('consent-decline');

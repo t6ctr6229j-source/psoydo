@@ -31,3 +31,31 @@ https://www.united-domains.de/help/faq-article/wie-lade-ich-meine-website-mit-fi
 8. Record release commit, date, target directory, checks and rollback location. For rollback, restore the saved directory or switch the domain back to it; verify again.
 
 No .htaccess or hosting-specific configuration is bundled until the actual hosting product is verified. This package is prepared for upload, not evidence of a production launch.
+
+## Manueller GitHub-SFTP-Upload (2026-09-22)
+
+Workflow: **Deploy United Domains**, ausschließlich manuell auf `main`.
+Webspace S benötigt hierfür nur SFTP, keinen SSH-Shell-Zugang.
+
+Repository-Secrets: `UD_SFTP_HOST`, `UD_SFTP_USER`, `UD_SFTP_PASSWORD`
+und zusätzlich **`UD_SFTP_FINGERPRINT`**. Letzteres ist der SHA256-Fingerprint
+(`SHA256:…`) des vom Server angebotenen SSH-Hostschlüssels. Den Wert über
+United Domains bestätigen lassen; ein unbestätigtes `ssh-keyscan` allein
+belegt nicht die Echtheit. Bei fehlendem/falschem Fingerprint wird vor der
+Passwortübertragung abgebrochen.
+
+Unter Actions → Deploy United Domains → Run workflow → main starten.
+Der Workflow prüft und lädt das gesamte Paket in einen neuen Nachbarordner,
+liest die Dateien zum Prüfsummenvergleich zurück und benennt ihn danach in
+`psoydo` um. Ein vorhandenes leeres `psoydo` ist erlaubt; ein befülltes muss
+von diesem Workflow stammen. Andere Websiteverzeichnisse werden nicht geändert.
+Vorherige Versionen bleiben als `psoydo-backup-RUN-ATTEMPT` erhalten.
+Bei gescheitertem Aktivierungs-Rename wird die vorherige Version zurückbenannt.
+Zwischen den beiden Renames kann eine kurze Unterbrechung entstehen.
+Abgebrochene Uploads und Backups werden nicht automatisch gelöscht.
+
+Im United-Domains-Portfolio muss **psoydo.com mit dem Verzeichnis psoydo**
+verknüpft und HTTPS aktiviert sein. Erfolgreicher SFTP-Upload beweist diese
+Domain-/TLS-Konfiguration nicht. Anschließend öffentliche Seiten, Formular,
+HTTPS, Weiterleitungen und echte 404-Antwort prüfen. Der Workflow ändert
+weder DNS noch Zertifikate oder E-Mail-Einstellungen.

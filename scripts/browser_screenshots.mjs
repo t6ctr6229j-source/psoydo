@@ -245,6 +245,7 @@ for (const [name, path, viewport] of captures) {
   });
   const page = await context.newPage();
   await page.goto(base + '/de/produkt.html?qa=lightbox', { waitUntil: 'networkidle' });
+  await page.locator('#consent-decline').click();
 
   const trigger = page.locator('[data-lightbox]').first();
   await trigger.scrollIntoViewIfNeeded();

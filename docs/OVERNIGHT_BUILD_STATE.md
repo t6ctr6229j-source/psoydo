@@ -191,3 +191,8 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - Withdrawal disables the runtime and reloads with saved choices. Mock Chromium tests cover consent lifecycle and registration events on mobile/desktop; no real measurements or inquiries sent.
 - Account-side retention, tag destinations, enhanced measurement and live receipt remain open in MEASUREMENT.md.
 - SFTP deployment workflow remains the next hosting task; user reports the three UD_SFTP secrets have been saved per repository. No password read or production upload performed.
+
+## Deployment preparation — 2026-09-22
+- User authorized go-live. PR22 CI revealed delayed consent stealing focus from the product lightbox; consent now opens immediately and the lightbox test dismisses it explicitly.
+- Added manual main-only United Domains SFTP workflow: pinned host fingerprint, checksum read-back, isolated staging, retained previous release and activation rollback.
+- Remaining external requirements: verified UD_SFTP_FINGERPRINT secret, domain psoydo.com mapped to psoydo directory, HTTPS and public smoke test. No production upload claimed.

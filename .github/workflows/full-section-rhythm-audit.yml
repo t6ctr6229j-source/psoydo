@@ -25,6 +25,7 @@ jobs:
           CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           CHROME="$CHROME" node - <<'NODE'
           const { chromium } = require('playwright');
+          (async () => {
           const browser = await chromium.launch({
             executablePath: process.env.CHROME,
             headless: true,
@@ -129,6 +130,7 @@ jobs:
             }
           }
           await browser.close();
+          })().catch(error => { console.error(error); process.exit(1); });
           NODE
       - name: Stop local site
         if: always()

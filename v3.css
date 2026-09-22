@@ -4278,3 +4278,17 @@ body.lightbox-open{overflow:hidden}
   .ai-quiz-feedback{padding:22px 20px}
   .ai-quiz-note{padding:16px 20px 20px}
 }
+
+
+/* V19 — section rhythm polish after full desktop/mobile audit */
+.closed-loop{
+  background:#e8ebe4;
+}
+.architecture-map-section{
+  background:#0b1c17;
+}
+.sub-cta.sub-cta-paper{
+  background:#f3f3ed;
+  color:var(--v3-ink);
+  border-top:1px solid rgba(7,16,13,.08);
+}

@@ -4417,3 +4417,11 @@ body.lightbox-open{overflow:hidden}
   /* Keep the mint brand disc clear of white hero text. */
   .sub-hero:after{width:170px;height:170px;right:-65px;top:-85px}
 }
+
+/* Registration recovery and provider information. */
+.registration-help{font-size:12px;line-height:1.6;color:#52615e}
+.registration-help a,.form-noscript a{text-decoration:underline;text-underline-offset:3px}
+.registration-entry .registration-help{margin:16px 0}
+
+.form-card #tf-container.registration-error{grid-template-rows:auto auto auto;align-content:center;gap:16px}
+.registration-error .registration-open{align-self:start;margin-top:0}

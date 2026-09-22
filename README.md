@@ -17,12 +17,14 @@ The production website lives at the repository root. There is no separate `previ
 
 Repository: `t6ctr6229j-source/psoydo_website` (renamed from `psoydo`).
 
-GitHub Pages deploys from `redesign/register-landingpage`. As verified on 2026-09-22, that branch and `main` both point to `425c393` (SEO pass, PR #14).
+GitHub Pages deploys from `redesign/register-landingpage`. As verified on 2026-09-22, that branch and `main` both point to `6d8f162` (PR #18, coral removed).
 
 - GitHub Pages: https://t6ctr6229j-source.github.io/psoydo_website/de/
 - Planned canonical production URL: https://psoydo.com/de/
 
 Canonical, sitemap and social URLs intentionally use `psoydo.com`, not the repository name. Domain publication and Search Console verification remain separate release tasks; see `docs/SEO_RELEASE_CHECKLIST.md`.
+
+See `docs/GO_LIVE_READINESS.md` for launch blockers and acceptance steps.
 
 ## Quality controls
 

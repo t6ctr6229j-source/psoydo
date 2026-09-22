@@ -13,7 +13,7 @@
     var siteRoot = location.origin + (project ? '/' + project + '/' : '/');
     // Create URLs before requesting assets; speculative loading must not use
     // the missing page's directory.
-    ['styles.css?v=20260922-colors3', 'v3.css?v=20260922-colors3', 'favicon.svg'].forEach(function (asset) {
+    ['styles.css?v=20260922-release1', 'v3.css?v=20260922-release1', 'favicon.svg'].forEach(function (asset) {
       var link = document.createElement('link');
       link.rel = asset.split('?')[0].endsWith('.css') ? 'stylesheet' : 'icon';
       link.href = siteRoot + asset;
@@ -28,7 +28,7 @@
   </script>
   <noscript>
     <link rel="stylesheet" href="https://psoydo.com/styles.css">
-    <link rel="stylesheet" href="https://psoydo.com/v3.css?v=20260922-colors3">
+    <link rel="stylesheet" href="https://psoydo.com/v3.css?v=20260922-release1">
   </noscript>
   <style>
     body{background:#071d22;color:#fff}

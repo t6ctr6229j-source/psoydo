@@ -160,3 +160,10 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - User supersedes earlier coral palette decisions: remove every coral brand accent.
 - Hero highlights and dark-section labels now use mint. Product label and divider return to the existing neutral styles. Removed coral tokens/classes and refreshed stylesheet cache versions.
 - Petrol, mint and warm off-white remain the approved palette.
+
+
+## 2026-09-22 — Registration release readiness
+- Hardened registration loading with a readiness deadline, retry, stale-callback guard and email fallback. Added a Typeform/privacy notice and no-JavaScript email link.
+- Added CI regression scenarios for deferred loading, failure/retry, readiness and stalled widgets at desktop/mobile sizes. Local tests pass; third-party widget is mocked, no external lead submitted.
+- See GO_LIVE_READINESS.md for current domain/hosting, registration delivery, commercial flow and measurement decisions. In particular, united-domains in privacy copy is not reconciled with current GitHub Pages publication.
+- No DNS, legal facts, hosting configuration or external form settings changed. Merge awaits explicit approval.

@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
 import { checkErrorPage } from './check_error_page.mjs';
+import { checkRegistration } from './check_registration.mjs';
 
 const base = process.env.BASE_URL || 'http://127.0.0.1:8080';
 const executablePath = process.env.CHROME;
@@ -417,4 +418,5 @@ for (const [name, path, viewport] of captures) {
 }
 
 await checkErrorPage(browser);
+await checkRegistration(browser);
 await browser.close();

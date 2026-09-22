@@ -311,9 +311,12 @@ def main() -> int:
     provider_logo = ROOT / "assets" / "wescaleIT_Logo_RGB_RZ.png"
     provider_logo_negative = ROOT / "assets" / "wescaleIT_Logo_RGB_negativ_RZ.png"
     og_asset = ROOT / "og-image.svg"
+    og_png_asset = ROOT / "og-image.png"
     page_404 = ROOT / "404.html"
     if not og_asset.exists():
-        fail(errors, "missing social preview asset: og-image.svg")
+        fail(errors, "missing social preview source asset: og-image.svg")
+    if not og_png_asset.exists() or og_png_asset.stat().st_size < 50000:
+        fail(errors, "missing or invalid 1200x630 social preview asset: og-image.png")
     if not page_404.exists():
         fail(errors, "missing branded 404.html")
     else:
@@ -372,21 +375,31 @@ def main() -> int:
                 fail(errors, f"app.js: core content must remain static, found {dynamic_builder}")
 
     sitemap = ROOT / "sitemap.xml"
+    expected_sitemap_urls = [
+        "https://psoydo.com/de/",
+        "https://psoydo.com/de/produkt.html",
+        "https://psoydo.com/de/technologie.html",
+        "https://psoydo.com/de/architektur.html",
+        "https://psoydo.com/de/anwendungsfaelle.html",
+        "https://psoydo.com/de/sicherheit.html",
+        "https://psoydo.com/de/preise.html",
+    ]
     if sitemap.exists():
         sitemap_text = sitemap.read_text(encoding="utf-8")
-        for url in [
-            "https://psoydo.com/de/",
-            "https://psoydo.com/de/produkt.html",
-            "https://psoydo.com/de/technologie.html",
-            "https://psoydo.com/de/architektur.html",
-            "https://psoydo.com/de/anwendungsfaelle.html",
-            "https://psoydo.com/de/sicherheit.html",
-            "https://psoydo.com/de/preise.html",
-        ]:
-            if url not in sitemap_text:
-                fail(errors, f"sitemap.xml: missing {url}")
+        actual_urls = re.findall(r"<loc>(.*?)</loc>", sitemap_text)
+        if actual_urls != expected_sitemap_urls:
+            fail(errors, f"sitemap.xml: expected only indexable content URLs in canonical order, got {actual_urls}")
+        if "impressum" in sitemap_text or "datenschutz" in sitemap_text:
+            fail(errors, "sitemap.xml: noindex legal pages must not be listed")
+        for date in re.findall(r"<lastmod>(.*?)</lastmod>", sitemap_text):
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
+                fail(errors, f"sitemap.xml: invalid lastmod date {date}")
     else:
         fail(errors, "missing sitemap.xml")
+
+    seo_plan = ROOT / "docs" / "SEO_CONTENT_PLAN.md"
+    if not seo_plan.exists():
+        fail(errors, "missing docs/SEO_CONTENT_PLAN.md")
 
     if errors:
         print("SITE QA FAILED")

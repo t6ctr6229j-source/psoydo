@@ -154,3 +154,9 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - Restored petrol home outcomes and warm off-white product/context and use-case closing sections.
 - Retained coral home headline and small labels/rules; primary actions remain mint.
 - Refreshed CSS cache versions. This supersedes the large coral surfaces in the previous color iteration.
+
+
+## 2026-09-22 — Remove coral completely
+- User supersedes earlier coral palette decisions: remove every coral brand accent.
+- Hero highlights and dark-section labels now use mint. Product label and divider return to the existing neutral styles. Removed coral tokens/classes and refreshed stylesheet cache versions.
+- Petrol, mint and warm off-white remain the approved palette.

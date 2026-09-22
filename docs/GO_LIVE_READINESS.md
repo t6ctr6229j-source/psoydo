@@ -1,10 +1,10 @@
 # Psoydo — Go-live readiness
 
-Reviewed 2026-09-22 against main `6d8f162` (PR #18). This is an evidence checklist, not a claim of production readiness.
+Updated 2026-09-22 after approved PR #20 merged as `d5219dd590a75219e5f63a89c12adf866b93c050`. This is an evidence checklist, not a claim of production readiness.
 
 ## Confirmed
 - Eighteen public pages, navigation, prices, product images, SEO metadata and sitemap exist.
-- PR #18 Website QA and GitHub Pages deployment passed.
+- PR #20 full Website QA passed (run 35753354275). The merged release passed Pages deployment (run 35759274316) and main/publishing-branch QA.
 - Pages currently publishes from `redesign/register-landingpage`; publishing main alone is insufficient.
 - Approved palette: petrol, mint, warm off-white. No coral.
 - Canonical and social URLs already target `https://psoydo.com/de/`.
@@ -21,7 +21,7 @@ Reviewed 2026-09-22 against main `6d8f162` (PR #18). This is an evidence checkli
 | Item | Evidence / missing information | Acceptance |
 | --- | --- | --- |
 | Final hosting | Flo confirmed United Domains hosting and psoydo.com. GitHub Pages remains the preview. | Deploy to the confirmed host; verify processing-contract and log-retention statements against the actual service. |
-| Domain / HTTPS | psoydo.com is the intended canonical domain. A public retrieval did not succeed in this environment; this does not prove a DNS or website outage. | Verify apex/www routing, certificate, HTTPS and all nine pages at the target host; follow SEO_RELEASE_CHECKLIST.md. |
+| Domain / HTTPS | psoydo.com is the intended canonical domain. A public retrieval did not succeed in this environment; this does not prove a DNS or website outage. | Verify apex/www routing, certificate, HTTPS and all eighteen pages at the target host; follow SEO_RELEASE_CHECKLIST.md. |
 | Registration delivery | Code references Typeform ID 01KVRJN19YZ8J86JFQYX9N09QG. Live form configuration is not verified. | Verify live publication, required fields, success screen and recipient. With approval, submit one marked test and confirm receipt and response process. |
 | Commercial next step | Flo confirmed registration as an inquiry; offer, invoice and activation are arranged personally. Stripe is deferred. | Verify that the live form and response process match this inquiry flow. |
 | Ads / consent | Ads ID AW-18355213487 exists; custom submit event is not evidence of a configured Google Ads conversion. | Confirm whether Ads is needed at launch. Test deny/accept/revoke/reaccept and actual network behavior; verify conversion configuration before campaigns. |
@@ -36,3 +36,7 @@ Reviewed 2026-09-22 against main `6d8f162` (PR #18). This is an evidence checkli
 6. Record the deployed commit and test date here. Roll back by reverting the release commit through the same publishing process if necessary.
 
 Do not change DNS, claim contracts exist, submit external test leads or enable ad campaigns based on assumptions.
+
+## United Domains upload preparation
+- scripts/build_release.py produces a ZIP of public runtime files and a separate checksum manifest. It checks local HTML/CSS dependencies and archive integrity.
+- See UNITED_DOMAINS_DEPLOYMENT.md. The actual hosting product, target directory and SFTP setup still need account-side confirmation. No production upload or DNS changes have occurred.

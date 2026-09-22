@@ -14,11 +14,21 @@ const captures = [
   ['home-desktop', '/de/', { width: 1440, height: 900 }],
   ['home-mobile', '/de/', { width: 390, height: 844 }],
   ['product-desktop', '/de/produkt.html', { width: 1440, height: 900 }],
+  ['product-mobile', '/de/produkt.html', { width: 390, height: 844 }],
   ['technology-desktop', '/de/technologie.html', { width: 1440, height: 900 }],
+  ['technology-mobile', '/de/technologie.html', { width: 390, height: 844 }],
   ['architecture-desktop', '/de/architektur.html', { width: 1440, height: 900 }],
+  ['architecture-mobile', '/de/architektur.html', { width: 390, height: 844 }],
   ['usecases-desktop', '/de/anwendungsfaelle.html', { width: 1440, height: 900 }],
+  ['usecases-mobile', '/de/anwendungsfaelle.html', { width: 390, height: 844 }],
   ['security-desktop', '/de/sicherheit.html', { width: 1440, height: 900 }],
-  ['pricing-desktop', '/de/preise.html', { width: 1440, height: 900 }]
+  ['security-mobile', '/de/sicherheit.html', { width: 390, height: 844 }],
+  ['pricing-desktop', '/de/preise.html', { width: 1440, height: 900 }],
+  ['pricing-mobile', '/de/preise.html', { width: 390, height: 844 }],
+  ['imprint-desktop', '/de/impressum.html', { width: 1440, height: 900 }],
+  ['imprint-mobile', '/de/impressum.html', { width: 390, height: 844 }],
+  ['privacy-desktop', '/de/datenschutz.html', { width: 1440, height: 900 }],
+  ['privacy-mobile', '/de/datenschutz.html', { width: 390, height: 844 }]
 ];
 
 for (const [name, path, viewport] of captures) {

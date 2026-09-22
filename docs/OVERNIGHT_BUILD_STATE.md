@@ -1,4 +1,38 @@
-# Website Build State
+# Website Build State — 2026-09-22
+
+QUALITY_GATE: OPEN (production readiness)
+AUTOMATION: DISABLED
+REPOSITORY: t6ctr6229j-source/psoydo_website
+BASELINE: main @ 425c3934c8e634f6e8669060e97bd9dbc5fd67e8
+PAGES_SOURCE: redesign/register-landingpage @ same commit
+CURRENT_WORK: fix/renamed-repo-paths
+
+## Current verified status
+
+This section supersedes the historical snapshot below. PR #2 is closed and unmerged; its old branch and conflict notes are no longer the current work plan. Current changes are based on main and proposed in a fresh PR, without overwriting that historical branch.
+
+- PR #10 merged: three real product screenshots, cropped top bars, homepage gallery and lightboxes.
+- PR #11 merged: public-AI decision quiz with five scenarios and qualified trade-secret wording.
+- PR #12 merged: navigation is Produkt / Use Cases / Sicherheit / Preise; shared CTA is “Pilot starten”, pointing to registration.
+- PR #13 merged: section rhythm, spacing and desktop/mobile layout regression checks across all nine pages.
+- PR #14 merged: on-page SEO, visible FAQ, JSON-LD, PNG social image, intrinsic image sizes, seven indexable sitemap URLs, legal-page noindex, SEO content plan and release checklist.
+- GitHub Actions confirms successful Pages deployment of 425c393 after the rename (run 35709304078, 2026-09-22 09:15 UTC).
+- The SEO PR's Website QA run 35704309312 succeeded. Historical Lighthouse numbers below are not a fresh measurement.
+
+## Current bounded repair
+
+The custom 404 previously resolved styles/images relative to the missing URL and linked to /de/, outside a GitHub project site. It now resolves assets and home links from the GitHub project prefix or custom-domain root and uses the official optimized logo. A browser regression exercises nested missing URLs under both hosting layouts at desktop/mobile widths, including keyboard recovery and the home link.
+
+## Remaining release work
+
+- Verify the actual psoydo.com deployment, HTTPS, canonical URLs, robots.txt, sitemap and social image before switching the domain.
+- Reconcile production hosting and data-processing details with the privacy page and final product documentation.
+- Verify the domain in Search Console and submit the sitemap after publication.
+- Prioritize additional landing pages using docs/SEO_CONTENT_PLAN.md and actual search data; do not create speculative product claims.
+- Merge and deployment still require explicit approval under the repository brief. No DNS, credentials or Search Console settings changed in this iteration.
+
+## Historical snapshot (superseded where noted above)
+
 
 QUALITY_GATE: OPEN
 AUTOMATION: DISABLED

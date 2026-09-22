@@ -6,9 +6,30 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Seite nicht gefunden — Psoydo</title>
   <meta name="theme-color" content="#06100d">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="v3.css">
+  <script>
+    // A custom 404 keeps the requested URL, including nested directories.
+    var project = location.hostname.endsWith('.github.io')
+      ? location.pathname.split('/').filter(Boolean)[0] : '';
+    var siteRoot = location.origin + (project ? '/' + project + '/' : '/');
+    // Create URLs before requesting assets; speculative loading must not use
+    // the missing page's directory.
+    ['styles.css', 'v3.css', 'favicon.svg'].forEach(function (asset) {
+      var link = document.createElement('link');
+      link.rel = asset.endsWith('.css') ? 'stylesheet' : 'icon';
+      link.href = siteRoot + asset;
+      document.head.appendChild(link);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('[data-home]').forEach(function (link) {
+        link.href = siteRoot + 'de/';
+      });
+      document.querySelector('[data-logo]').src = siteRoot + 'assets/web/psoydo-negative.webp';
+    });
+  </script>
+  <noscript>
+    <link rel="stylesheet" href="https://psoydo.com/styles.css">
+    <link rel="stylesheet" href="https://psoydo.com/v3.css">
+  </noscript>
   <style>
     body{background:#06100d;color:#fff}
     .error-shell{min-height:100svh;display:grid;place-items:center;padding:40px}
@@ -24,14 +45,14 @@
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
-  <a class="error-logo" href="/de/" aria-label="Psoydo Startseite"><img src="assets/psoydo-logo.svg" alt="Psoydo AI"></a>
-  <main id="main" class="error-shell">
+  <a class="error-logo" data-home href="https://psoydo.com/de/" aria-label="Psoydo Startseite"><img data-logo width="700" height="180" alt="Psoydo AI"><noscript>Psoydo AI</noscript></a>
+  <main id="main" class="error-shell" tabindex="-1">
     <section class="error-card">
       <span class="error-code">ERROR / 404</span>
       <div>
         <h1>Hier ist<br><span>nichts zu schützen.</span></h1>
         <p>Die gesuchte Seite existiert nicht oder wurde verschoben. Zurück zur Psoydo Startseite und von dort weiter.</p>
-        <a class="button button-primary" href="/de/">Zur Startseite <span>↗</span></a>
+        <a class="button button-primary" data-home href="https://psoydo.com/de/">Zur Startseite <span>↗</span></a>
       </div>
     </section>
   </main>

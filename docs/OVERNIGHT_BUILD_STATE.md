@@ -147,3 +147,10 @@ The gate stays OPEN. Code/content quality, static QA, automated browser renderin
 - Added stylesheet cache versions, including query-safe stylesheet detection on the 404.
 - Static QA and JavaScript syntax pass. Local intercepted-file Chromium review covers 1440px and 390px; targeted grid/heading wrapping addresses long German text overflow. GitHub CI provides the full Lighthouse and browser gate.
 - This color iteration awaits explicit merge approval under the repository rule; no production publication yet.
+
+
+## 2026-09-22 — Coral reduced to accents
+- User correction: coral must not be used for large backgrounds.
+- Restored petrol home outcomes and warm off-white product/context and use-case closing sections.
+- Retained coral home headline and small labels/rules; primary actions remain mint.
+- Refreshed CSS cache versions. This supersedes the large coral surfaces in the previous color iteration.

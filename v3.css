@@ -4406,25 +4406,12 @@ body.lightbox-open{overflow:hidden}
 
 /* Petrol / mint / coral: brand accents stay separate from data and quiz states. */
 .home2-hero h1 span{color:var(--v3-coral)}
-.home2-outcomes,.brand-coral{
-  background:var(--v3-coral);
-  color:var(--v3-ink);
-}
-.home2-outcomes .v3-index,
-.home2-outcomes h2 span,
-.home2-outcomes-head p,
-.home2-outcome-list small,
-.home2-outcome-list span,
-.sub-section.brand-coral .v3-index,
-.sub-section.brand-coral h2 span,
-.brand-coral .sub-copy,
-.sub-section.brand-coral .fact-strip span,
-.brand-coral.sub-cta p{color:var(--v3-coral-text)}
-.home2-outcome-list,.home2-outcome-list a{border-color:rgba(7,29,34,.24)}
-.home2-outcome-list a:hover{background:rgba(7,29,34,.04)}
-.brand-coral .fact-strip,.brand-coral .fact-strip div{border-color:rgba(7,29,34,.24)}
-.brand-coral .text-link:focus-visible,
-.home2-outcomes a:focus-visible{outline-color:var(--v3-ink)}
+/* Coral is a highlight, never a section background. */
+.brand-coral{background:var(--v3-paper);color:var(--v3-ink)}
+.home2-outcomes .v3-index,.home2-outcome-list small{color:var(--v3-coral)}
+.sub-section.brand-coral .v3-index{color:#a33d30}
+.brand-coral .fact-strip{border-top:2px solid var(--v3-coral)}
+.home2-outcomes a:focus-visible{outline-color:var(--v3-green)}
 /* Conversion remains mint even when the surrounding section is quiet. */
 .sub-cta .button{background:var(--v3-green);color:var(--v3-ink)}
 .sub-cta:not(.brand-coral):not(.sub-cta-paper){background:var(--v3-paper)}

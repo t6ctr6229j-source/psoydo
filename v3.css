@@ -5,8 +5,6 @@
   --v3-paper:#f5f2eb;
   --v3-paper2:#eae5dc;
   --v3-green:#5df5b8;
-  --v3-coral:#ff806c;
-  --v3-coral-text:#392a28;
   --v3-green2:#1ed99a;
   --v3-text:#0b2228;
   --v3-muted:#73817a;
@@ -4404,17 +4402,12 @@ body.lightbox-open{overflow:hidden}
   .home2-faq-list details p{font-size:14px}
 }
 
-/* Petrol / mint / coral: brand accents stay separate from data and quiz states. */
-.home2-hero h1 span{color:var(--v3-coral)}
-/* Coral is a highlight, never a section background. */
-.brand-coral{background:var(--v3-paper);color:var(--v3-ink)}
-.home2-outcomes .v3-index,.home2-outcome-list small{color:var(--v3-coral)}
-.sub-section.brand-coral .v3-index{color:#a33d30}
-.brand-coral .fact-strip{border-top:2px solid var(--v3-coral)}
+/* Petrol and mint brand accents; retain semantic data and quiz colors. */
+.home2-hero h1 span{color:var(--v3-green)}
+.home2-outcomes .v3-index,.home2-outcome-list small{color:var(--v3-green)}
 .home2-outcomes a:focus-visible{outline-color:var(--v3-green)}
-/* Conversion remains mint even when the surrounding section is quiet. */
 .sub-cta .button{background:var(--v3-green);color:var(--v3-ink)}
-.sub-cta:not(.brand-coral):not(.sub-cta-paper){background:var(--v3-paper)}
+.sub-cta:not(.sub-cta-paper){background:var(--v3-paper)}
 /* Keep long German headings inside their grid tracks on narrow screens. */
 .sub-hero-grid>*,.case-study-grid>*,.case-result>*,.control-stack-grid>*,
 .legal-hero-grid>*,.legal-layout>*,.sub-cta-grid>*{min-width:0}

@@ -1,4 +1,4 @@
-# Psoydo
+# Psoydo Website
 
 Website repository for psoydo.com.
 
@@ -15,7 +15,14 @@ The production website lives at the repository root. There is no separate `previ
 - `/de/preise.html` — pricing and 30-day evaluation
 - `/de/impressum.html` / `/de/datenschutz.html` — legal pages
 
-GitHub Pages deploys from `redesign/register-landingpage`. The same production tree is intended to be mirrored to `main`.
+Repository: `t6ctr6229j-source/psoydo_website` (renamed from `psoydo`).
+
+GitHub Pages deploys from `redesign/register-landingpage`. As verified on 2026-09-22, that branch and `main` both point to `425c393` (SEO pass, PR #14).
+
+- GitHub Pages: https://t6ctr6229j-source.github.io/psoydo_website/de/
+- Planned canonical production URL: https://psoydo.com/de/
+
+Canonical, sitemap and social URLs intentionally use `psoydo.com`, not the repository name. Domain publication and Search Console verification remain separate release tasks; see `docs/SEO_RELEASE_CHECKLIST.md`.
 
 ## Quality controls
 

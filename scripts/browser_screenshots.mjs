@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import { checkErrorPage } from './check_error_page.mjs';
 
 const base = process.env.BASE_URL || 'http://127.0.0.1:8080';
 const executablePath = process.env.CHROME;
@@ -415,4 +416,5 @@ for (const [name, path, viewport] of captures) {
   await context.close();
 }
 
+await checkErrorPage(browser);
 await browser.close();

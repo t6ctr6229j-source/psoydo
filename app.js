@@ -401,86 +401,10 @@
     renderAiQuizQuestion();
   }
 
-  var tfOpen=document.getElementById('tf-open');
-  var tfContainer=document.getElementById('tf-container');
-
-  var tfLoadId=0;
-  var tfLoadTimer=null;
-
-  function registrationError(loadId){
-    if(loadId!==tfLoadId)return;
-    window.clearTimeout(tfLoadTimer);
-    tfLoadId+=1; // Ignore callbacks from timed-out attempts.
-    var failedScript=document.getElementById('typeform-embed-script');
-    if(failedScript)failedScript.remove();
-    tfContainer.classList.remove('typeform-active');
-    tfContainer.classList.add('registration-entry','registration-error');
-    tfContainer.removeAttribute('aria-busy');
-    tfContainer.innerHTML='<div class="registration-entry-intro"><h3>Das Formular lädt gerade nicht.</h3><p role="status">Versuche es noch einmal oder schreib uns deinen Use Case direkt per E-Mail.</p></div><button class="button button-primary registration-open" id="tf-retry" type="button">Erneut versuchen <span>↗</span></button><p class="registration-help"><a href="mailto:info@wescaleit.com?subject=Psoydo%20Pilotanfrage">Pilot per E-Mail anfragen ↗</a></p>';
-    var retry=document.getElementById('tf-retry');
-    retry.addEventListener('click',loadTypeform);
-    retry.focus({preventScroll:true});
-  }
-
-  function renderTypeform(loadId){
-    if(loadId!==tfLoadId)return;
-    if(!window.tf||typeof window.tf.createWidget!=='function'){
-      registrationError(loadId);
-      return;
-    }
-    try{
-      tfContainer.classList.remove('registration-entry','registration-error');
-      tfContainer.classList.add('typeform-active');
-      tfContainer.innerHTML='';
-      var submitted=false;
-      window.tf.createWidget('01KVRJN19YZ8J86JFQYX9N09QG',{
-        container:tfContainer,
-        hideHeaders:true,
-        hideFooter:true,
-        inlineOnMobile:true,
-        onReady:function(){
-          if(loadId!==tfLoadId)return;
-          window.clearTimeout(tfLoadTimer);
-          tfContainer.removeAttribute('aria-busy');
-          if(!tfContainer.dataset.startMeasured&&window.__psoydoTrack){
-            window.__psoydoTrack('psoydo_registration_start');
-            tfContainer.dataset.startMeasured='true';
-          }
-        },
-        onSubmit:function(){
-          if(loadId!==tfLoadId||submitted)return;
-          submitted=true;
-          if(window.__psoydoTrack)window.__psoydoTrack('psoydo_registration_submit');
-        }
-      });
-    }catch(error){registrationError(loadId);}
-  }
-
-  function loadTypeform(){
-    if(!tfContainer)return;
-    var loadId=++tfLoadId;
-    window.clearTimeout(tfLoadTimer);
-    tfContainer.classList.remove('registration-entry','registration-error');
-    tfContainer.setAttribute('aria-busy','true');
-    tfContainer.innerHTML='<div class="form-loading" role="status">Registrierung wird geladen …</div>';
-    // Cover a blocked script as well as a widget that never becomes ready.
-    tfLoadTimer=window.setTimeout(function(){registrationError(loadId);},15000);
-    if(window.tf&&typeof window.tf.createWidget==='function'){
-      renderTypeform(loadId);
-      return;
-    }
-    var existing=document.getElementById('typeform-embed-script');
-    if(existing)existing.remove();
-    var script=document.createElement('script');
-    script.id='typeform-embed-script';
-    script.src='https://embed.typeform.com/next/embed.js';
-    script.async=true;
-    script.onload=function(){renderTypeform(loadId);};
-    script.onerror=function(){registrationError(loadId);};
-    document.head.appendChild(script);
-  }
-
-  if(tfOpen)tfOpen.addEventListener('click',loadTypeform);
+  var pilotEmail=document.getElementById('pilot-email');
+  if(pilotEmail)pilotEmail.addEventListener('click',function(){
+    if(window.__psoydoTrack)window.__psoydoTrack('psoydo_pilot_email_click');
+  });
 
   // Product screenshot lightbox: enlarge real UI screenshots in-place without navigation.
   var lightboxTriggers=Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
@@ -610,9 +534,6 @@
     if(!production||!configured||typeof window.gtag!=='function')return;
     if(current.analytics)window.gtag('event',name,{
       send_to:GA,event_category:'registration',event_label:'pilot_inquiry'
-    });
-    if(current.ads&&name==='psoydo_registration_submit')window.gtag('event',name,{
-      send_to:ADS,event_category:'registration',event_label:'30_day_test'
     });
   };
 

@@ -208,7 +208,7 @@ body{background:var(--v3-paper)}
 .v3-register h2 span{color:#82908a}
 .v3-register-copy>p{font-size:16px;line-height:1.7;color:#5e6b65;max-width:580px}
 .v3-register .form-card{min-height:610px}
-.v3-register .form-card #tf-container.registration-entry{height:550px}
+.v3-register .form-card #pilot-contact.registration-entry{height:550px}
 
 /* subpages */
 .sub-hero{padding:170px 0 110px;background:var(--v3-ink);color:#fff;position:relative;overflow:hidden}
@@ -4423,8 +4423,7 @@ body.lightbox-open{overflow:hidden}
 .registration-help a,.form-noscript a{text-decoration:underline;text-underline-offset:3px}
 .registration-entry .registration-help{margin:16px 0}
 
-.form-card #tf-container.registration-error{grid-template-rows:auto auto auto;align-content:center;gap:16px}
-.registration-error .registration-open{align-self:start;margin-top:0}
 
 /* Editorial entry follows the warm pilot section. */
 .sub-cta.home-insights-entry{background:#e1e5dc}
+

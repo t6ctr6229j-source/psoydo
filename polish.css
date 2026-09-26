@@ -126,8 +126,8 @@
 .reveal,.reveal.visible{opacity:1!important;transform:none!important;transition:none!important}
 .delay-1,.delay-2{transition-delay:0!important}
 
-/* Registration stays first-party until the visitor explicitly opens Typeform */
-.form-card #tf-container.registration-entry{
+/* Pilot contact opens the visitor's email application. */
+.form-card #pilot-contact.registration-entry{
   height:590px;
   padding:42px;
   background:
@@ -144,7 +144,6 @@
 .registration-entry-steps span{display:grid;grid-template-columns:38px 1fr;align-items:center;padding:15px 0;border-bottom:1px solid var(--hairline);font-size:12px}
 .registration-entry-steps b{font:500 9px var(--mono);color:#087b57}
 .registration-open{justify-self:start;margin-top:26px;border:0;cursor:pointer}
-.form-card #tf-container.typeform-active{height:590px}
 .form-noscript{padding:24px;font-size:12px;line-height:1.6;color:#68746e}
 
 /* Use more of very wide desktops without changing the normal 1440px composition */
@@ -156,8 +155,9 @@
 }
 
 @media(max-width:620px){
-  .form-card #tf-container.registration-entry{height:auto;min-height:540px;padding:28px 22px}
+  .form-card #pilot-contact.registration-entry{height:auto;min-height:540px;padding:28px 22px}
   .registration-entry-intro h3{font-size:36px}
   .registration-entry-steps{margin-top:28px}
   .registration-open{width:100%}
 }
+

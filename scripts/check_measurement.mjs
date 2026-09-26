@@ -4,7 +4,7 @@ const root=new URL('../',import.meta.url);
 const GA='G-EYFT82SFN7';
 const KEY='psoydo-consent-v3';
 
-// Mock Google and Typeform: validate consent/routing without sending measurements or leads.
+// Mock Google: validate consent/routing without sending measurements or opening a mail client.
 export async function checkMeasurement(browser){
  for(const width of [390,1440]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
@@ -14,7 +14,6 @@ export async function checkMeasurement(browser){
    if(u.hostname==='www.googletagmanager.com'){
     google++;return route.fulfill({contentType:'text/javascript',body:'window.mockGoogleLoaded=true;'});
    }
-   if(u.hostname==='embed.typeform.com')return route.fulfill({contentType:'text/javascript',body:'window.tf={createWidget:function(id,o){window.widget=o;o.container.innerHTML="Testformular";o.onReady();}};'});
    if(!['psoydo.com','preview.test'].includes(u.hostname))return route.abort();
    const path=u.pathname.endsWith('/')?u.pathname+'index.html':u.pathname;
    return route.fulfill({path:fileURLToPath(new URL(path.slice(1),root))});
@@ -27,9 +26,8 @@ export async function checkMeasurement(browser){
   assert.equal(await page.locator('#consent-analytics').isChecked(),false);
   assert.equal(await page.locator('#consent-ads').isChecked(),false);
   await page.locator('#consent-decline').click();
-  await page.locator('#tf-open').click();
-  await page.waitForFunction(()=>!!window.widget);
-  await page.evaluate(()=>window.widget.onSubmit());
+  await page.locator('#pilot-email').evaluate(el=>{el.addEventListener('click',event=>event.preventDefault(),{once:true});el.click();});
+  assert.equal((await commands()).filter(x=>x[0]==='event').length,0);
   assert.equal(google,0,'Declined consent must not load Google or send events');
   await page.reload();
   assert.equal(await page.locator('#consent').getAttribute('aria-hidden'),'true');
@@ -44,12 +42,10 @@ export async function checkMeasurement(browser){
   assert.equal(rows.find(x=>x[0]==='consent')[2].ad_storage,'denied');
   assert.equal(rows.find(x=>x[0]==='set')[1].page_location,'https://psoydo.com/de/');
   assert.ok(!JSON.stringify(rows).includes('do-not-send'));
-  await page.locator('#tf-open').click();
-  await page.waitForFunction(()=>!!window.widget);
-  await page.evaluate(()=>{window.widget.onReady();window.widget.onSubmit();window.widget.onSubmit();});
+  await page.locator('#pilot-email').evaluate(el=>{el.addEventListener('click',event=>event.preventDefault(),{once:true});el.click();});
   rows=await commands();
-  assert.equal(rows.filter(x=>x[0]==='event'&&x[1]==='psoydo_registration_start').length,1);
-  assert.equal(rows.filter(x=>x[0]==='event'&&x[1]==='psoydo_registration_submit').length,1);
+  assert.equal(rows.filter(x=>x[0]==='event'&&x[1]==='psoydo_pilot_email_click').length,1);
+  assert.equal(rows.filter(x=>x[0]==='event'&&x[1]==='psoydo_registration_submit').length,0);
   assert.ok(rows.filter(x=>x[0]==='event').every(x=>x[2].send_to===GA));
   await context.addCookies([{name:'_ga',value:'test',domain:'psoydo.com',path:'/'}]);
   await page.locator('#consent-reopen').click();
@@ -91,3 +87,4 @@ export async function checkMeasurement(browser){
   await context.close();console.log('Measurement consent passed:',width);
  }
 }
+

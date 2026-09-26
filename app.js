@@ -401,86 +401,10 @@
     renderAiQuizQuestion();
   }
 
-  var tfOpen=document.getElementById('tf-open');
-  var tfContainer=document.getElementById('tf-container');
-
-  var tfLoadId=0;
-  var tfLoadTimer=null;
-
-  function registrationError(loadId){
-    if(loadId!==tfLoadId)return;
-    window.clearTimeout(tfLoadTimer);
-    tfLoadId+=1; // Ignore callbacks from timed-out attempts.
-    var failedScript=document.getElementById('typeform-embed-script');
-    if(failedScript)failedScript.remove();
-    tfContainer.classList.remove('typeform-active');
-    tfContainer.classList.add('registration-entry','registration-error');
-    tfContainer.removeAttribute('aria-busy');
-    tfContainer.innerHTML='<div class="registration-entry-intro"><h3>Das Formular lädt gerade nicht.</h3><p role="status">Versuche es noch einmal oder schreib uns deinen Use Case direkt per E-Mail.</p></div><button class="button button-primary registration-open" id="tf-retry" type="button">Erneut versuchen <span>↗</span></button><p class="registration-help"><a href="mailto:info@wescaleit.com?subject=Psoydo%20Pilotanfrage">Pilot per E-Mail anfragen ↗</a></p>';
-    var retry=document.getElementById('tf-retry');
-    retry.addEventListener('click',loadTypeform);
-    retry.focus({preventScroll:true});
-  }
-
-  function renderTypeform(loadId){
-    if(loadId!==tfLoadId)return;
-    if(!window.tf||typeof window.tf.createWidget!=='function'){
-      registrationError(loadId);
-      return;
-    }
-    try{
-      tfContainer.classList.remove('registration-entry','registration-error');
-      tfContainer.classList.add('typeform-active');
-      tfContainer.innerHTML='';
-      var submitted=false;
-      window.tf.createWidget('01KVRJN19YZ8J86JFQYX9N09QG',{
-        container:tfContainer,
-        hideHeaders:true,
-        hideFooter:true,
-        inlineOnMobile:true,
-        onReady:function(){
-          if(loadId!==tfLoadId)return;
-          window.clearTimeout(tfLoadTimer);
-          tfContainer.removeAttribute('aria-busy');
-          if(!tfContainer.dataset.startMeasured&&window.__psoydoTrack){
-            window.__psoydoTrack('psoydo_registration_start');
-            tfContainer.dataset.startMeasured='true';
-          }
-        },
-        onSubmit:function(){
-          if(loadId!==tfLoadId||submitted)return;
-          submitted=true;
-          if(window.__psoydoTrack)window.__psoydoTrack('psoydo_registration_submit');
-        }
-      });
-    }catch(error){registrationError(loadId);}
-  }
-
-  function loadTypeform(){
-    if(!tfContainer)return;
-    var loadId=++tfLoadId;
-    window.clearTimeout(tfLoadTimer);
-    tfContainer.classList.remove('registration-entry','registration-error');
-    tfContainer.setAttribute('aria-busy','true');
-    tfContainer.innerHTML='<div class="form-loading" role="status">Registrierung wird geladen …</div>';
-    // Cover a blocked script as well as a widget that never becomes ready.
-    tfLoadTimer=window.setTimeout(function(){registrationError(loadId);},15000);
-    if(window.tf&&typeof window.tf.createWidget==='function'){
-      renderTypeform(loadId);
-      return;
-    }
-    var existing=document.getElementById('typeform-embed-script');
-    if(existing)existing.remove();
-    var script=document.createElement('script');
-    script.id='typeform-embed-script';
-    script.src='https://embed.typeform.com/next/embed.js';
-    script.async=true;
-    script.onload=function(){renderTypeform(loadId);};
-    script.onerror=function(){registrationError(loadId);};
-    document.head.appendChild(script);
-  }
-
-  if(tfOpen)tfOpen.addEventListener('click',loadTypeform);
+  var pilotEmail=document.getElementById('pilot-email');
+  if(pilotEmail)pilotEmail.addEventListener('click',function(){
+    if(window.__psoydoTrack)window.__psoydoTrack('psoydo_pilot_email_click');
+  });
 
   // Product screenshot lightbox: enlarge real UI screenshots in-place without navigation.
   var lightboxTriggers=Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
@@ -567,6 +491,9 @@
   if(!box)return;
 
   var KEY='psoydo-consent-v3';
+  var CONSENT_VERSION=4;
+  var LIFETIME=180*24*60*60*1000;
+  var expiryTimer;
 
   var consentReturnFocus=null;
 
@@ -591,7 +518,7 @@
 
   var GA='G-EYFT82SFN7';
   var ADS='AW-18355213487';
-  var production=/^(www\.)?psoydo\.com$/.test(location.hostname);
+  var production=location.protocol==='https:'&&/^(www\.)?psoydo\.com$/.test(location.hostname);
   var current={analytics:false,ads:false};
   var configured=false;
   var analyticsOption=document.getElementById('consent-analytics');
@@ -603,17 +530,16 @@
   }
 
   window.__psoydoTrack=function(name){
+    if(current.expires<=Date.now()){stopMeasurement();return;}
     if(!production||!configured||typeof window.gtag!=='function')return;
     if(current.analytics)window.gtag('event',name,{
       send_to:GA,event_category:'registration',event_label:'pilot_inquiry'
-    });
-    if(current.ads&&name==='psoydo_registration_submit')window.gtag('event',name,{
-      send_to:ADS,event_category:'registration',event_label:'30_day_test'
     });
   };
 
   function loadMeasurement(choice){
     current=choice;
+    watchExpiry(choice.expires);
     if(analyticsOption)analyticsOption.checked=choice.analytics;
     if(adsOption)adsOption.checked=choice.ads;
     if(!production||(!choice.analytics&&!choice.ads)||configured)return;
@@ -634,7 +560,7 @@
     });
     if(choice.analytics)window.gtag('config',GA,{
       send_page_view:true,allow_google_signals:false,
-      allow_ad_personalization_signals:false,cookie_expires:34128000,cookie_update:false
+      allow_ad_personalization_signals:false,cookie_expires:LIFETIME/1000,cookie_update:false
     });
     if(choice.ads)window.gtag('config',ADS,{allow_ad_personalization_signals:false});
     var script=document.createElement('script');
@@ -644,39 +570,74 @@
     document.head.appendChild(script);
   }
 
-  function clearMeasurementCookies(){
+  function clearMeasurementCookies(keep){
     var domains=['',location.hostname,'.'+location.hostname,'.psoydo.com'];
     document.cookie.split(';').forEach(function(cookie){
       var name=cookie.split('=')[0].trim();
       if(!/^(_ga|_gid|_gat|_gcl)(_|$)/.test(name))return;
+      if(keep&&((keep.analytics&&/^(_ga|_gid|_gat)(_|$)/.test(name))||(keep.ads&&/^_gcl(_|$)/.test(name))))return;
       domains.forEach(function(domain){
         document.cookie=name+'=; Max-Age=0; path=/'+(domain?'; domain='+domain:'');
       });
     });
   }
 
+  function stopMeasurement(){
+    window['ga-disable-'+GA]=true;
+    clearTimeout(expiryTimer);
+    current={analytics:false,ads:false};
+    if(analyticsOption)analyticsOption.checked=false;
+    if(adsOption)adsOption.checked=false;
+    clearMeasurementCookies();
+    if(configured)location.reload();
+  }
+
+  function watchExpiry(expires){
+    clearTimeout(expiryTimer);
+    var remaining=expires-Date.now();
+    if(remaining<=0){stopMeasurement();showConsent();return;}
+    expiryTimer=setTimeout(function(){watchExpiry(expires);},Math.min(remaining,2147483647));
+  }
+
+  function readChoice(){
+    try{
+      var value=JSON.parse(localStorage.getItem(KEY));
+      if(value&&value.version===CONSENT_VERSION&&typeof value.analytics==='boolean'&&
+         typeof value.ads==='boolean'&&Number.isFinite(value.expires)&&
+         value.expires>Date.now()&&value.expires<=Date.now()+LIFETIME)return value;
+    }catch(error){}
+    return null;
+  }
+
   function saveChoice(choice){
+    choice={version:CONSENT_VERSION,analytics:choice.analytics,ads:choice.ads,expires:Date.now()+LIFETIME};
     var changed=current.analytics!==choice.analytics||current.ads!==choice.ads;
     try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(error){}
     if(configured&&changed){
-      // Reload removes the already loaded third-party runtime after withdrawal.
-      window['ga-disable-'+GA]=true;
-      current={analytics:false,ads:false};
-      window.gtag('consent','update',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
-      clearMeasurementCookies();
-      location.reload();
+      // A new document prevents the old runtime from sending further events.
+      stopMeasurement();
       return;
     }
+    if(!choice.analytics&&!choice.ads)clearMeasurementCookies();
     loadMeasurement(choice);
     hideConsent();
   }
 
-  var stored=null;
-  try{
-    stored=JSON.parse(localStorage.getItem(KEY));
-    if(!stored||typeof stored.analytics!=='boolean'||typeof stored.ads!=='boolean')stored=null;
-  }catch(error){}
-  // Prior Ads-only consent does not authorize newly introduced Analytics.
+  window.addEventListener('storage',function(event){
+    if(event.key!==KEY&&event.key!==null)return;
+    stopMeasurement();
+    if(!configured){
+      var choice=readChoice();
+      if(choice){loadMeasurement(choice);hideConsent();}
+      else showConsent();
+    }
+  });
+  window.addEventListener('pageshow',function(event){
+    if(event.persisted)location.reload();
+  });
+  // Expired, malformed and old unlimited choices require a new decision.
+  var stored=readChoice();
+  clearMeasurementCookies(stored);
   if(stored)loadMeasurement(stored);
   else showConsent();
 
@@ -711,3 +672,4 @@
     }
   });
 })();
+

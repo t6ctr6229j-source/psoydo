@@ -567,6 +567,9 @@
   if(!box)return;
 
   var KEY='psoydo-consent-v3';
+  var CONSENT_VERSION=4;
+  var LIFETIME=180*24*60*60*1000;
+  var expiryTimer;
 
   var consentReturnFocus=null;
 
@@ -591,7 +594,7 @@
 
   var GA='G-EYFT82SFN7';
   var ADS='AW-18355213487';
-  var production=/^(www\.)?psoydo\.com$/.test(location.hostname);
+  var production=location.protocol==='https:'&&/^(www\.)?psoydo\.com$/.test(location.hostname);
   var current={analytics:false,ads:false};
   var configured=false;
   var analyticsOption=document.getElementById('consent-analytics');
@@ -603,6 +606,7 @@
   }
 
   window.__psoydoTrack=function(name){
+    if(current.expires<=Date.now()){stopMeasurement();return;}
     if(!production||!configured||typeof window.gtag!=='function')return;
     if(current.analytics)window.gtag('event',name,{
       send_to:GA,event_category:'registration',event_label:'pilot_inquiry'
@@ -614,6 +618,7 @@
 
   function loadMeasurement(choice){
     current=choice;
+    watchExpiry(choice.expires);
     if(analyticsOption)analyticsOption.checked=choice.analytics;
     if(adsOption)adsOption.checked=choice.ads;
     if(!production||(!choice.analytics&&!choice.ads)||configured)return;
@@ -634,7 +639,7 @@
     });
     if(choice.analytics)window.gtag('config',GA,{
       send_page_view:true,allow_google_signals:false,
-      allow_ad_personalization_signals:false,cookie_expires:34128000,cookie_update:false
+      allow_ad_personalization_signals:false,cookie_expires:LIFETIME/1000,cookie_update:false
     });
     if(choice.ads)window.gtag('config',ADS,{allow_ad_personalization_signals:false});
     var script=document.createElement('script');
@@ -644,39 +649,74 @@
     document.head.appendChild(script);
   }
 
-  function clearMeasurementCookies(){
+  function clearMeasurementCookies(keep){
     var domains=['',location.hostname,'.'+location.hostname,'.psoydo.com'];
     document.cookie.split(';').forEach(function(cookie){
       var name=cookie.split('=')[0].trim();
       if(!/^(_ga|_gid|_gat|_gcl)(_|$)/.test(name))return;
+      if(keep&&((keep.analytics&&/^(_ga|_gid|_gat)(_|$)/.test(name))||(keep.ads&&/^_gcl(_|$)/.test(name))))return;
       domains.forEach(function(domain){
         document.cookie=name+'=; Max-Age=0; path=/'+(domain?'; domain='+domain:'');
       });
     });
   }
 
+  function stopMeasurement(){
+    window['ga-disable-'+GA]=true;
+    clearTimeout(expiryTimer);
+    current={analytics:false,ads:false};
+    if(analyticsOption)analyticsOption.checked=false;
+    if(adsOption)adsOption.checked=false;
+    clearMeasurementCookies();
+    if(configured)location.reload();
+  }
+
+  function watchExpiry(expires){
+    clearTimeout(expiryTimer);
+    var remaining=expires-Date.now();
+    if(remaining<=0){stopMeasurement();showConsent();return;}
+    expiryTimer=setTimeout(function(){watchExpiry(expires);},Math.min(remaining,2147483647));
+  }
+
+  function readChoice(){
+    try{
+      var value=JSON.parse(localStorage.getItem(KEY));
+      if(value&&value.version===CONSENT_VERSION&&typeof value.analytics==='boolean'&&
+         typeof value.ads==='boolean'&&Number.isFinite(value.expires)&&
+         value.expires>Date.now()&&value.expires<=Date.now()+LIFETIME)return value;
+    }catch(error){}
+    return null;
+  }
+
   function saveChoice(choice){
+    choice={version:CONSENT_VERSION,analytics:choice.analytics,ads:choice.ads,expires:Date.now()+LIFETIME};
     var changed=current.analytics!==choice.analytics||current.ads!==choice.ads;
     try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(error){}
     if(configured&&changed){
-      // Reload removes the already loaded third-party runtime after withdrawal.
-      window['ga-disable-'+GA]=true;
-      current={analytics:false,ads:false};
-      window.gtag('consent','update',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
-      clearMeasurementCookies();
-      location.reload();
+      // A new document prevents the old runtime from sending further events.
+      stopMeasurement();
       return;
     }
+    if(!choice.analytics&&!choice.ads)clearMeasurementCookies();
     loadMeasurement(choice);
     hideConsent();
   }
 
-  var stored=null;
-  try{
-    stored=JSON.parse(localStorage.getItem(KEY));
-    if(!stored||typeof stored.analytics!=='boolean'||typeof stored.ads!=='boolean')stored=null;
-  }catch(error){}
-  // Prior Ads-only consent does not authorize newly introduced Analytics.
+  window.addEventListener('storage',function(event){
+    if(event.key!==KEY&&event.key!==null)return;
+    stopMeasurement();
+    if(!configured){
+      var choice=readChoice();
+      if(choice){loadMeasurement(choice);hideConsent();}
+      else showConsent();
+    }
+  });
+  window.addEventListener('pageshow',function(event){
+    if(event.persisted)location.reload();
+  });
+  // Expired, malformed and old unlimited choices require a new decision.
+  var stored=readChoice();
+  clearMeasurementCookies(stored);
   if(stored)loadMeasurement(stored);
   else showConsent();
 
@@ -711,3 +751,4 @@
     }
   });
 })();
+
